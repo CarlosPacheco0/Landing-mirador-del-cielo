@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Mirador del Cielo | Río de Oro</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            50: '#FAF6F0',
+                            100: '#F3EDE2',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #0B0F17; /* Slate Night Mode: Oscuro profundo, elegante y moderno */
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { 
+            font-family: 'Playfair Display', serif; 
+        }
+        /* Sombras personalizadas para asegurar que el texto sea legible sobre cualquier video */
+        .text-shadow-hard {
+            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.9), 0px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #fbbf24, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-bottom-fade {
+            background: linear-gradient(
+                to top,
+                #0B0F17 0%,
+                rgba(11, 15, 23, 0.96) 20%,
+                rgba(11, 15, 23, 0.75) 45%,
+                rgba(11, 15, 23, 0.35) 72%,
+                rgba(11, 15, 23, 0) 100%
+            );
+        }
+    </style>
+</head>
+<body class="pt-20">
+
+    <!-- BARRA DE NAVEGACIÓN FLOTANTE (Sticky Navbar) -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-[#0B0F17]/85 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#inicio" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg shadow-[0_0_15px_rgba(245,158,11,0.4)] group-hover:scale-105 transition-transform duration-300">
+                    🌄
+                </div>
+                <span class="text-xl font-extrabold text-white font-serif tracking-tight">
+                    El Mirador <span class="text-gradient">del Cielo</span>
+                </span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#inicio" class="hover:text-amber-400 transition-colors">Inicio</a>
+                <a href="#conoce" class="hover:text-amber-400 transition-colors">Conoce</a>
+                <a href="#menu" class="hover:text-amber-400 transition-colors">Menú</a>
+                <a href="#galeria" class="hover:text-amber-400 transition-colors">Galería</a>
+                <a href="#souvenirs" class="hover:text-amber-400 transition-colors">Recuerdos</a>
+                <a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a>
+            </div>
+
+            <!-- CTA Button & Mobile Toggle -->
+            <div class="flex items-center gap-4">
+                <a href="#contacto" class="hidden sm:inline-block bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold text-xs uppercase tracking-wider py-2.5 px-6 rounded-full transition duration-300 shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:scale-105">
+                    Visítanos
+                </a>
+                
+                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 rounded-xl border border-slate-800 bg-slate-900/60 focus:outline-none" aria-label="Abrir Menú">
+                    <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#0B0F17]/95 backdrop-blur-xl border-b border-slate-800 px-6 py-6 space-y-4">
+            <a href="#inicio" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Inicio</a>
+            <a href="#conoce" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Conoce</a>
+            <a href="#menu" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Menú</a>
+            <a href="#galeria" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Galería</a>
+            <a href="#souvenirs" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Recuerdos</a>
+            <a href="#faq" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">FAQ</a>
+            <a href="#contacto" class="mobile-link block w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 rounded-full mt-4">Visítanos</a>
+        </div>
+    </nav>
+
+    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+    <a href="https://wa.me/570000000000" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 group flex items-center justify-center" aria-label="Escribir a WhatsApp">
+        <div class="absolute -inset-1 bg-green-500 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
+        <div class="relative bg-[#25D366] text-white p-4 rounded-full shadow-2xl transition duration-300 transform group-hover:scale-110 flex items-center gap-2">
+            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span class="hidden md:inline font-bold text-sm pr-1">¡Escríbenos!</span>
+        </div>
+    </a>
+
+    <!-- 1. SECCIÓN HERO (El primer impacto) -->
+    <header class="relative h-screen flex flex-col justify-center items-center text-center text-white px-4 overflow-hidden" id="inicio">
+        
+        <!-- Video Background con precarga y poster -->
+        <video autoplay loop muted playsinline preload="auto" poster="images/pin00.jpeg" class="absolute z-0 w-full h-full object-cover top-0 left-0">
+            <source src="images/video.mp4" type="video/mp4">
+        </video>
+        
+        <!-- CAPAS DE OSCURECIMIENTO (Overlays) para garantizar la lectura del texto -->
+        <!-- Capa 1: Oscurece todo el video al 40% -->
+        <div class="absolute inset-0 bg-black/40 z-0"></div>
+        <!-- Capa 2: Degradado suave ultra elegante que fusiona el video con el fondo oscuro #0B0F17 -->
+        <div class="absolute bottom-0 left-0 w-full h-1/2 hero-bottom-fade z-0 pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col items-center mt-16">
+            <h1 class="text-6xl md:text-8xl font-black mb-4 text-shadow-hard tracking-wide" data-aos="zoom-out" data-aos-duration="1200">El Mirador del Cielo</h1>
+            <p class="text-xl md:text-2xl mb-10 font-light max-w-2xl text-shadow-hard text-slate-200" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">Los mejores atardeceres de Río de Oro acompañados de una experiencia de altura.</p>
+            <a href="#menu" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-10 rounded-full transition duration-300 transform hover:scale-105 shadow-[0_0_25px_rgba(245,158,11,0.4)]" data-aos="fade-up" data-aos-delay="400">
+                Explorar el Menú
+            </a>
+        </div>
+    </header>
+
+    <!-- 2. SECCIÓN CONTEXTO (Conoce El Mirador) -->
+    <section class="py-24 px-4 md:px-20 max-w-7xl mx-auto" id="conoce">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right" data-aos-duration="1000">
+                <h2 class="text-5xl text-white font-bold mb-6 leading-tight">El punto de encuentro entre la <span class="text-gradient">tierra y el cielo</span></h2>
+                <p class="text-slate-300 mb-4 leading-relaxed text-lg font-light">Ubicado junto al icónico monumento en el cerro, nuestro mirador ofrece la vista panorámica más espectacular de Río de Oro.</p>
+                <p class="text-slate-400 leading-relaxed text-lg font-light">Diseñamos este espacio para que disfrutes de la brisa fresca, compartas con amigos y te dejes cautivar por la magia de nuestros atardeceres. ¡La foto perfecta está garantizada!</p>
+            </div>
+            <div data-aos="fade-left" data-aos-duration="1000" class="relative">
+                <div class="absolute -inset-4 bg-gradient-to-tr from-amber-500/30 to-orange-600/30 rounded-2xl blur-xl opacity-50"></div>
+                <img src="images/monumento.png" alt="Vista aérea del Mirador en Río de Oro" class="relative rounded-2xl shadow-2xl w-full object-cover h-[450px] border-2 border-slate-700/80">
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SECCIÓN MENÚ (Nuestros Favoritos) -->
+    <section class="py-24 bg-[#0d121d] px-4 md:px-20 relative border-y border-slate-800/80" id="menu">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-20 -right-20 w-96 h-96 bg-amber-500/10 rounded-full mix-blend-screen filter blur-3xl opacity-60"></div>
+            <div class="absolute -bottom-20 -left-20 w-96 h-96 bg-orange-600/10 rounded-full mix-blend-screen filter blur-3xl opacity-60"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-5xl text-white font-bold mb-4">Nuestros Favoritos</h2>
+                <p class="text-amber-400 font-semibold text-lg tracking-wider uppercase">Refresca tu tarde con nuestras especialidades</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Tarjeta 1 -->
+                <div class="bg-slate-900/90 rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300 border border-slate-800 group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative overflow-hidden">
+                        <img src="images/granizados.jpeg" alt="Granizados Artesanales" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute top-4 right-4 bg-amber-500/20 backdrop-blur-md border border-amber-500/40 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                            Más Vendido
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-white mb-3">Granizados</h3>
+                        <p class="text-slate-400 mb-6 text-sm leading-relaxed">Refrescantes granizados artesanales con sabores cítricos y frutales únicos, servidos helados. ¡El compañero ideal para el atardecer!</p>
+                        <div class="flex justify-between items-center border-t border-slate-800 pt-4">
+                            <span class="text-amber-400 font-black text-2xl">$15.000</span>
+                            <button class="bg-slate-800 text-slate-200 font-semibold px-5 py-2 rounded-full hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-white transition-colors duration-300">Pedir</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="bg-slate-900/90 rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300 border border-slate-800 group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative overflow-hidden">
+                        <img src="images/pizzeta.jpeg" alt="Pizzeta Artesanal" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-white mb-3">Pizzeta Artesanal</h3>
+                        <p class="text-slate-400 mb-6 text-sm leading-relaxed">Masa crocante horneada al punto perfecto, cubierta con abundante queso derretido, salsa napolitana e ingredientes frescos de la casa.</p>
+                        <div class="flex justify-between items-center border-t border-slate-800 pt-4">
+                            <span class="text-amber-400 font-black text-2xl">$25.000</span>
+                            <button class="bg-slate-800 text-slate-200 font-semibold px-5 py-2 rounded-full hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-white transition-colors duration-300">Pedir</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="bg-slate-900/90 rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300 border border-slate-800 group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative overflow-hidden">
+                        <img src="images/empanadas.jpeg" alt="Empanadas Crocantes" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-white mb-3">Empanadas Crocantes</h3>
+                        <p class="text-slate-400 mb-6 text-sm leading-relaxed">Deliciosas empanadas doradas y crocantes, rellenas de jugoso guiso tradicional y servidas con nuestro especial ají casero.</p>
+                        <div class="flex justify-between items-center border-t border-slate-800 pt-4">
+                            <span class="text-amber-400 font-black text-2xl">$18.000</span>
+                            <button class="bg-slate-800 text-slate-200 font-semibold px-5 py-2 rounded-full hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-white transition-colors duration-300">Pedir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center" data-aos="fade-up">
+                <a href="#menu" class="inline-block border-2 border-amber-500/80 text-amber-400 hover:bg-amber-500 hover:text-slate-950 font-bold py-4 px-10 rounded-full transition duration-300 uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+                    Ver Menú Completo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN GALERÍA (Galería de Atardeceres y Experiencias) -->
+    <section class="py-24 px-4 md:px-20 max-w-7xl mx-auto" id="galeria">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-5xl text-white font-bold mb-4">Galería del Mirador</h2>
+            <p class="text-amber-400 font-semibold text-lg tracking-wider uppercase">Captura la magia de nuestros atardeceres y sabores</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+                <img src="images/monumento.png" alt="Vista del Monumento" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <span class="text-white font-medium text-lg">Vista Panorámica al Atardecer</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+                <img src="images/granizados.jpeg" alt="Granizados Helados" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <span class="text-white font-medium text-lg">Granizados Refrescantes</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+                <img src="images/pizzeta.jpeg" alt="Pizzeta Recién Horneada" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <span class="text-white font-medium text-lg">Pizzeta Artesanal</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+                <img src="images/empanadas.jpeg" alt="Empanadas Crocantes" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <span class="text-white font-medium text-lg">Empanadas Tradicionales</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+                <img src="images/pin01.png" alt="Pin Fachada Edición Especial" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <span class="text-white font-medium text-lg">Pin Fachada Local</span>
+                </div>
+            </div>
+            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+                <img src="images/pin02.png" alt="Pin Conmemorativo Jaguar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                    <span class="text-white font-medium text-lg">Pin Jaguar 368 Años</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SECCIÓN TIENDA (Llévate un Recuerdo) -->
+    <section class="py-24 px-4 md:px-20 bg-[#090c13] text-white relative overflow-hidden border-t border-slate-800/80" id="souvenirs">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-amber-600 blur-[120px] opacity-20 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-orange-600 blur-[120px] opacity-20 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="grid grid-cols-2 gap-6" data-aos="fade-right" data-aos-duration="1000">
+                <img src="images/pin01.png" alt="Pin Fachada Local" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500">
+                <img src="images/pin02.png" alt="Pin Jaguar Río de Oro" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500 mt-8">
+            </div>
+            <div data-aos="fade-left" data-aos-duration="1000">
+                <h2 class="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Llévate un recuerdo</h2>
+                <p class="text-slate-300 mb-8 leading-relaxed text-lg font-light">No te vayas sin tu pieza de colección. Celebra el arte y los 368 años de historia de Río de Oro con nuestros pines exclusivos de edición limitada.</p>
+                <ul class="space-y-6 text-slate-200 mb-10">
+                    <li class="flex items-center text-lg bg-slate-800/40 p-4 rounded-xl backdrop-blur-sm border border-slate-700/50">
+                        <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 
+                        </div>
+                        <span class="font-medium">Pin Fachada "El Mirador del Cielo"</span>
+                    </li>
+                    <li class="flex items-center text-lg bg-slate-800/40 p-4 rounded-xl backdrop-blur-sm border border-slate-700/50">
+                        <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 
+                        </div>
+                        <span class="font-medium">Pin Conmemorativo Jaguar (368 años)</span>
+                    </li>
+                </ul>
+                <a href="#contacto" class="inline-block bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-10 rounded-full transition duration-300 shadow-xl shadow-amber-500/20 transform hover:-translate-y-1">
+                    Preguntar por disponibilidad
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN PREGUNTAS FRECUENTES (FAQ) -->
+    <section class="py-24 px-4 md:px-20 max-w-4xl mx-auto" id="faq">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-5xl text-white font-bold mb-4">Preguntas Frecuentes</h2>
+            <p class="text-amber-400 font-semibold text-lg tracking-wider uppercase">Todo lo que necesitas saber antes de visitarnos</p>
+        </div>
+
+        <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+            <!-- FAQ 1 -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/80 backdrop-blur-md overflow-hidden transition-all duration-300">
+                <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center text-white font-semibold text-lg hover:text-amber-400 focus:outline-none">
+                    <span>¿Se requiere reserva previa para ingresar?</span>
+                    <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
+                    No es obligatoria la reserva previa. Atendemos por orden de llegada. Sin embargo, para grupos grandes o eventos especiales nos puedes escribir por WhatsApp para asegurar la mejor ubicación.
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/80 backdrop-blur-md overflow-hidden transition-all duration-300">
+                <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center text-white font-semibold text-lg hover:text-amber-400 focus:outline-none">
+                    <span>¿Cuentan con parqueadero disponible?</span>
+                    <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
+                    Sí, en la zona adyacente al cerro del monumento hay espacio designado para estacionamiento de vehículos y motocicletas.
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/80 backdrop-blur-md overflow-hidden transition-all duration-300">
+                <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center text-white font-semibold text-lg hover:text-amber-400 focus:outline-none">
+                    <span>¿Es un espacio Pet Friendly?</span>
+                    <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
+                    ¡Por supuesto! Nos encanta recibir a tus mascotas. Contamos con espacio al aire libre para que disfruten del ambiente de montaña contigo.
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/80 backdrop-blur-md overflow-hidden transition-all duration-300">
+                <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center text-white font-semibold text-lg hover:text-amber-400 focus:outline-none">
+                    <span>¿Cuál es la mejor hora para llegar y tomar fotos?</span>
+                    <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
+                    Te recomendamos llegar entre las 4:30 PM y las 5:30 PM para alcanzar la "Hora Dorada", presenciar el atardecer completo y disfrutar de las luces nocturnas del mirador.
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="border border-slate-800 rounded-2xl bg-slate-900/80 backdrop-blur-md overflow-hidden transition-all duration-300">
+                <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center text-white font-semibold text-lg hover:text-amber-400 focus:outline-none">
+                    <span>¿Qué medios de pago aceptan?</span>
+                    <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
+                    Aceptamos efectivo, transferencias Nequi y Daviplata.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BANNER DE REDES SOCIALES (@miradordelcielordo) -->
+    <section class="py-16 px-4 md:px-20 bg-gradient-to-r from-amber-600/10 via-orange-600/15 to-amber-600/10 border-y border-amber-500/30 relative overflow-hidden" id="redes">
+        <div class="max-w-5xl mx-auto text-center relative z-10" data-aos="zoom-in">
+            <span class="bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">
+                ¡Forma parte de nuestra comunidad!
+            </span>
+            <h3 class="text-4xl md:text-5xl font-bold text-white mb-4">Síguenos en Redes Sociales</h3>
+            <p class="text-slate-300 text-lg mb-8 max-w-xl mx-auto font-light">Etiquétanos en tus mejores fotos y videos con <strong class="text-amber-400">@miradordelcielordo</strong> para aparecer en nuestras historias.</p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://instagram.com/miradordelcielordo" target="_blank" class="inline-flex items-center bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    @miradordelcielordo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. SECCIÓN FOOTER (Visítanos) + MAPA -->
+    <footer class="py-24 px-4 md:px-20 bg-[#0B0F17] border-t border-slate-800/80" id="contacto">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+            
+            <!-- Datos de Contacto -->
+            <div data-aos="fade-up" data-aos-duration="1000">
+                <h2 class="text-5xl text-white font-bold mb-8">Planea tu visita</h2>
+                <div class="space-y-6 mb-10">
+                    <p class="text-slate-300 text-lg flex items-start">
+                        <span class="text-3xl mr-4">📍</span> 
+                        <span><strong class="text-white block text-xl mb-1">Ubicación</strong> Cerro del Monumento, Río de Oro (Cesar)</span>
+                    </p>
+                    <p class="text-slate-300 text-lg flex items-start">
+                        <span class="text-3xl mr-4">🕒</span> 
+                        <span><strong class="text-white block text-xl mb-1">Horario</strong> Jueves a Domingo - 4:00 PM a 11:00 PM<br><span class="text-amber-400 font-medium text-sm">Mejor hora para fotos: Atardecer</span></span>
+                    </p>
+                    <p class="text-slate-300 text-lg flex items-start">
+                        <span class="text-3xl mr-4">✨</span> 
+                        <span><strong class="text-white block text-xl mb-1">Ambiente</strong> Familiar, Pet Friendly, Terraza abierta</span>
+                    </p>
+                </div>
+                
+                <a href="https://wa.me/570000000000" target="_blank" class="inline-flex items-center bg-[#25D366] hover:bg-green-500 text-white font-bold py-4 px-8 rounded-full transition duration-300 shadow-lg shadow-green-500/20 transform hover:scale-105">
+                    <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Escribir al WhatsApp
+                </a>
+            </div>
+
+            <!-- Mapa Interactivo -->
+            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" class="w-full h-full min-h-[350px] relative">
+                <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-40"></div>
+                <div class="relative w-full h-full rounded-2xl shadow-xl overflow-hidden border-2 border-slate-800 bg-slate-900">
+                    <!-- Google Maps Iframe centrado en Río de Oro -->
+                     <iframe 
+                        src="https://maps.google.com/maps?q=Cerro%20de%20la%20virgen%20del%20rosario%20rio%20de%20oro&t=&z=17&ie=UTF8&iwloc=&output=embed" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0; min-height: 350px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="mt-20 pt-8 border-t border-slate-800/80 text-center text-slate-500 font-medium">
+            <p>&copy; 2026 El Mirador del Cielo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Inicialización de animaciones AOS e interacción JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800, 
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 120,
+        });
+
+        // Toggle del Menú Móvil
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('menu-icon-open');
+        const iconClose = document.getElementById('menu-icon-close');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                iconOpen.classList.toggle('hidden');
+                iconClose.classList.toggle('hidden');
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    iconOpen.classList.remove('hidden');
+                    iconClose.classList.add('hidden');
+                });
+            });
+        }
+
+        // Acordeón de FAQ (Cierra automáticamente las demás al abrir una)
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('.faq-icon');
+                const isOpening = content.classList.contains('hidden');
+
+                // Cerrar todos los demás items
+                faqToggles.forEach(otherToggle => {
+                    const otherContent = otherToggle.nextElementSibling;
+                    const otherIcon = otherToggle.querySelector('.faq-icon');
+                    
+                    otherContent.classList.add('hidden');
+                    if (otherIcon) {
+                        otherIcon.classList.remove('rotate-180');
+                    }
+                });
+
+                // Si el elemento cliqueado estaba cerrado, lo abrimos
+                if (isOpening) {
+                    content.classList.remove('hidden');
+                    if (icon) {
+                        icon.classList.add('rotate-180');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
