@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Mirador del Cielo | Río de Oro</title>
+    <title>El Mirador del Cielo | Gastronomía & Atardeceres en Río de Oro</title>
+    <meta name="description" content="El Mirador del Cielo en Río de Oro, Cesar. Disfruta de la mejor vista panorámica, granizados artesanales, pizzetas crocantes y momentos inolvidables.">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -21,27 +23,33 @@
         }
     </script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- AOS CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         body { 
             font-family: 'Montserrat', sans-serif; 
-            background-color: #0B0F17; /* Slate Night Mode: Oscuro profundo, elegante y moderno */
+            background-color: #0B0F17; /* Slate Night Mode */
             color: #E2E8F0;
             overflow-x: hidden;
         }
         h1, h2, h3, h4 { 
             font-family: 'Playfair Display', serif; 
         }
-        /* Sombras personalizadas para asegurar que el texto sea legible sobre cualquier video */
-        .text-shadow-hard {
-            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.9), 0px 2px 4px rgba(0, 0, 0, 0.7);
+        /* Sombras e iluminación para maxima legibilidad sobre video */
+        .hero-title {
+            filter: drop-shadow(0px 6px 18px rgba(0, 0, 0, 0.95)) drop-shadow(0px 0px 30px rgba(245, 158, 11, 0.35));
         }
         .text-gradient {
-            background: linear-gradient(to right, #fbbf24, #f97316);
+            background: linear-gradient(135deg, #FFE082 0%, #FBBF24 50%, #F97316 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+        .text-shadow-drop {
+            filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.95));
         }
         .hero-bottom-fade {
             background: linear-gradient(
@@ -53,12 +61,41 @@
                 rgba(11, 15, 23, 0) 100%
             );
         }
+        /* Glassmorphic Cards Glow */
+        .glass-glow {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+        .glass-glow:hover {
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+        /* Active nav item */
+        .nav-link.active {
+            color: #f59e0b;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body class="pt-20">
 
     <!-- BARRA DE NAVEGACIÓN FLOTANTE (Sticky Navbar) -->
-    <nav class="fixed top-0 left-0 w-full z-50 bg-[#0B0F17]/85 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300">
+    <nav class="fixed top-0 left-0 w-full z-50 bg-[#0B0F17]/90 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
             
             <!-- Brand Logo -->
@@ -72,20 +109,29 @@
             </a>
 
             <!-- Desktop Links -->
-            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
-                <a href="#inicio" class="hover:text-amber-400 transition-colors">Inicio</a>
-                <a href="#conoce" class="hover:text-amber-400 transition-colors">Conoce</a>
-                <a href="#menu" class="hover:text-amber-400 transition-colors">Menú</a>
-                <a href="#galeria" class="hover:text-amber-400 transition-colors">Galería</a>
-                <a href="#souvenirs" class="hover:text-amber-400 transition-colors">Recuerdos</a>
-                <a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a>
+            <div class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-300">
+                <a href="#inicio" class="nav-link hover:text-amber-400 transition-colors">Inicio</a>
+                <a href="#conoce" class="nav-link hover:text-amber-400 transition-colors">Conoce</a>
+                <a href="#menu" class="nav-link hover:text-amber-400 transition-colors">Menú</a>
+                <a href="#galeria" class="nav-link hover:text-amber-400 transition-colors">Galería</a>
+                <a href="#souvenirs" class="nav-link hover:text-amber-400 transition-colors">Recuerdos</a>
+                <a href="#resenas" class="nav-link hover:text-amber-400 transition-colors">Reseñas</a>
+                <a href="#faq" class="nav-link hover:text-amber-400 transition-colors">FAQ</a>
             </div>
 
-            <!-- CTA Button & Mobile Toggle -->
-            <div class="flex items-center gap-4">
-                <a href="#contacto" class="hidden sm:inline-block bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold text-xs uppercase tracking-wider py-2.5 px-6 rounded-full transition duration-300 shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:scale-105">
-                    Visítanos
-                </a>
+            <!-- CTA Buttons & Cart & Mobile Toggle -->
+            <div class="flex items-center gap-3">
+                <!-- Cart Trigger Button -->
+                <button id="cart-btn" onclick="openCartModal()" class="relative bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold p-2.5 px-4 rounded-full flex items-center gap-2 text-xs uppercase tracking-wider transition-all duration-300 hover:scale-105 shadow-md">
+                    <span>🛒</span>
+                    <span class="hidden sm:inline">Pedido</span>
+                    <span id="cart-badge" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+                </button>
+
+                <!-- Reservation Modal Button -->
+                <button onclick="openReservationModal()" class="hidden sm:inline-block bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold text-xs uppercase tracking-wider py-2.5 px-5 rounded-full transition duration-300 shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:scale-105">
+                    Reservar
+                </button>
                 
                 <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 rounded-xl border border-slate-800 bg-slate-900/60 focus:outline-none" aria-label="Abrir Menú">
                     <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
@@ -101,19 +147,35 @@
             <a href="#menu" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Menú</a>
             <a href="#galeria" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Galería</a>
             <a href="#souvenirs" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Recuerdos</a>
+            <a href="#resenas" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Reseñas</a>
             <a href="#faq" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">FAQ</a>
-            <a href="#contacto" class="mobile-link block w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 rounded-full mt-4">Visítanos</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <button onclick="openReservationModal(); closeMobileMenu();" class="w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 rounded-full">
+                    📅 Reservar Mesa
+                </button>
+                <a href="#contacto" class="mobile-link block w-full text-center border border-slate-700 text-slate-300 font-bold py-2.5 rounded-full">
+                    📍 Dónde Estamos
+                </a>
+            </div>
         </div>
     </nav>
 
-    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
-    <a href="https://wa.me/570000000000" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 group flex items-center justify-center" aria-label="Escribir a WhatsApp">
-        <div class="absolute -inset-1 bg-green-500 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
-        <div class="relative bg-[#25D366] text-white p-4 rounded-full shadow-2xl transition duration-300 transform group-hover:scale-110 flex items-center gap-2">
-            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            <span class="hidden md:inline font-bold text-sm pr-1">¡Escríbenos!</span>
+    <!-- BOTÓN FLOTANTE DE WHATSAPP CON TOOLTIP INTELIGENTE -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2 group">
+        <!-- Tooltip emergente -->
+        <div id="wa-tooltip" class="hidden sm:flex items-center gap-2 bg-slate-900/95 text-slate-200 border border-slate-700 px-4 py-2 rounded-2xl shadow-2xl text-xs font-semibold backdrop-blur-md animate-bounce">
+            <span>👋 ¿Dudas o reservas en vivo?</span>
+            <span class="text-green-400 font-bold">¡Escríbenos!</span>
         </div>
-    </a>
+        
+        <a href="https://wa.me/573000000000?text=Hola!%20Quisiera%20mas%20informacion%20sobre%20El%20Mirador%20del%20Cielo." target="_blank" rel="noopener noreferrer" class="relative flex items-center justify-center" aria-label="Escribir a WhatsApp">
+            <div class="absolute -inset-1 bg-green-500 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
+            <div class="relative bg-[#25D366] text-white p-4 rounded-full shadow-2xl transition duration-300 transform group-hover:scale-110 flex items-center gap-2">
+                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span class="hidden md:inline font-bold text-sm pr-1">WhatsApp</span>
+            </div>
+        </a>
+    </div>
 
     <!-- 1. SECCIÓN HERO (El primer impacto) -->
     <header class="relative h-screen flex flex-col justify-center items-center text-center text-white px-4 overflow-hidden" id="inicio">
@@ -123,18 +185,37 @@
             <source src="images/video.mp4" type="video/mp4">
         </video>
         
-        <!-- CAPAS DE OSCURECIMIENTO (Overlays) para garantizar la lectura del texto -->
-        <!-- Capa 1: Oscurece todo el video al 40% -->
-        <div class="absolute inset-0 bg-black/40 z-0"></div>
-        <!-- Capa 2: Degradado suave ultra elegante que fusiona el video con el fondo oscuro #0B0F17 -->
+        <!-- CAPAS DE OSCURECIMIENTO (Overlays) -->
+        <div class="absolute inset-0 bg-black/55 z-0"></div>
         <div class="absolute bottom-0 left-0 w-full h-1/2 hero-bottom-fade z-0 pointer-events-none"></div>
 
-        <div class="relative z-10 flex flex-col items-center mt-16">
-            <h1 class="text-6xl md:text-8xl font-black mb-4 text-shadow-hard tracking-wide" data-aos="zoom-out" data-aos-duration="1200">El Mirador del Cielo</h1>
-            <p class="text-xl md:text-2xl mb-10 font-light max-w-2xl text-shadow-hard text-slate-200" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">Los mejores atardeceres de Río de Oro acompañados de una experiencia de altura.</p>
-            <a href="#menu" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-10 rounded-full transition duration-300 transform hover:scale-105 shadow-[0_0_25px_rgba(245,158,11,0.4)]" data-aos="fade-up" data-aos-delay="400">
-                Explorar el Menú
-            </a>
+        <div class="relative z-10 flex flex-col items-center mt-12 max-w-4xl">
+            <!-- WIDGET DE HORA DORADA & CLIMA EN VIVO -->
+            <div class="inline-flex items-center gap-3 bg-slate-900/90 backdrop-blur-xl border border-amber-500/40 px-5 py-2.5 rounded-full mb-6 text-xs md:text-sm font-medium text-amber-300 shadow-[0_0_20px_rgba(245,158,11,0.25)]" data-aos="fade-down" data-aos-duration="1000">
+                <span class="flex h-2.5 w-2.5 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                </span>
+                <span>📍 Cerro del Monumento, Río de Oro</span>
+                <span class="text-slate-500 hidden sm:inline">•</span>
+                <span id="sunset-widget-text" class="font-semibold text-amber-200">🌅 Atardecer hoy: 5:48 PM</span>
+            </div>
+
+            <h1 class="text-5xl md:text-8xl font-black mb-4 hero-title tracking-wide leading-tight" data-aos="zoom-out" data-aos-duration="1200">
+                <span class="text-white">El Mirador</span> <span class="text-gradient">del Cielo</span>
+            </h1>
+            <p class="text-lg md:text-2xl mb-10 font-light max-w-2xl text-shadow-drop text-slate-100 leading-relaxed" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                Los mejores atardeceres de Río de Oro acompañados de una experiencia gastronómica de altura.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="400">
+                <a href="#menu" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-9 rounded-full transition duration-300 transform hover:scale-105 shadow-[0_0_25px_rgba(245,158,11,0.4)] text-center">
+                    Explorar el Menú
+                </a>
+                <button onclick="openReservationModal()" class="bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-white font-bold py-4 px-9 rounded-full transition duration-300 backdrop-blur-md transform hover:scale-105 shadow-xl text-center">
+                    📅 Reservar Mesa
+                </button>
+            </div>
         </div>
     </header>
 
@@ -142,18 +223,39 @@
     <section class="py-24 px-4 md:px-20 max-w-7xl mx-auto" id="conoce">
         <div class="grid md:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right" data-aos-duration="1000">
-                <h2 class="text-5xl text-white font-bold mb-6 leading-tight">El punto de encuentro entre la <span class="text-gradient">tierra y el cielo</span></h2>
-                <p class="text-slate-300 mb-4 leading-relaxed text-lg font-light">Ubicado junto al icónico monumento en el cerro, nuestro mirador ofrece la vista panorámica más espectacular de Río de Oro.</p>
-                <p class="text-slate-400 leading-relaxed text-lg font-light">Diseñamos este espacio para que disfrutes de la brisa fresca, compartas con amigos y te dejes cautivar por la magia de nuestros atardeceres. ¡La foto perfecta está garantizada!</p>
+                <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Experiencia Única</span>
+                <h2 class="text-4xl md:text-5xl text-white font-bold mb-6 leading-tight">El punto de encuentro entre la <span class="text-gradient">tierra y el cielo</span></h2>
+                <p class="text-slate-300 mb-4 leading-relaxed text-lg font-light">Ubicado junto al icónico monumento en el cerro, nuestro mirador ofrece la vista panorámica más espectacular de Río de Oro (Cesar).</p>
+                <p class="text-slate-400 leading-relaxed text-lg font-light mb-8">Diseñamos este espacio para que disfrutes de la brisa fresca de montaña, compartas con amigos y te dejes cautivar por los colores vibrantes del atardecer. ¡La foto perfecta está garantizada!</p>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-800 pt-6 text-center">
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                        <span class="text-2xl font-black text-amber-400 block font-serif">368+</span>
+                        <span class="text-xs text-slate-400 uppercase tracking-wider">Años Historia</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                        <span class="text-2xl font-black text-amber-400 block font-serif">4.9 ★</span>
+                        <span class="text-xs text-slate-400 uppercase tracking-wider">Calificación</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 col-span-2 sm:col-span-1">
+                        <span class="text-2xl font-black text-amber-400 block font-serif">100%</span>
+                        <span class="text-xs text-slate-400 uppercase tracking-wider">Pet Friendly</span>
+                    </div>
+                </div>
             </div>
-            <div data-aos="fade-left" data-aos-duration="1000" class="relative">
-                <div class="absolute -inset-4 bg-gradient-to-tr from-amber-500/30 to-orange-600/30 rounded-2xl blur-xl opacity-50"></div>
-                <img src="images/monumento.png" alt="Vista aérea del Mirador en Río de Oro" class="relative rounded-2xl shadow-2xl w-full object-cover h-[450px] border-2 border-slate-700/80">
+            
+            <div data-aos="fade-left" data-aos-duration="1000" class="relative group cursor-pointer" onclick="openLightbox(0)">
+                <div class="absolute -inset-4 bg-gradient-to-tr from-amber-500/30 to-orange-600/30 rounded-3xl blur-xl opacity-50 group-hover:opacity-80 transition duration-500"></div>
+                <img src="images/monumento.png" alt="Vista aérea del Mirador en Río de Oro" class="relative rounded-2xl shadow-2xl w-full object-cover h-[450px] border-2 border-slate-700/80 group-hover:scale-[1.01] transition duration-500">
+                <div class="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-4 rounded-xl border border-slate-800 text-xs text-slate-300 flex justify-between items-center z-10">
+                    <span>📷 Monumento Cerro de la Virgen</span>
+                    <span class="text-amber-400 font-bold">Ver ampliación ↗</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. SECCIÓN MENÚ (Nuestros Favoritos) -->
+    <!-- 3. SECCIÓN MENÚ (Nuestros Favoritos + Carrito Interactivo) -->
     <section class="py-24 bg-[#0d121d] px-4 md:px-20 relative border-y border-slate-800/80" id="menu">
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <div class="absolute -top-20 -right-20 w-96 h-96 bg-amber-500/10 rounded-full mix-blend-screen filter blur-3xl opacity-60"></div>
@@ -161,155 +263,328 @@
         </div>
 
         <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-5xl text-white font-bold mb-4">Nuestros Favoritos</h2>
-                <p class="text-amber-400 font-semibold text-lg tracking-wider uppercase">Refresca tu tarde con nuestras especialidades</p>
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Gastronomía & Coctelería</span>
+                <h2 class="text-4xl md:text-5xl text-white font-bold mb-4">Nuestras Especialidades</h2>
+                <p class="text-slate-400 text-base md:text-lg max-w-xl mx-auto font-light">Refresca tu tarde o deleita tu paladar con nuestras preparaciones artesanales.</p>
+            </div>
+
+            <!-- MENU FILTER TABS -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12" data-aos="fade-up" data-aos-delay="100">
+                <button onclick="filterMenu('todos')" class="menu-tab-btn active bg-amber-500 text-slate-950 font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300">Todos</button>
+                <button onclick="filterMenu('bebidas')" class="menu-tab-btn bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300">Granizados & Bebidas</button>
+                <button onclick="filterMenu('comidas')" class="menu-tab-btn bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300">Platos & Snacks</button>
+                <button onclick="filterMenu('souvenirs')" class="menu-tab-btn bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300">Souvenirs</button>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Tarjeta 1 -->
-                <div class="bg-slate-900/90 rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300 border border-slate-800 group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="relative overflow-hidden">
-                        <img src="images/granizados.jpeg" alt="Granizados Artesanales" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
-                        <div class="absolute top-4 right-4 bg-amber-500/20 backdrop-blur-md border border-amber-500/40 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                            Más Vendido
+            <div class="grid md:grid-cols-3 gap-8" id="menu-items-grid">
+                
+                <!-- Tarjeta 1: Granizados -->
+                <div class="menu-item-card glass-glow rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between" data-category="bebidas" data-aos="fade-up" data-aos-delay="100">
+                    <div>
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox(1)">
+                            <img src="images/granizados.jpeg" alt="Granizados Artesanales" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute top-4 right-4 bg-amber-500/20 backdrop-blur-md border border-amber-500/40 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                                🔥 Más Vendido
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Granizados Artesanales</h3>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Refrescantes granizados con sabores cítricos y frutales únicos, servidos extremadamente helados. ¡El compañero ideal para ver el atardecer!</p>
                         </div>
                     </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold text-white mb-3">Granizados</h3>
-                        <p class="text-slate-400 mb-6 text-sm leading-relaxed">Refrescantes granizados artesanales con sabores cítricos y frutales únicos, servidos helados. ¡El compañero ideal para el atardecer!</p>
-                        <div class="flex justify-between items-center border-t border-slate-800 pt-4">
-                            <span class="text-amber-400 font-black text-2xl">$15.000</span>
-                            <button class="bg-slate-800 text-slate-200 font-semibold px-5 py-2 rounded-full hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-white transition-colors duration-300">Pedir</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 2 -->
-                <div class="bg-slate-900/90 rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300 border border-slate-800 group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="relative overflow-hidden">
-                        <img src="images/pizzeta.jpeg" alt="Pizzeta Artesanal" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold text-white mb-3">Pizzeta Artesanal</h3>
-                        <p class="text-slate-400 mb-6 text-sm leading-relaxed">Masa crocante horneada al punto perfecto, cubierta con abundante queso derretido, salsa napolitana e ingredientes frescos de la casa.</p>
-                        <div class="flex justify-between items-center border-t border-slate-800 pt-4">
-                            <span class="text-amber-400 font-black text-2xl">$25.000</span>
-                            <button class="bg-slate-800 text-slate-200 font-semibold px-5 py-2 rounded-full hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-white transition-colors duration-300">Pedir</button>
+                    <div class="p-8 pt-0">
+                        <div class="flex justify-between items-center border-t border-slate-800/80 pt-4">
+                            <div>
+                                <span class="text-slate-500 text-xs block">Precio</span>
+                                <span class="text-amber-400 font-black text-2xl">$15.000</span>
+                            </div>
+                            <button onclick="addToCart('Granizados Artesanales', 15000, 'images/granizados.jpeg')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300 shadow-md transform active:scale-95">
+                                + Pedir
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tarjeta 3 -->
-                <div class="bg-slate-900/90 rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-300 border border-slate-800 group" data-aos="fade-up" data-aos-delay="300">
-                    <div class="relative overflow-hidden">
-                        <img src="images/empanadas.jpeg" alt="Empanadas Crocantes" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                <!-- Tarjeta 2: Pizzeta Artesanal -->
+                <div class="menu-item-card glass-glow rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between" data-category="comidas" data-aos="fade-up" data-aos-delay="200">
+                    <div>
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox(2)">
+                            <img src="images/pizzeta.jpeg" alt="Pizzeta Artesanal" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute top-4 right-4 bg-orange-500/20 backdrop-blur-md border border-orange-500/40 text-orange-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                                Recién Horneada
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Pizzeta Artesanal</h3>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Masa crocante horneada al punto perfecto, cubierta con abundante queso derretido, salsa napolitana e ingredientes frescos de la casa.</p>
+                        </div>
                     </div>
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold text-white mb-3">Empanadas Crocantes</h3>
-                        <p class="text-slate-400 mb-6 text-sm leading-relaxed">Deliciosas empanadas doradas y crocantes, rellenas de jugoso guiso tradicional y servidas con nuestro especial ají casero.</p>
-                        <div class="flex justify-between items-center border-t border-slate-800 pt-4">
-                            <span class="text-amber-400 font-black text-2xl">$18.000</span>
-                            <button class="bg-slate-800 text-slate-200 font-semibold px-5 py-2 rounded-full hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:text-white transition-colors duration-300">Pedir</button>
+                    <div class="p-8 pt-0">
+                        <div class="flex justify-between items-center border-t border-slate-800/80 pt-4">
+                            <div>
+                                <span class="text-slate-500 text-xs block">Precio</span>
+                                <span class="text-amber-400 font-black text-2xl">$25.000</span>
+                            </div>
+                            <button onclick="addToCart('Pizzeta Artesanal', 25000, 'images/pizzeta.jpeg')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300 shadow-md transform active:scale-95">
+                                + Pedir
+                            </button>
                         </div>
                     </div>
                 </div>
+
+                <!-- Tarjeta 3: Empanadas Crocantes -->
+                <div class="menu-item-card glass-glow rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between" data-category="comidas" data-aos="fade-up" data-aos-delay="300">
+                    <div>
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox(3)">
+                            <img src="images/empanadas.jpeg" alt="Empanadas Crocantes" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Empanadas Crocantes</h3>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Deliciosas empanadas doradas y crocantes, rellenas de jugoso guiso tradicional y servidas con nuestro especial ají casero picantico.</p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <div class="flex justify-between items-center border-t border-slate-800/80 pt-4">
+                            <div>
+                                <span class="text-slate-500 text-xs block">Precio</span>
+                                <span class="text-amber-400 font-black text-2xl">$18.000</span>
+                            </div>
+                            <button onclick="addToCart('Empanadas Crocantes', 18000, 'images/empanadas.jpeg')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300 shadow-md transform active:scale-95">
+                                + Pedir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Pin Fachada -->
+                <div class="menu-item-card glass-glow rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between" data-category="souvenirs" data-aos="fade-up" data-aos-delay="100">
+                    <div>
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox(4)">
+                            <img src="images/pin01.png" alt="Pin Fachada Local" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute top-4 right-4 bg-purple-500/20 backdrop-blur-md border border-purple-500/40 text-purple-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                                Edición Especial
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Pin Fachada "El Mirador"</h3>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Pieza metálica conmemorativa de alta calidad que representa la icónica arquitectura de nuestro espacio gastronómico.</p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <div class="flex justify-between items-center border-t border-slate-800/80 pt-4">
+                            <div>
+                                <span class="text-slate-500 text-xs block">Precio</span>
+                                <span class="text-amber-400 font-black text-2xl">$15.000</span>
+                            </div>
+                            <button onclick="addToCart('Pin Fachada Local', 15000, 'images/pin01.png')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300 shadow-md transform active:scale-95">
+                                + Pedir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 5: Pin Jaguar -->
+                <div class="menu-item-card glass-glow rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col justify-between" data-category="souvenirs" data-aos="fade-up" data-aos-delay="200">
+                    <div>
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox(5)">
+                            <img src="images/pin02.png" alt="Pin Jaguar 368 Años" class="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute top-4 right-4 bg-amber-500/20 backdrop-blur-md border border-amber-500/40 text-amber-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                                368 Años Río de Oro
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Pin Jaguar Conmemorativo</h3>
+                            <p class="text-slate-400 mb-6 text-sm leading-relaxed">Pin oficial de los 368 años de historia de Río de Oro. Un souvenir imperdible para amantes de la cultura local.</p>
+                        </div>
+                    </div>
+                    <div class="p-8 pt-0">
+                        <div class="flex justify-between items-center border-t border-slate-800/80 pt-4">
+                            <div>
+                                <span class="text-slate-500 text-xs block">Precio</span>
+                                <span class="text-amber-400 font-black text-2xl">$15.000</span>
+                            </div>
+                            <button onclick="addToCart('Pin Jaguar 368 Años', 15000, 'images/pin02.png')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-300 shadow-md transform active:scale-95">
+                                + Pedir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             
             <div class="mt-16 text-center" data-aos="fade-up">
-                <a href="#menu" class="inline-block border-2 border-amber-500/80 text-amber-400 hover:bg-amber-500 hover:text-slate-950 font-bold py-4 px-10 rounded-full transition duration-300 uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(245,158,11,0.2)]">
-                    Ver Menú Completo
-                </a>
+                <button onclick="openCartModal()" class="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-10 rounded-full transition duration-300 uppercase tracking-widest text-sm shadow-[0_0_25px_rgba(245,158,11,0.3)] hover:scale-105">
+                    <span>🛒 Ver Mi Pedido y Confirmar</span>
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- SECCIÓN GALERÍA (Galería de Atardeceres y Experiencias) -->
+    <!-- 4. SECCIÓN GALERÍA INTERACTIVA (Con Lightbox) -->
     <section class="py-24 px-4 md:px-20 max-w-7xl mx-auto" id="galeria">
         <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-5xl text-white font-bold mb-4">Galería del Mirador</h2>
-            <p class="text-amber-400 font-semibold text-lg tracking-wider uppercase">Captura la magia de nuestros atardeceres y sabores</p>
+            <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Momento Fotográfico</span>
+            <h2 class="text-4xl md:text-5xl text-white font-bold mb-4">Galería del Mirador</h2>
+            <p class="text-slate-400 text-lg max-w-xl mx-auto font-light">Haz clic en cualquier fotografía para verla a pantalla completa.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+            <!-- Foto 1 -->
+            <div onclick="openLightbox(0)" class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl cursor-pointer">
                 <img src="images/monumento.png" alt="Vista del Monumento" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 justify-between">
                     <span class="text-white font-medium text-lg">Vista Panorámica al Atardecer</span>
+                    <span class="text-amber-400 text-xl font-bold">🔍</span>
                 </div>
             </div>
-            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+            <!-- Foto 2 -->
+            <div onclick="openLightbox(1)" class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl cursor-pointer">
                 <img src="images/granizados.jpeg" alt="Granizados Helados" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 justify-between">
                     <span class="text-white font-medium text-lg">Granizados Refrescantes</span>
+                    <span class="text-amber-400 text-xl font-bold">🔍</span>
                 </div>
             </div>
-            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+            <!-- Foto 3 -->
+            <div onclick="openLightbox(2)" class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl cursor-pointer">
                 <img src="images/pizzeta.jpeg" alt="Pizzeta Recién Horneada" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 justify-between">
                     <span class="text-white font-medium text-lg">Pizzeta Artesanal</span>
+                    <span class="text-amber-400 text-xl font-bold">🔍</span>
                 </div>
             </div>
-            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+            <!-- Foto 4 -->
+            <div onclick="openLightbox(3)" class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl cursor-pointer">
                 <img src="images/empanadas.jpeg" alt="Empanadas Crocantes" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 justify-between">
                     <span class="text-white font-medium text-lg">Empanadas Tradicionales</span>
+                    <span class="text-amber-400 text-xl font-bold">🔍</span>
                 </div>
             </div>
-            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+            <!-- Foto 5 -->
+            <div onclick="openLightbox(4)" class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl cursor-pointer">
                 <img src="images/pin01.png" alt="Pin Fachada Edición Especial" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 justify-between">
                     <span class="text-white font-medium text-lg">Pin Fachada Local</span>
+                    <span class="text-amber-400 text-xl font-bold">🔍</span>
                 </div>
             </div>
-            <div class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl">
+            <!-- Foto 6 -->
+            <div onclick="openLightbox(5)" class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl cursor-pointer">
                 <img src="images/pin02.png" alt="Pin Conmemorativo Jaguar" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 justify-between">
                     <span class="text-white font-medium text-lg">Pin Jaguar 368 Años</span>
+                    <span class="text-amber-400 text-xl font-bold">🔍</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. SECCIÓN TIENDA (Llévate un Recuerdo) -->
+    <!-- 5. SECCIÓN SOUVENIRS (Tienda de Recuerdos) -->
     <section class="py-24 px-4 md:px-20 bg-[#090c13] text-white relative overflow-hidden border-t border-slate-800/80" id="souvenirs">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-amber-600 blur-[120px] opacity-20 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-orange-600 blur-[120px] opacity-20 pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
             <div class="grid grid-cols-2 gap-6" data-aos="fade-right" data-aos-duration="1000">
-                <img src="images/pin01.png" alt="Pin Fachada Local" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500">
-                <img src="images/pin02.png" alt="Pin Jaguar Río de Oro" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500 mt-8">
+                <div class="cursor-pointer" onclick="openLightbox(4)">
+                    <img src="images/pin01.png" alt="Pin Fachada Local" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="cursor-pointer" onclick="openLightbox(5)">
+                    <img src="images/pin02.png" alt="Pin Jaguar Río de Oro" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500 mt-8">
+                </div>
             </div>
             <div data-aos="fade-left" data-aos-duration="1000">
-                <h2 class="text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Llévate un recuerdo</h2>
-                <p class="text-slate-300 mb-8 leading-relaxed text-lg font-light">No te vayas sin tu pieza de colección. Celebra el arte y los 368 años de historia de Río de Oro con nuestros pines exclusivos de edición limitada.</p>
-                <ul class="space-y-6 text-slate-200 mb-10">
-                    <li class="flex items-center text-lg bg-slate-800/40 p-4 rounded-xl backdrop-blur-sm border border-slate-700/50">
-                        <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 
-                        </div>
-                        <span class="font-medium">Pin Fachada "El Mirador del Cielo"</span>
+                <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Cultura & Colección</span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Llévate un recuerdo exclusivo</h2>
+                <p class="text-slate-300 mb-8 leading-relaxed text-lg font-light">No te vayas sin tu pieza de colección. Celebra el arte y los 368 años de historia de Río de Oro con nuestros pines exclusivos metálicos de edición limitada.</p>
+                <ul class="space-y-4 text-slate-200 mb-10">
+                    <li class="flex items-center text-lg bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg text-white font-bold text-xs">✓</div>
+                        <span class="font-medium text-base">Pin Fachada "El Mirador del Cielo" ($15.000)</span>
                     </li>
-                    <li class="flex items-center text-lg bg-slate-800/40 p-4 rounded-xl backdrop-blur-sm border border-slate-700/50">
-                        <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 
-                        </div>
-                        <span class="font-medium">Pin Conmemorativo Jaguar (368 años)</span>
+                    <li class="flex items-center text-lg bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg text-white font-bold text-xs">✓</div>
+                        <span class="font-medium text-base">Pin Conmemorativo Jaguar 368 Años ($15.000)</span>
                     </li>
                 </ul>
-                <a href="#contacto" class="inline-block bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-10 rounded-full transition duration-300 shadow-xl shadow-amber-500/20 transform hover:-translate-y-1">
-                    Preguntar por disponibilidad
-                </a>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="addToCart('Pin Fachada Local', 15000, 'images/pin01.png')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-xl shadow-amber-500/20">
+                        + Añadir Pin Fachada
+                    </button>
+                    <button onclick="addToCart('Pin Jaguar 368 Años', 15000, 'images/pin02.png')" class="bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-full transition duration-300">
+                        + Añadir Pin Jaguar
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SECCIÓN PREGUNTAS FRECUENTES (FAQ) -->
+    <!-- 6. SECCIÓN RESEÑAS & PRUEBA SOCIAL -->
+    <section class="py-24 px-4 md:px-20 max-w-7xl mx-auto" id="resenas">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-4 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-wider mb-4">
+                <span>⭐ Calificación 4.9 de 5.0 en Google & TripAdvisor</span>
+            </div>
+            <h2 class="text-4xl md:text-5xl text-white font-bold mb-4">Lo que dicen nuestros visitantes</h2>
+            <p class="text-slate-400 text-lg max-w-xl mx-auto font-light">Experiencias reales de quienes han vivido la magia en el Cerro del Monumento.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="200">
+            <!-- Review 1 -->
+            <div class="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 relative flex flex-col justify-between hover:border-amber-500/40 transition duration-300">
+                <div>
+                    <div class="flex text-amber-400 text-lg mb-4">★★★★★</div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">"La vista al atardecer desde la terraza es Sencillamente ESPECTACULAR. Los granizados están ultra fríos y deliciosos. Definitivamente el mejor lugar para tardear en Río de Oro."</p>
+                </div>
+                <div class="flex items-center gap-3 border-t border-slate-800 pt-4">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center font-bold text-white text-sm">MC</div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">María Camila Rodríguez</h4>
+                        <span class="text-slate-500 text-xs">Visitante de Ocaña</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 relative flex flex-col justify-between hover:border-amber-500/40 transition duration-300">
+                <div>
+                    <div class="flex text-amber-400 text-lg mb-4">★★★★★</div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">"Excelente atención, la pizzeta artesanal viene bien cargada y doradita. Nos encantó que es Pet Friendly, pudimos traer a nuestro perrito sin ningún problema."</p>
+                </div>
+                <div class="flex items-center gap-3 border-t border-slate-800 pt-4">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center font-bold text-white text-sm">CE</div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Carlos Eduardo Páez</h4>
+                        <span class="text-slate-500 text-xs">Visitante Local</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="bg-slate-900/80 p-8 rounded-3xl border border-slate-800 relative flex flex-col justify-between hover:border-amber-500/40 transition duration-300">
+                <div>
+                    <div class="flex text-amber-400 text-lg mb-4">★★★★★</div>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">"Compré los dos pines de colección para llevar de recuerdo a Bogotá. El ambiente con música suave y la brisa fresca del cerro hacen de la visita algo mágico."</p>
+                </div>
+                <div class="flex items-center gap-3 border-t border-slate-800 pt-4">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-500 flex items-center justify-center font-bold text-white text-sm">AG</div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Andrea Gutiérrez</h4>
+                        <span class="text-slate-500 text-xs">Turista</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. SECCIÓN PREGUNTAS FRECUENTES (FAQ) -->
     <section class="py-24 px-4 md:px-20 max-w-4xl mx-auto" id="faq">
         <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-5xl text-white font-bold mb-4">Preguntas Frecuentes</h2>
-            <p class="text-amber-400 font-semibold text-lg tracking-wider uppercase">Todo lo que necesitas saber antes de visitarnos</p>
+            <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Información Útil</span>
+            <h2 class="text-4xl md:text-5xl text-white font-bold mb-4">Preguntas Frecuentes</h2>
+            <p class="text-slate-400 text-lg font-light">Todo lo que necesitas saber antes de visitarnos.</p>
         </div>
 
         <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
@@ -320,7 +595,7 @@
                     <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
-                    No es obligatoria la reserva previa. Atendemos por orden de llegada. Sin embargo, para grupos grandes o eventos especiales nos puedes escribir por WhatsApp para asegurar la mejor ubicación.
+                    No es obligatoria la reserva previa. Atendemos por orden de llegada. Sin embargo, para grupos grandes o celebraciones especiales puedes reservar desde el botón superior o escribirnos directamente por WhatsApp.
                 </div>
             </div>
 
@@ -331,7 +606,7 @@
                     <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
-                    Sí, en la zona adyacente al cerro del monumento hay espacio designado para estacionamiento de vehículos y motocicletas.
+                    Sí, en la zona adyacente al Cerro del Monumento se dispone de espacio para estacionar automóviles y motocicletas de forma segura.
                 </div>
             </div>
 
@@ -342,7 +617,7 @@
                     <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
-                    ¡Por supuesto! Nos encanta recibir a tus mascotas. Contamos con espacio al aire libre para que disfruten del ambiente de montaña contigo.
+                    ¡Por supuesto! Nos encanta recibir a tus mascotas. Contamos con amplia terraza al aire libre para que disfruten de la brisa de montaña a tu lado.
                 </div>
             </div>
 
@@ -353,7 +628,7 @@
                     <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
-                    Te recomendamos llegar entre las 4:30 PM y las 5:30 PM para alcanzar la "Hora Dorada", presenciar el atardecer completo y disfrutar de las luces nocturnas del mirador.
+                    Te recomendamos llegar entre las 4:30 PM y 5:30 PM para alcanzar la "Hora Dorada", admirar la puesta de sol completa y disfrutar la iluminación nocturna del mirador.
                 </div>
             </div>
 
@@ -364,23 +639,23 @@
                     <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
-                    Aceptamos efectivo, transferencias Nequi y Daviplata.
+                    Aceptamos efectivo, transferencias bancarias en línea por Nequi y Daviplata.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- BANNER DE REDES SOCIALES (@miradordelcielordo) -->
+    <!-- BANNER REDES SOCIALES -->
     <section class="py-16 px-4 md:px-20 bg-gradient-to-r from-amber-600/10 via-orange-600/15 to-amber-600/10 border-y border-amber-500/30 relative overflow-hidden" id="redes">
         <div class="max-w-5xl mx-auto text-center relative z-10" data-aos="zoom-in">
             <span class="bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block">
                 ¡Forma parte de nuestra comunidad!
             </span>
             <h3 class="text-4xl md:text-5xl font-bold text-white mb-4">Síguenos en Redes Sociales</h3>
-            <p class="text-slate-300 text-lg mb-8 max-w-xl mx-auto font-light">Etiquétanos en tus mejores fotos y videos con <strong class="text-amber-400">@miradordelcielordo</strong> para aparecer en nuestras historias.</p>
+            <p class="text-slate-300 text-lg mb-8 max-w-xl mx-auto font-light">Etiquétanos en tus mejores fotos y reels con <strong class="text-amber-400">@miradordelcielordo</strong> para repostearte.</p>
             
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="https://instagram.com/miradordelcielordo" target="_blank" class="inline-flex items-center bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-95 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-lg transform hover:scale-105">
                     <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     @miradordelcielordo
                 </a>
@@ -388,44 +663,58 @@
         </div>
     </section>
 
-    <!-- 5. SECCIÓN FOOTER (Visítanos) + MAPA -->
+    <!-- 8. SECCIÓN FOOTER & MAPA (Visítanos) -->
     <footer class="py-24 px-4 md:px-20 bg-[#0B0F17] border-t border-slate-800/80" id="contacto">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
             
             <!-- Datos de Contacto -->
             <div data-aos="fade-up" data-aos-duration="1000">
-                <h2 class="text-5xl text-white font-bold mb-8">Planea tu visita</h2>
+                <h2 class="text-4xl md:text-5xl text-white font-bold mb-8">Planea tu visita</h2>
                 <div class="space-y-6 mb-10">
-                    <p class="text-slate-300 text-lg flex items-start">
+                    <div class="flex items-start">
                         <span class="text-3xl mr-4">📍</span> 
-                        <span><strong class="text-white block text-xl mb-1">Ubicación</strong> Cerro del Monumento, Río de Oro (Cesar)</span>
-                    </p>
-                    <p class="text-slate-300 text-lg flex items-start">
+                        <div>
+                            <strong class="text-white block text-xl mb-1">Ubicación</strong> 
+                            <span class="text-slate-300">Cerro del Monumento a la Virgen, Río de Oro (Cesar)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
                         <span class="text-3xl mr-4">🕒</span> 
-                        <span><strong class="text-white block text-xl mb-1">Horario</strong> Jueves a Domingo - 4:00 PM a 11:00 PM<br><span class="text-amber-400 font-medium text-sm">Mejor hora para fotos: Atardecer</span></span>
-                    </p>
-                    <p class="text-slate-300 text-lg flex items-start">
+                        <div>
+                            <strong class="text-white block text-xl mb-1">Horarios de Atención</strong> 
+                            <span class="text-slate-300">Jueves a Domingo: 4:00 PM a 11:00 PM</span><br>
+                            <span class="text-amber-400 font-medium text-xs uppercase tracking-wider">Hora recomendada: 4:30 PM para atardecer</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
                         <span class="text-3xl mr-4">✨</span> 
-                        <span><strong class="text-white block text-xl mb-1">Ambiente</strong> Familiar, Pet Friendly, Terraza abierta</span>
-                    </p>
+                        <div>
+                            <strong class="text-white block text-xl mb-1">Ambiente & Servicios</strong> 
+                            <span class="text-slate-300">Familiar, Pet Friendly, Terraza Abierta, Vista Panorámica</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <a href="https://wa.me/570000000000" target="_blank" class="inline-flex items-center bg-[#25D366] hover:bg-green-500 text-white font-bold py-4 px-8 rounded-full transition duration-300 shadow-lg shadow-green-500/20 transform hover:scale-105">
-                    <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Escribir al WhatsApp
-                </a>
+                <div class="flex flex-wrap gap-4">
+                    <a href="https://wa.me/573000000000?text=Hola!%20Deseo%20hacer%20una%20consulta%20para%20visitar%20El%20Mirador." target="_blank" class="inline-flex items-center bg-[#25D366] hover:bg-green-500 text-white font-bold py-4 px-8 rounded-full transition duration-300 shadow-lg shadow-green-500/20 transform hover:scale-105">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        WhatsApp Directo
+                    </a>
+                    <button onclick="openReservationModal()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-8 rounded-full transition duration-300 shadow-lg shadow-amber-500/20 transform hover:scale-105">
+                        📅 Reservar Mesa
+                    </button>
+                </div>
             </div>
 
             <!-- Mapa Interactivo -->
             <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" class="w-full h-full min-h-[350px] relative">
                 <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-40"></div>
                 <div class="relative w-full h-full rounded-2xl shadow-xl overflow-hidden border-2 border-slate-800 bg-slate-900">
-                    <!-- Google Maps Iframe centrado en Río de Oro -->
-                     <iframe 
+                    <iframe 
                         src="https://maps.google.com/maps?q=Cerro%20de%20la%20virgen%20del%20rosario%20rio%20de%20oro&t=&z=17&ie=UTF8&iwloc=&output=embed" 
                         width="100%" 
                         height="100%" 
-                        style="border:0; min-height: 350px;" 
+                        style="border:0; min-height: 380px;" 
                         allowfullscreen="" 
                         loading="lazy" 
                         referrerpolicy="no-referrer-when-downgrade">
@@ -435,27 +724,423 @@
             
         </div>
         
-        <div class="mt-20 pt-8 border-t border-slate-800/80 text-center text-slate-500 font-medium">
-            <p>&copy; 2026 El Mirador del Cielo. Todos los derechos reservados.</p>
+        <div class="mt-20 pt-8 border-t border-slate-800/80 text-center text-slate-500 font-medium text-sm flex flex-col sm:flex-row justify-between items-center gap-4 max-w-7xl mx-auto">
+            <p>&copy; 2026 El Mirador del Cielo. Río de Oro, Cesar (Colombia).</p>
+            <p class="text-xs text-slate-600">Experiencia Gastronómica & Turismo de Montaña</p>
         </div>
     </footer>
 
-    <!-- Inicialización de animaciones AOS e interacción JS -->
+
+    <!-- MODAL 1: CARRITO DE PEDIDOS (ORDER BUILDER) -->
+    <div id="cart-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex justify-end transition-opacity duration-300">
+        <div class="bg-[#0D121D] w-full max-w-md h-full border-l border-slate-800 flex flex-col justify-between p-6 overflow-y-auto relative shadow-2xl">
+            <div>
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+                    <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <span>🛒 Tu Pedido</span>
+                    </h3>
+                    <button onclick="closeCartModal()" class="text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 text-xl" title="Cerrar">✕</button>
+                </div>
+
+                <!-- Mode Selector: En el local vs Para llevar -->
+                <div class="bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 grid grid-cols-2 gap-1 mb-6">
+                    <button id="order-mode-mesa" onclick="setOrderMode('mesa')" class="py-2 rounded-lg text-xs font-bold transition duration-200 bg-amber-500 text-slate-950">
+                        📍 Para Mesa en Mirador
+                    </button>
+                    <button id="order-mode-llevar" onclick="setOrderMode('llevar')" class="py-2 rounded-lg text-xs font-bold transition duration-200 text-slate-400 hover:text-white">
+                        🛍️ Para Llevar / Recoger
+                    </button>
+                </div>
+
+                <!-- Order items container -->
+                <div id="cart-items-list" class="space-y-4 mb-6">
+                    <!-- Dynamic rendering -->
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-6">
+                <!-- Customer info inputs -->
+                <div class="space-y-3 mb-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Tu Nombre</label>
+                        <input type="text" id="order-name" placeholder="Ej: Carlos Páez" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Mesa o Nota Especial</label>
+                        <input type="text" id="order-notes" placeholder="Ej: Mesa exterior / Sin azúcar" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <!-- Subtotal calculation -->
+                <div class="flex justify-between items-center mb-6 text-slate-300">
+                    <span class="text-sm font-semibold">Total a pagar:</span>
+                    <span id="cart-total-price" class="text-3xl font-black text-amber-400 font-serif">$0</span>
+                </div>
+
+                <!-- WhatsApp Submit Button -->
+                <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#25D366] hover:bg-green-500 text-white font-bold py-4 rounded-xl text-center shadow-lg shadow-green-500/20 flex items-center justify-center gap-2 text-base transition duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span>Enviar Pedido por WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL 2: RESERVA DE MESA / CELEBRACIONES -->
+    <div id="reservation-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#0D121D] w-full max-w-lg rounded-3xl border border-slate-800 p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="closeReservationModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-xl p-2 rounded-full hover:bg-slate-800">✕</button>
+
+            <div class="mb-6">
+                <span class="text-amber-400 font-semibold text-xs tracking-widest uppercase block mb-1">Asegura tu Espacio</span>
+                <h3 class="text-2xl sm:text-3xl font-bold text-white">Reservar Mesa</h3>
+                <p class="text-slate-400 text-xs sm:text-sm font-light mt-1">Disfruta de la mejor vista con tu grupo sin contratiempos.</p>
+            </div>
+
+            <form onsubmit="sendReservationToWhatsApp(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Nombre Completo</label>
+                    <input type="text" id="res-name" required placeholder="Ej: Laura Mendoza" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Fecha</label>
+                        <input type="date" id="res-date" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Hora Estimada</label>
+                        <select id="res-time" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500">
+                            <option value="4:30 PM (Hora Dorada)">4:30 PM (Atardecer)</option>
+                            <option value="5:30 PM">5:30 PM</option>
+                            <option value="6:30 PM">6:30 PM</option>
+                            <option value="7:30 PM">7:30 PM</option>
+                            <option value="8:30 PM">8:30 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Nº de Personas</label>
+                        <select id="res-guests" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500">
+                            <option value="2 personas">2 Personas (Pareja)</option>
+                            <option value="3-4 personas">3 - 4 Personas</option>
+                            <option value="5-8 personas">5 - 8 Personas</option>
+                            <option value="Grupo Grande (9+)">Grupo Grande (9+)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Ocasión Especial</label>
+                        <select id="res-occasion" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500">
+                            <option value="Casual / Atardecer">Visita Casual</option>
+                            <option value="Cumpleaños">Cumpleaños</option>
+                            <option value="Aniversario / Cita">Aniversario</option>
+                            <option value="Reunión Familiar">Reunión Familiar</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 rounded-xl text-center shadow-lg shadow-amber-500/20 transition duration-300 mt-2 text-sm">
+                    📱 Confirmar Reserva por WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- MODAL 3: LIGHTBOX DE GALERÍA -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-xl flex flex-col justify-between items-center p-4 sm:p-8">
+        <div class="w-full flex justify-between items-center max-w-5xl z-10">
+            <span id="lightbox-counter" class="text-amber-400 font-mono text-xs font-bold uppercase tracking-wider">Foto 1 de 6</span>
+            <button onclick="closeLightbox()" class="text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 text-2xl">✕</button>
+        </div>
+
+        <div class="relative w-full max-w-4xl flex-1 flex items-center justify-center my-4 overflow-hidden">
+            <button onclick="prevLightboxImage()" class="absolute left-2 sm:left-4 z-20 bg-slate-900/80 hover:bg-slate-800 text-white p-3 rounded-full border border-slate-700 text-xl">‹</button>
+            
+            <img id="lightbox-img" src="" alt="Ampliación" class="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl border border-slate-800 transition duration-300">
+            
+            <button onclick="nextLightboxImage()" class="absolute right-2 sm:right-4 z-20 bg-slate-900/80 hover:bg-slate-800 text-white p-3 rounded-full border border-slate-700 text-xl">›</button>
+        </div>
+
+        <div class="w-full max-w-xl text-center z-10">
+            <h4 id="lightbox-title" class="text-white text-xl font-bold font-serif mb-1">Título de Foto</h4>
+            <p id="lightbox-desc" class="text-slate-400 text-xs font-light">Descripción de la foto</p>
+        </div>
+    </div>
+
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 hidden bg-slate-900/95 text-white border border-amber-500/40 px-6 py-3 rounded-full shadow-2xl text-xs font-bold flex items-center gap-2 backdrop-blur-md animate-fade-in">
+        <span class="text-amber-400 text-base">✨</span>
+        <span id="toast-text">Producto agregado al pedido</span>
+    </div>
+
+
+    <!-- AOS & LÓGICA DE INTERACCIÓN -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // 1. Inicialización AOS
         AOS.init({
             duration: 800, 
             easing: 'ease-out-cubic',
             once: true,
-            offset: 120,
+            offset: 100,
         });
 
-        // Toggle del Menú Móvil
+        // 2. Galería Lightbox Data
+        const galleryItems = [
+            { src: 'images/monumento.png', title: 'Vista Panorámica del Cerro', desc: 'Atardecer único desde el Cerro del Monumento a la Virgen en Río de Oro.' },
+            { src: 'images/granizados.jpeg', title: 'Granizados Artesanales', desc: 'Sabor refrescante cítrico y frutal, servido helado para el calor de la tarde.' },
+            { src: 'images/pizzeta.jpeg', title: 'Pizzeta Artesanal Horneada', desc: 'Masa crujiente horneada con abundante queso y salsa napolitana de la casa.' },
+            { src: 'images/empanadas.jpeg', title: 'Empanadas Crocantes', desc: 'Empanadas tradicionales doradas servidas con ají casero especial.' },
+            { src: 'images/pin01.png', title: 'Pin Fachada El Mirador', desc: 'Edición conmemorativa en metal con detalles de la fachada original.' },
+            { src: 'images/pin02.png', title: 'Pin Jaguar 368 Años', desc: 'Pin oficial celebrando la historia y fauna representativa de Río de Oro.' }
+        ];
+
+        let currentLightboxIndex = 0;
+
+        function openLightbox(index) {
+            currentLightboxIndex = index;
+            updateLightboxContent();
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateLightboxContent() {
+            const item = galleryItems[currentLightboxIndex];
+            document.getElementById('lightbox-img').src = item.src;
+            document.getElementById('lightbox-title').innerText = item.title;
+            document.getElementById('lightbox-desc').innerText = item.desc;
+            document.getElementById('lightbox-counter').innerText = `Foto ${currentLightboxIndex + 1} de ${galleryItems.length}`;
+        }
+
+        function prevLightboxImage() {
+            currentLightboxIndex = (currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length;
+            updateLightboxContent();
+        }
+
+        function nextLightboxImage() {
+            currentLightboxIndex = (currentLightboxIndex + 1) % galleryItems.length;
+            updateLightboxContent();
+        }
+
+        // Teclado para Lightbox (ESC y Flechas)
+        window.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('lightbox-modal');
+            if (!modal.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') prevLightboxImage();
+                if (e.key === 'ArrowRight') nextLightboxImage();
+            }
+        });
+
+
+        // 3. Sistema de Carrito (Order Builder)
+        let cartItems = [];
+        let orderMode = 'mesa';
+
+        function addToCart(name, price, img) {
+            const existing = cartItems.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cartItems.push({ name, price, img, qty: 1 });
+            }
+            updateCartUI();
+            showToast(`¡Agregado: ${name}!`);
+        }
+
+        function removeFromCart(name) {
+            cartItems = cartItems.filter(item => item.name !== name);
+            updateCartUI();
+            showToast('Producto eliminado del pedido');
+        }
+
+        function changeQty(name, delta) {
+            const item = cartItems.find(i => i.name === name);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    removeFromCart(name);
+                } else {
+                    updateCartUI();
+                }
+            }
+        }
+
+        function setOrderMode(mode) {
+            orderMode = mode;
+            const btnMesa = document.getElementById('order-mode-mesa');
+            const btnLlevar = document.getElementById('order-mode-llevar');
+            if (mode === 'mesa') {
+                btnMesa.className = 'py-2 rounded-lg text-xs font-bold transition duration-200 bg-amber-500 text-slate-950';
+                btnLlevar.className = 'py-2 rounded-lg text-xs font-bold transition duration-200 text-slate-400 hover:text-white';
+            } else {
+                btnLlevar.className = 'py-2 rounded-lg text-xs font-bold transition duration-200 bg-amber-500 text-slate-950';
+                btnMesa.className = 'py-2 rounded-lg text-xs font-bold transition duration-200 text-slate-400 hover:text-white';
+            }
+        }
+
+        function updateCartUI() {
+            const totalCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            document.getElementById('cart-badge').innerText = totalCount;
+            document.getElementById('cart-total-price').innerText = '$' + totalPrice.toLocaleString('es-CO');
+
+            const listContainer = document.getElementById('cart-items-list');
+            if (cartItems.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 text-slate-500">
+                        <span class="text-4xl block mb-2">🍹</span>
+                        <p class="text-sm font-medium">Tu pedido está vacío.</p>
+                        <p class="text-xs text-slate-600 mt-1">Explora nuestro menú y añade tus favoritos.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = cartItems.map(item => `
+                <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group">
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <img src="${item.img}" class="w-14 h-14 rounded-xl object-cover border border-slate-800 flex-shrink-0">
+                        <div class="min-w-0 flex-1">
+                            <h4 class="text-white font-bold text-sm leading-tight truncate">${item.name}</h4>
+                            <span class="text-amber-400 font-black text-xs block mt-0.5">$${(item.price * item.qty).toLocaleString('es-CO')}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800/60">
+                        <div class="flex items-center border border-slate-800 bg-slate-950 rounded-xl px-2.5 py-1 gap-2">
+                            <button onclick="changeQty('${item.name}', -1)" class="text-slate-400 hover:text-white font-bold px-1 text-sm" title="Disminuir">-</button>
+                            <span class="text-white font-bold text-xs min-w-[16px] text-center">${item.qty}</span>
+                            <button onclick="changeQty('${item.name}', 1)" class="text-slate-400 hover:text-white font-bold px-1 text-sm" title="Aumentar">+</button>
+                        </div>
+                        <button onclick="removeFromCart('${item.name}')" class="text-xs font-semibold text-red-400 hover:text-white bg-red-500/10 hover:bg-red-600 border border-red-500/30 px-3 py-1.5 rounded-xl transition duration-200 flex items-center gap-1.5 shadow-sm" title="Eliminar este producto">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            <span>Eliminar</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openCartModal() {
+            updateCartUI();
+            document.getElementById('cart-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function sendOrderToWhatsApp() {
+            if (cartItems.length === 0) {
+                alert('Añade al menos un producto a tu pedido.');
+                return;
+            }
+
+            const name = document.getElementById('order-name').value.trim() || 'Cliente Mirador';
+            const notes = document.getElementById('order-notes').value.trim() || 'Sin especificaciones';
+            const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const modeText = orderMode === 'mesa' ? '📍 Para consumir en Mesa' : '🛍️ Para Llevar / Recoger';
+
+            let itemsFormatted = cartItems.map(i => `• ${i.qty}x ${i.name} ($${(i.price * i.qty).toLocaleString('es-CO')})`).join('\n');
+
+            let message = `*¡Hola El Mirador del Cielo!* 🌄\n\nQuisiera realizar el siguiente pedido:\n\n${itemsFormatted}\n\n*Modalidad:* ${modeText}\n*Total:* $${totalPrice.toLocaleString('es-CO')}\n*A nombre de:* ${name}\n*Nota/Mesa:* ${notes}\n\n¡Quedo atento a la confirmación!`;
+
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/573000000000?text=${encoded}`, '_blank');
+        }
+
+
+        // 4. Modal de Reservas
+        function openReservationModal() {
+            // Set default date to today
+            const dateInput = document.getElementById('res-date');
+            if (dateInput && !dateInput.value) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+            }
+            document.getElementById('reservation-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReservationModal() {
+            document.getElementById('reservation-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function sendReservationToWhatsApp(e) {
+            e.preventDefault();
+            const name = document.getElementById('res-name').value.trim();
+            const date = document.getElementById('res-date').value;
+            const time = document.getElementById('res-time').value;
+            const guests = document.getElementById('res-guests').value;
+            const occasion = document.getElementById('res-occasion').value;
+
+            let message = `*¡Hola El Mirador del Cielo!* 🌄\n\nDeseo realizar una solicitud de reserva de mesa:\n\n👤 *Nombre:* ${name}\n📅 *Fecha:* ${date}\n🕒 *Hora:* ${time}\n👥 *Personas:* ${guests}\n✨ *Ocasión:* ${occasion}\n\n¿Tienen disponibilidad disponible? Gracias.`;
+
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/573000000000?text=${encoded}`, '_blank');
+            closeReservationModal();
+        }
+
+
+        // 5. Filtros de Menú
+        function filterMenu(category) {
+            const tabs = document.querySelectorAll('.menu-tab-btn');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-amber-500', 'text-slate-950');
+                tab.classList.add('bg-slate-900', 'border', 'border-slate-800', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-900', 'border', 'border-slate-800', 'text-slate-300');
+            event.target.classList.add('bg-amber-500', 'text-slate-950');
+
+            const cards = document.querySelectorAll('.menu-item-card');
+            cards.forEach(card => {
+                if (category === 'todos' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+
+        // 6. Toast Feedback
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = text;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+
+        // 7. Toggle del Menú Móvil
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const iconOpen = document.getElementById('menu-icon-open');
         const iconClose = document.getElementById('menu-icon-close');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function closeMobileMenu() {
+            if (mobileMenu) {
+                mobileMenu.classList.add('hidden');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+            }
+        }
 
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', () => {
@@ -463,17 +1148,10 @@
                 iconOpen.classList.toggle('hidden');
                 iconClose.classList.toggle('hidden');
             });
-
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                    iconOpen.classList.remove('hidden');
-                    iconClose.classList.add('hidden');
-                });
-            });
         }
 
-        // Acordeón de FAQ (Cierra automáticamente las demás al abrir una)
+
+        // 8. Acordeón FAQ
         const faqToggles = document.querySelectorAll('.faq-toggle');
         faqToggles.forEach(toggle => {
             toggle.addEventListener('click', () => {
@@ -481,23 +1159,59 @@
                 const icon = toggle.querySelector('.faq-icon');
                 const isOpening = content.classList.contains('hidden');
 
-                // Cerrar todos los demás items
                 faqToggles.forEach(otherToggle => {
                     const otherContent = otherToggle.nextElementSibling;
                     const otherIcon = otherToggle.querySelector('.faq-icon');
-                    
                     otherContent.classList.add('hidden');
-                    if (otherIcon) {
-                        otherIcon.classList.remove('rotate-180');
-                    }
+                    if (otherIcon) otherIcon.classList.remove('rotate-180');
                 });
 
-                // Si el elemento cliqueado estaba cerrado, lo abrimos
                 if (isOpening) {
                     content.classList.remove('hidden');
-                    if (icon) {
-                        icon.classList.add('rotate-180');
-                    }
+                    if (icon) icon.classList.add('rotate-180');
+                }
+            });
+        });
+
+
+        // 9. Sunset & Time Widget
+        function updateSunWidget() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const widgetText = document.getElementById('sunset-widget-text');
+
+            if (!widgetText) return;
+
+            // Hora dorada en Colombia suele ser ~ 5:20 PM a 6:15 PM (17:20 a 18:15)
+            if (hours >= 17 && hours <= 18) {
+                widgetText.innerHTML = "🌅 ¡Hora Dorada Activa en Río de Oro! La mejor luz para fotos";
+            } else if (hours >= 19 || hours < 5) {
+                widgetText.innerHTML = "🌙 Modo Nocturno: Luces y ambiente acogedor en el cerro";
+            } else {
+                widgetText.innerHTML = "🌅 Atardecer hoy: ~ 5:48 PM • Te esperamos en la tarde";
+            }
+        }
+        updateSunWidget();
+
+
+        // 10. Active Nav Link Highlighter on Scroll
+        const sections = document.querySelectorAll('section, header');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
                 }
             });
         });

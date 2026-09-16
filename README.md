@@ -1,6 +1,6 @@
-# 🌄 El Mirador del Cielo | Landing Page Web
+# 🌄 El Mirador del Cielo | Landing Page Web Premium
 
-Landing Page oficial para **El Mirador del Cielo**, un emblemático mirador gastronómico y turístico ubicado en el Cerro del Monumento en **Río de Oro, Cesar (Colombia)**.
+Landing Page oficial e interactiva de nivel profesional para **El Mirador del Cielo**, un emblemático mirador gastronómico y turístico ubicado en el Cerro del Monumento en **Río de Oro, Cesar (Colombia)**.
 
 ![El Mirador del Cielo](images/monumento.png)
 
@@ -8,28 +8,38 @@ Landing Page oficial para **El Mirador del Cielo**, un emblemático mirador gast
 
 ## 🚀 Características Principales
 
-- 🌙 **Diseño Slate Night Mode (`#0B0F17`)**: Estética nocturna elegante, moderna y de gran contraste con destellos en gradiente ámbar y naranja.
-- 📹 **Hero con Video de Fondo**: Encabezado a pantalla completa con video dinámico, overlay protector para legibilidad de texto y degradado inferior ultra suave.
-- 📌 **Barra de Navegación Flotante (Sticky Navbar)**:
-  - Navegación rápida entre secciones (`Inicio`, `Conoce`, `Menú`, `Galería`, `Recuerdos`, `FAQ`, `Visítanos`).
-  - Menú hamburguesa responsive para dispositivos móviles.
-- 💬 **Botón Flotante de WhatsApp**: Botón fijo en la esquina inferior derecha con efecto de pulso animado para reservas y contacto inmediato.
-- 🍕 **Sección de Menú Destacado**: Tarjetas estilizadas tipo *Dark Glass* para especialidades gastronómicas (*Granizados*, *Pizzeta Artesanal*, *Empanadas Crocantes*).
-- 🖼️ **Galería Fotográfica Interactiva**: Cuadrícula de fotos con efectos hover y títulos emergentes sobre la experiencia del mirador.
-- 🏷️ **Tienda de Recuerdos**: Exhibición de los pines conmemorativos de los 368 años de historia de Río de Oro.
-- ❓ **Acordeón de Preguntas Frecuentes (FAQ)**: Sistema interactivo inteligente en JavaScript (cierra automáticamente las demás respuestas al desplegar una).
-- 📍 **Sección de Contacto y Mapa Interactivo**: Horarios, información de ambiente y mapa embebido de Google Maps centrado en el Cerro del Monumento.
-- 📲 **Banner de Redes Sociales**: Integración para invitar a etiquetar a `@miradordelcielordo`.
+- 🌙 **Diseño Slate Night Mode (`#0B0F17`) & Glassmorphism**: Estética nocturna ultra elegante, moderna y de gran contraste con destellos ámbar y naranja (`glass-glow`).
+- 🌅 **Widget de "Hora Dorada & Atardecer" en Tiempo Real**: Indicador activo en el Hero que calcula la hora del atardecer en Río de Oro e informa a los usuarios sobre la mejor luz para fotos.
+- 🛒 **Carrito de Pedidos Interactivo (`Order Builder WhatsApp`)**:
+  - Selector de cantidades (`+` / `-`) para granizados, pizzetas, empanadas y souvenirs.
+  - Opciones de consumo: *En Mesa en el Mirador* o *Para Llevar / Recoger*.
+  - Cálculo del subtotal y total acumulado en tiempo real.
+  - Envió del pedido estructurado con resumen de productos directamente a WhatsApp.
+- 🖼️ **Visor Lightbox de Galería a Pantalla Completa**:
+  - Modal interactivo con zoom de imágenes high-resolution.
+  - Navegación por teclado (Flechas `←` `→` y tecla `ESC`).
+  - Contador de fotos y descripción detallada.
+- 📅 **Sistema de Reserva de Mesas & Celebraciones**:
+  - Formulario desplegable para agendar visitas (Fecha, Hora, Nº de Personas y Ocasión especial).
+  - Enlace rápido a WhatsApp con la información pre-diligenciada.
+- 🍕 **Sección de Menú con Filtros de Categoría**:
+  - Pestañas interactivas (*Todos*, *Granizados & Bebidas*, *Platos & Snacks*, *Souvenirs*).
+- ⭐ **Sección de Reseñas & Prueba Social**:
+  - Valoración 4.9 ★★★★★ basada en Google Maps & TripAdvisor.
+- 📌 **Barra de Navegación Flotante Inteligente**: Resaltado automático de sección activa al hacer scroll y menú hamburguesa responsive.
+- 💬 **Botón Flotante de WhatsApp con Tooltip Inteligente**: Botón fijo con destello animado y mensaje emergente.
+- ❓ **Acordeón de FAQ Inteligente**: Acordeón interactivo en JS.
+- 📍 **Mapa Interactivo de Google Maps**: Ubicación exacta en el Cerro del Monumento.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **HTML5**: Estructura semántica.
-- **Tailwind CSS** (vía CDN): Sistema de utilidades y componentes estilizados con flexbox, CSS grid y glassmorphic overlays.
-- **JavaScript (ES6+)**: Interactividad para menú móvil y acordeón FAQ.
+- **HTML5**: Estructura semántica accesible y SEO optimizada.
+- **Tailwind CSS** (vía CDN): Sistema de utilidades visuales, glassmorphism overlays y responsividad avanzada.
+- **JavaScript (ES6+)**: Lógica reactiva para carrito de compras, lightbox modal, widget de horario solar y filtros de categoría.
 - **Google Fonts**: Tipografías *Playfair Display* (títulos serif) y *Montserrat* (cuerpo de texto).
-- **AOS (Animate On Scroll)**: Animaciones al hacer scroll.
+- **AOS (Animate On Scroll)**: Animaciones fluidas al hacer scroll.
 
 ---
 
@@ -46,7 +56,7 @@ MIRADOR DEL CIELO/
 │   ├── pin01.png            # Pin Fachada Local
 │   ├── pin02.png            # Pin Jaguar Río de Oro (368 años)
 │   └── video.mp4            # Video promocional de fondo
-├── index.html               # Archivo principal de la aplicación
+├── index.html               # Aplicación principal
 └── README.md                # Documentación del proyecto
 ```
 
@@ -62,7 +72,7 @@ MIRADOR DEL CIELO/
    ```bash
    cd "MIRADOR DEL CIELO"
    ```
-3. Abre el archivo `index.html` directamente en tu navegador preferido o utiliza una extensión como **Live Server** en VS Code.
+3. Abre el archivo `index.html` directamente en tu navegador preferido o utiliza **Live Server** en VS Code.
 
 ---
 
