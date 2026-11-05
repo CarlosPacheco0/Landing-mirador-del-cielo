@@ -1,0 +1,391 @@
+---
+// src/pages/menu.astro
+import Layout from '../layouts/Layout.astro';
+import CartModal from '../components/CartModal.astro';
+import Toast from '../components/Toast.astro';
+import { menuItems, menuCategories, DEFAULT_PLACEHOLDER_IMAGE } from '../data/menu';
+
+const getCategoryCount = (catId: string) => {
+  if (catId === 'mas-vendidos') {
+    return menuItems.filter(i => i.featured).length;
+  }
+  if (catId === 'todos') {
+    return menuItems.length;
+  }
+  return menuItems.filter(i => i.category === catId).length;
+};
+
+const featuredCount = getCategoryCount('mas-vendidos');
+---
+
+<Layout 
+  title="Menú Digital & Pedidos | El Mirador del Cielo" 
+  description="Carta gastronómica oficial de El Mirador del Cielo en Río de Oro. Granizados, pizzetas, bebidas calientes, cócteles y pedidos directos a WhatsApp."
+>
+  <!-- BARRA SUPERIOR FIJA DEL MENÚ DIGITAL -->
+  <header class="fixed top-0 left-0 w-full z-40 bg-[#0B0F17]/95 backdrop-blur-md border-b border-slate-800 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Botón Volver + Logo -->
+      <div class="flex items-center gap-3">
+        <a 
+          href="/" 
+          class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 px-3.5 py-2 rounded-full transition duration-200"
+          title="Regresar a la página principal"
+        >
+          <span>←</span>
+          <span class="hidden sm:inline">Volver</span>
+        </a>
+
+        <a href="/" class="flex items-center gap-2 group">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-base shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+            🌄
+          </div>
+          <div class="flex flex-col">
+            <span class="text-base sm:text-lg font-black text-white font-serif leading-tight">
+              El Mirador <span class="text-gradient">del Cielo</span>
+            </span>
+            <span class="text-[10px] text-amber-400 font-mono tracking-wide">
+              Menú Digital • Carta Oficial
+            </span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Acciones de Carrito -->
+      <div class="flex items-center gap-2">
+        <button 
+          onclick="openCartModal()" 
+          class="relative bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-4 py-2.5 rounded-full flex items-center gap-2 text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
+        >
+          <span>🛒</span>
+          <span class="hidden sm:inline">Mi Pedido</span>
+          <span id="cart-badge" class="bg-black/40 text-amber-100 font-black text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO BANNER CON LA IMAGEN DE EL MIRADOR -->
+  <section class="relative pt-28 pb-16 sm:pb-20 px-4 overflow-hidden border-b border-slate-800/80">
+    <!-- Imagen de fondo a pantalla completa -->
+    <img 
+      src="/images/mirador.webp" 
+      alt="El Mirador del Cielo" 
+      class="absolute inset-0 w-full h-full object-cover object-center z-0" 
+      loading="eager"
+      fetchpriority="high"
+    />
+    
+    <!-- Capas de oscurecimiento y contraste -->
+    <div class="absolute inset-0 bg-black/60 z-10 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0B0F17] via-transparent to-black/50 z-10 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0B0F17] to-transparent z-10 pointer-events-none"></div>
+
+    <!-- Contenido del Encabezado & Buscador -->
+    <div class="relative z-20 max-w-3xl mx-auto text-center isolate">
+      <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-lg">
+        <span>📍 Cerro del Monumento, Río de Oro</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-serif mb-4 leading-tight hero-title">
+        Carta <span class="text-gradient">Gastronómica</span>
+      </h1>
+
+      <p class="text-slate-100 text-sm sm:text-base md:text-lg max-w-xl mx-auto font-light mb-8 text-shadow-drop leading-relaxed">
+        Disfruta de nuestros sabores con la mejor vista. Haz tu pedido desde la mesa o para llevar y confirma directamente por WhatsApp.
+      </p>
+
+      <!-- BUSCADOR EN TIEMPO REAL -->
+      <div class="max-w-md mx-auto relative shadow-2xl">
+        <div class="relative flex items-center">
+          <span class="absolute left-4 text-slate-400 text-base pointer-events-none">🔍</span>
+          <input 
+            type="text" 
+            id="menu-search-input" 
+            placeholder="Buscar plato, café, cerveza, cóctel..." 
+            class="w-full bg-slate-900/95 border border-amber-500/30 rounded-full py-4 pl-12 pr-10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 transition duration-200 shadow-2xl backdrop-blur-md"
+          />
+          <button 
+            id="menu-search-clear" 
+            class="absolute right-3.5 text-slate-500 hover:text-white p-1 rounded-full text-xs hidden cursor-pointer"
+            title="Limpiar búsqueda"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL DEL MENÚ -->
+  <main class="min-h-screen pt-10 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
+
+    <!-- PESTAÑAS DE CATEGORÍAS COMPLETAS -->
+    <div class="mb-8">
+      <div class="flex flex-wrap justify-center gap-2 sm:gap-2.5 max-w-5xl mx-auto px-1">
+        {menuCategories.map((cat) => {
+          const count = getCategoryCount(cat.id);
+          const isInitialActive = cat.id === 'mas-vendidos';
+          return (
+            <button 
+              data-category={cat.id}
+              onclick={`filterMenuCategory('${cat.id}', this)`}
+              class={`category-tab-btn inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
+                isInitialActive 
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab' 
+                  : 'bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 hover:bg-slate-800/80'
+              }`}
+            >
+              <span class="text-sm">{cat.icon}</span>
+              <span class="tracking-wide uppercase text-[11px] sm:text-xs">{cat.name}</span>
+              <span class={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
+                isInitialActive ? 'bg-black/30 text-amber-100' : 'bg-slate-800 text-slate-400'
+              }`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- INDICADOR DE ESTADO -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 text-xs text-slate-400 px-2 gap-2 border-b border-slate-800/60 pb-3">
+      <div class="flex items-center gap-2">
+        <span id="active-category-indicator" class="text-amber-400 font-bold uppercase tracking-wider text-xs bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+          ⭐ Mostrando: Más Vendidos
+        </span>
+        <span>(<strong id="product-count" class="text-white font-mono">{featuredCount}</strong> productos)</span>
+      </div>
+      <span class="text-slate-500">✨ Precios en pesos colombianos (COP)</span>
+    </div>
+
+    <!-- GRID DINÁMICO DE PRODUCTOS (Diseño limpio sin imágenes) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="menu-items-grid">
+      {menuItems.map((item) => (
+        <div 
+          class="menu-item-card glass-glow rounded-2xl p-5 sm:p-6 border border-slate-800/80 hover:border-amber-500/40 transition-all duration-300 flex flex-col justify-between group shadow-lg"
+          data-category={item.category}
+          data-featured={item.featured ? 'true' : 'false'}
+          data-name={item.name.toLowerCase()}
+          data-description={(item.description || '').toLowerCase()}
+          style={item.featured ? 'display: flex;' : 'display: none;'}
+        >
+          <div>
+            <!-- Header de tarjeta: Categoría e Insignia -->
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="inline-flex items-center gap-1 text-[11px] font-semibold tracking-wider uppercase text-amber-300 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-full">
+                {item.categoryName}
+              </span>
+
+              {item.badge && (
+                <span class="inline-flex items-center text-[10px] font-black uppercase tracking-wider text-amber-200 bg-gradient-to-r from-amber-500/90 to-orange-600/90 px-2.5 py-0.5 rounded-full shadow-sm">
+                  {item.badge}
+                </span>
+              )}
+            </div>
+
+            <!-- Nombre del producto -->
+            <h3 class="text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug mb-1.5">
+              {item.name}
+            </h3>
+
+            <!-- Descripción (si existe) -->
+            {item.description && (
+              <p class="text-slate-400 text-xs sm:text-sm leading-relaxed line-clamp-2 mb-3 font-light">
+                {item.description}
+              </p>
+            )}
+          </div>
+
+          <!-- Pie de tarjeta: Precio y Botón de Pedido -->
+          <div class="pt-3 border-t border-slate-800/60 flex items-center justify-between mt-auto gap-3">
+            <div>
+              <span class="text-[10px] text-slate-500 uppercase tracking-widest block font-medium">Precio</span>
+              <span class="text-amber-400 font-extrabold text-xl font-serif">
+                ${item.price.toLocaleString('es-CO')}
+              </span>
+            </div>
+
+            <button 
+              onclick={`addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, '${DEFAULT_PLACEHOLDER_IMAGE}')`}
+              class="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all duration-200 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
+              title="Añadir al pedido"
+            >
+              <span>+</span>
+              <span>Pedir</span>
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- ESTADO VACÍO -->
+    <div id="no-results" class="hidden text-center py-16 px-4">
+      <span class="text-5xl block mb-3">🔍</span>
+      <h4 class="text-xl font-bold text-white mb-1">No se encontraron productos</h4>
+      <p class="text-slate-400 text-sm max-w-sm mx-auto mb-6">
+        No encontramos ningún plato o bebida que coincida con tu búsqueda.
+      </p>
+      <button 
+        onclick="resetMenuFilters()"
+        class="bg-slate-900 border border-slate-700 hover:bg-slate-800 text-amber-400 font-semibold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-200 cursor-pointer"
+      >
+        Ver Más Vendidos
+      </button>
+    </div>
+  </main>
+
+  <!-- BARRA FLOTANTE FIJA INFERIOR PARA VER PEDIDO -->
+  <div class="fixed bottom-6 left-0 w-full z-40 px-4 pointer-events-none">
+    <div class="max-w-md mx-auto pointer-events-auto">
+      <button 
+        onclick="openCartModal()" 
+        class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-6 rounded-2xl transition duration-300 shadow-[0_10px_30px_rgba(245,158,11,0.4)] flex items-center justify-between cursor-pointer transform hover:scale-[1.02]"
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xl">🛒</span>
+          <div class="text-left">
+            <span class="text-xs uppercase tracking-wider block font-medium opacity-90">Tu Pedido</span>
+            <span class="text-sm font-bold">Ver y Confirmar en WhatsApp</span>
+          </div>
+        </div>
+        <span class="bg-black/30 px-3 py-1 rounded-xl text-xs font-mono font-bold">
+          Ver Total ↗
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL DE PEDIDO Y TOAST -->
+  <CartModal />
+  <Toast />
+</Layout>
+
+<script is:inline>
+  let activeCategory = 'mas-vendidos';
+  let searchTerm = '';
+
+  function applyMenuFilters() {
+    const cards = document.querySelectorAll('.menu-item-card');
+    const noResults = document.getElementById('no-results');
+    const countEl = document.getElementById('product-count');
+    const indicatorEl = document.getElementById('active-category-indicator');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const cardCategory = card.dataset.category;
+      const isFeatured = card.dataset.featured === 'true';
+      const cardName = card.dataset.name || '';
+      const cardDesc = card.dataset.description || '';
+
+      let matchesCategory = false;
+      if (activeCategory === 'mas-vendidos') {
+        matchesCategory = isFeatured;
+      } else if (activeCategory === 'todos') {
+        matchesCategory = true;
+      } else {
+        matchesCategory = (cardCategory === activeCategory);
+      }
+
+      const matchesSearch = !searchTerm || cardName.includes(searchTerm) || cardDesc.includes(searchTerm);
+      const shouldShow = searchTerm ? matchesSearch : (matchesCategory && matchesSearch);
+
+      if (shouldShow) {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (countEl) countEl.innerText = visibleCount;
+
+    if (indicatorEl) {
+      if (searchTerm) {
+        indicatorEl.innerHTML = `🔍 Búsqueda: "${searchTerm}"`;
+      } else if (activeCategory === 'mas-vendidos') {
+        indicatorEl.innerHTML = `⭐ Mostrando: Más Vendidos`;
+      } else if (activeCategory === 'todos') {
+        indicatorEl.innerHTML = `📋 Mostrando: Todo el Menú`;
+      } else {
+        const activeBtn = document.querySelector(`.category-tab-btn[data-category="${activeCategory}"]`);
+        const catName = activeBtn ? activeBtn.querySelector('span:nth-child(2)').innerText : activeCategory;
+        indicatorEl.innerHTML = `📍 Categoría: ${catName}`;
+      }
+    }
+
+    if (noResults) {
+      if (visibleCount === 0) noResults.classList.remove('hidden');
+      else noResults.classList.add('hidden');
+    }
+  }
+
+  function filterMenuCategory(category, clickedBtn) {
+    activeCategory = category;
+
+    const tabs = document.querySelectorAll('.category-tab-btn');
+    tabs.forEach(tab => {
+      tab.classList.remove(
+        'bg-gradient-to-r', 'from-amber-500', 'to-orange-600', 'text-white', 
+        'shadow-lg', 'shadow-amber-500/25', 'ring-2', 'ring-amber-400/50', 'scale-[1.03]', 'active-tab'
+      );
+      tab.classList.add('bg-slate-900/90', 'border', 'border-slate-800', 'text-slate-300');
+      
+      const badge = tab.querySelector('span:last-child');
+      if (badge) {
+        badge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400';
+      }
+    });
+
+    if (clickedBtn) {
+      clickedBtn.classList.remove('bg-slate-900/90', 'border', 'border-slate-800', 'text-slate-300');
+      clickedBtn.classList.add(
+        'bg-gradient-to-r', 'from-amber-500', 'to-orange-600', 'text-white', 
+        'shadow-lg', 'shadow-amber-500/25', 'ring-2', 'ring-amber-400/50', 'scale-[1.03]', 'active-tab'
+      );
+
+      const activeBadge = clickedBtn.querySelector('span:last-child');
+      if (activeBadge) {
+        activeBadge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-black/30 text-amber-100';
+      }
+    }
+
+    applyMenuFilters();
+  }
+
+  function resetMenuFilters() {
+    const searchInput = document.getElementById('menu-search-input');
+    const clearBtn = document.getElementById('menu-search-clear');
+    if (searchInput) searchInput.value = '';
+    if (clearBtn) clearBtn.classList.add('hidden');
+    searchTerm = '';
+
+    const defaultTab = document.querySelector('.category-tab-btn[data-category="mas-vendidos"]');
+    filterMenuCategory('mas-vendidos', defaultTab);
+  }
+
+  const searchInput = document.getElementById('menu-search-input');
+  const clearBtn = document.getElementById('menu-search-clear');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      if (clearBtn) {
+        if (searchTerm.length > 0) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+      applyMenuFilters();
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      clearBtn.classList.add('hidden');
+      searchTerm = '';
+      applyMenuFilters();
+    });
+  }
+</script>

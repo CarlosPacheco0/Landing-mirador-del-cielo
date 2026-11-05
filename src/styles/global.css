@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream-50: #FAF6F0;
+  --color-cream-100: #F3EDE2;
+}
+
+body { 
+  font-family: 'Montserrat', sans-serif; 
+  background-color: #0B0F17; /* Slate Night Mode */
+  color: #E2E8F0;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { 
+  font-family: 'Playfair Display', serif; 
+}
+
+/* Sombras e iluminación para máxima legibilidad sobre imagen */
+.hero-title {
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.95), 0 0 30px rgba(245, 158, 11, 0.35);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #FFE082 0%, #FBBF24 50%, #F97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.85));
+}
+
+.text-shadow-drop {
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.hero-bottom-fade {
+  background: linear-gradient(
+    to top,
+    #0B0F17 0%,
+    rgba(11, 15, 23, 0.96) 20%,
+    rgba(11, 15, 23, 0.75) 45%,
+    rgba(11, 15, 23, 0.35) 72%,
+    rgba(11, 15, 23, 0) 100%
+  );
+}
+
+/* Glassmorphic Cards Glow */
+.glass-glow {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.glass-glow:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0F17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+/* Active nav item */
+.nav-link.active {
+  color: #f59e0b;
+  font-weight: 700;
+}
+

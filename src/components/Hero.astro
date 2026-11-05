@@ -1,0 +1,70 @@
+---
+// src/components/Hero.astro
+---
+
+<header class="relative h-screen flex flex-col justify-center items-center text-center text-white px-4 overflow-hidden" id="inicio">
+  
+  <!-- Imagen de fondo a pantalla completa -->
+  <img 
+    src="/images/mirador.webp" 
+    alt="Vista panorámica El Mirador del Cielo" 
+    class="absolute inset-0 w-full h-full object-cover object-center z-4 opacity-70" 
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+  
+  <!-- CAPAS DE OSCURECIMIENTO Y CONTRASTE (Overlays para máxima legibilidad) -->
+  <div class="absolute bottom-0 left-0 w-full h-1/2 hero-bottom-fade z-10 pointer-events-none"></div>
+
+  <!-- Contenedor del contenido principal con isolate y z-20 -->
+  <div class="relative z-20 flex flex-col items-center mt-12 max-w-4xl isolate">
+    <!-- WIDGET DE HORA DORADA & CLIMA EN VIVO -->
+    <div class="inline-flex items-center gap-3 bg-slate-900/95 border border-amber-500/40 px-5 py-2.5 rounded-full mb-6 text-xs md:text-sm font-medium text-amber-300 shadow-[0_0_20px_rgba(245,158,11,0.25)]">
+      <span class="flex h-2.5 w-2.5 relative">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+      </span>
+      <span>📍 Cerro del Monumento, Río de Oro</span>
+      <span class="text-slate-500 hidden sm:inline">•</span>
+      <span id="sunset-widget-text" class="font-semibold text-amber-200">🌅 Atardecer hoy: ~ 5:48 PM</span>
+    </div>
+
+    <h1 class="text-5xl md:text-8xl font-black mb-4 hero-title tracking-wide leading-tight">
+      <span class="text-white">El Mirador</span> <span class="text-gradient">del Cielo</span>
+    </h1>
+    <p class="text-lg md:text-2xl mb-10 font-light max-w-2xl text-shadow-drop text-slate-100 leading-relaxed">
+      Los mejores atardeceres de Río de Oro acompañados de una experiencia gastronómica de altura.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+      <a href="#menu" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-9 rounded-full transition duration-300 transform hover:scale-105 shadow-[0_0_25px_rgba(245,158,11,0.4)] text-center">
+        Explorar el Menú
+      </a>
+      <button onclick="openReservationModal()" class="bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white font-bold py-4 px-9 rounded-full transition duration-300 transform hover:scale-105 shadow-xl text-center cursor-pointer">
+        📅 Reservar Mesa
+      </button>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  function updateSunWidget() {
+    const now = new Date();
+    const hours = now.getHours();
+    const widgetText = document.getElementById('sunset-widget-text');
+
+    if (!widgetText) return;
+
+    // Hora dorada en Colombia suele ser ~ 5:20 PM a 6:15 PM (17:20 a 18:15)
+    if (hours >= 17 && hours <= 18) {
+      widgetText.innerHTML = "🌅 ¡Hora Dorada Activa en Río de Oro! La mejor luz para fotos";
+    } else if (hours >= 19 || hours < 5) {
+      widgetText.innerHTML = "🌙 Modo Nocturno: Luces y ambiente acogedor en el cerro";
+    } else {
+      widgetText.innerHTML = "🌅 Atardecer hoy: ~ 5:48 PM • Te esperamos en la tarde";
+    }
+  }
+  updateSunWidget();
+</script>
+

@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Menu from '../components/Menu.astro';
+import Gallery from '../components/Gallery.astro';
+import Souvenirs from '../components/Souvenirs.astro';
+import Reviews from '../components/Reviews.astro';
+import FAQ from '../components/FAQ.astro';
+import SocialBanner from '../components/SocialBanner.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CartModal from '../components/CartModal.astro';
+import ReservationModal from '../components/ReservationModal.astro';
+import LightboxModal from '../components/LightboxModal.astro';
+import Toast from '../components/Toast.astro';
+---
+
+<Layout>
+  <!-- Barra de navegación fija -->
+  <Navbar />
+
+  <!-- Botón flotante WhatsApp -->
+  <WhatsAppButton />
+
+  <main>
+    <!-- 1. Hero con video background y widget solar -->
+    <Hero />
+
+    <!-- 2. Conoce El Mirador -->
+    <About />
+
+    <!-- 3. Menú interactivo generado con Astro Data -->
+    <Menu />
+
+    <!-- 4. Galería con Lightbox -->
+    <Gallery />
+
+    <!-- 5. Souvenirs y Recuerdos -->
+    <Souvenirs />
+
+    <!-- 6. Reseñas y testimonios -->
+    <Reviews />
+
+    <!-- 7. Preguntas frecuentes -->
+    <FAQ />
+
+    <!-- Banner redes sociales -->
+    <SocialBanner />
+  </main>
+
+  <!-- 8. Footer y Mapa -->
+  <Footer />
+
+  <!-- Modales y Overlays -->
+  <CartModal />
+  <ReservationModal />
+  <LightboxModal />
+  <Toast />
+</Layout>
+

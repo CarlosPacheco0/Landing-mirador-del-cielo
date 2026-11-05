@@ -1,0 +1,91 @@
+---
+// src/components/LightboxModal.astro
+import { galleryItems } from '../data/gallery';
+---
+
+<div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-xl flex flex-col justify-between items-center p-4 sm:p-8">
+  <div class="w-full flex justify-between items-center max-w-5xl z-10">
+    <span id="lightbox-counter" class="text-amber-400 font-mono text-xs font-bold uppercase tracking-wider">Foto 1 de 6</span>
+    <button onclick="closeLightbox()" class="text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 text-2xl cursor-pointer">✕</button>
+  </div>
+
+  <div class="relative w-full max-w-4xl flex-1 flex items-center justify-center my-4 overflow-hidden">
+    <button onclick="prevLightboxImage()" class="absolute left-2 sm:left-4 z-20 bg-slate-900/80 hover:bg-slate-800 text-white p-3 rounded-full border border-slate-700 text-xl cursor-pointer">‹</button>
+    
+    <img id="lightbox-img" src="" alt="Ampliación" class="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl border border-slate-800 transition duration-300" />
+    
+    <button onclick="nextLightboxImage()" class="absolute right-2 sm:right-4 z-20 bg-slate-900/80 hover:bg-slate-800 text-white p-3 rounded-full border border-slate-700 text-xl cursor-pointer">›</button>
+  </div>
+
+  <div class="w-full max-w-xl text-center z-10">
+    <h4 id="lightbox-title" class="text-white text-xl font-bold font-serif mb-1">Título de Foto</h4>
+    <p id="lightbox-desc" class="text-slate-400 text-xs font-light">Descripción de la foto</p>
+  </div>
+</div>
+
+<script is:inline define:vars={{ galleryItems }}>
+  let currentLightboxIndex = 0;
+
+  function openLightbox(index) {
+    currentLightboxIndex = index;
+    updateLightboxContent();
+    const modal = document.getElementById('lightbox-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function openLightboxBySrc(src) {
+    const idx = galleryItems.findIndex(i => i.src === src);
+    if (idx !== -1) {
+      openLightbox(idx);
+    } else {
+      openLightbox(0);
+    }
+  }
+
+  function closeLightbox() {
+    const modal = document.getElementById('lightbox-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  function updateLightboxContent() {
+    const item = galleryItems[currentLightboxIndex];
+    if (!item) return;
+    
+    const img = document.getElementById('lightbox-img');
+    const title = document.getElementById('lightbox-title');
+    const desc = document.getElementById('lightbox-desc');
+    const counter = document.getElementById('lightbox-counter');
+
+    if (img) img.src = item.src;
+    if (title) title.innerText = item.title;
+    if (desc) desc.innerText = item.desc;
+    if (counter) counter.innerText = `Foto ${currentLightboxIndex + 1} de ${galleryItems.length}`;
+  }
+
+  function prevLightboxImage() {
+    currentLightboxIndex = (currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length;
+    updateLightboxContent();
+  }
+
+  function nextLightboxImage() {
+    currentLightboxIndex = (currentLightboxIndex + 1) % galleryItems.length;
+    updateLightboxContent();
+  }
+
+  // Teclado para Lightbox (ESC y Flechas)
+  window.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('lightbox-modal');
+    if (modal && !modal.classList.contains('hidden')) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevLightboxImage();
+      if (e.key === 'ArrowRight') nextLightboxImage();
+    }
+  });
+</script>
+

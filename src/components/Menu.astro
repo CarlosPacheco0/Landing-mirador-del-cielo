@@ -1,0 +1,126 @@
+---
+// src/components/Menu.astro
+import { menuItems, DEFAULT_PLACEHOLDER_IMAGE } from '../data/menu';
+
+// Filtramos solo los productos que tengan el parámetro isSpecialty: true
+const specialties = menuItems.filter(item => item.isSpecialty);
+---
+
+<section class="py-24 bg-[#0d121d] px-4 md:px-12 lg:px-20 relative border-y border-slate-800/80" id="menu">
+  <!-- Luces ambientales de fondo -->
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-amber-500/10 rounded-full mix-blend-screen filter blur-3xl opacity-60"></div>
+    <div class="absolute -bottom-20 -left-20 w-96 h-96 bg-orange-600/10 rounded-full mix-blend-screen filter blur-3xl opacity-60"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    <!-- Encabezado de la Sección -->
+    <div class="text-center mb-16" data-aos="fade-up">
+      <span class="text-amber-400 font-semibold text-xs sm:text-sm tracking-widest uppercase mb-2 block">
+        Gastronomía & Selección de la Casa
+      </span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl text-white font-bold mb-4 font-serif">
+        Especialidades de <span class="text-gradient">El Mirador</span>
+      </h2>
+      <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto font-light">
+        Nuestros platos y bebidas más recomendados para disfrutar con la vista panorámica del cerro.
+      </p>
+    </div>
+
+    <!-- GRID DINÁMICO DE ESPECIALIDADES (Solo productos con isSpecialty: true) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      {specialties.map((item, index) => (
+        <div 
+          class="menu-item-card glass-glow rounded-3xl p-7 border border-slate-800/80 hover:border-amber-500/40 transition-all duration-300 group flex flex-col justify-between shadow-xl"
+          data-aos="fade-up"
+          data-aos-delay={(index % 3 + 1) * 100}
+        >
+          <div>
+            <!-- Header de tarjeta: Categoría e Insignia -->
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="inline-flex items-center text-xs font-bold tracking-wider uppercase text-amber-300 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full">
+                {item.categoryName}
+              </span>
+
+              {item.badge && (
+                <span class="inline-flex items-center text-[10px] font-black uppercase tracking-wider text-amber-200 bg-gradient-to-r from-amber-500/90 to-orange-600/90 px-2.5 py-1 rounded-full shadow-md">
+                  {item.badge}
+                </span>
+              )}
+            </div>
+
+            <!-- Nombre de la Especialidad -->
+            <h3 class="text-xl sm:text-2xl font-bold font-serif text-white group-hover:text-amber-300 transition-colors mb-3 leading-snug">
+              {item.name}
+            </h3>
+
+            <!-- Descripción -->
+            {item.description && (
+              <p class="text-slate-300 text-sm leading-relaxed font-light mb-6">
+                {item.description}
+              </p>
+            )}
+          </div>
+
+          <!-- Pie de tarjeta: Precio y Pedir -->
+          <div class="pt-5 border-t border-slate-800/80 flex items-center justify-between mt-auto gap-4">
+            <div>
+              <span class="text-[10px] text-slate-500 uppercase tracking-widest block font-medium">Precio</span>
+              <span class="text-amber-400 font-extrabold text-2xl font-serif">
+                ${item.price.toLocaleString('es-CO')}
+              </span>
+            </div>
+
+            <button 
+              onclick={`addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, '${DEFAULT_PLACEHOLDER_IMAGE}')`}
+              class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-200 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
+              title="Añadir al pedido"
+            >
+              <span>+</span>
+              <span>Pedir</span>
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- BANNER HERO QUE INVITA AL MENÚ DIGITAL COMPLETO -->
+    <div 
+      class="bg-gradient-to-b sm:bg-gradient-to-r from-slate-900/90 via-[#111726] to-slate-900/90 border border-amber-500/30 rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto shadow-2xl relative overflow-hidden"
+      data-aos="zoom-in"
+    >
+      <div class="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      
+      <div class="relative z-10">
+        <span class="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-4">
+          📖 Carta Digital Completa • 17 Categorías
+        </span>
+        
+        <h3 class="text-2xl sm:text-4xl font-extrabold text-white font-serif mb-4">
+          Descubre los <span class="text-gradient">{menuItems.length} Productos</span> de Nuestra Carta
+        </h3>
+        
+        <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+          Pizzetas, granizados, cafés calientes, cervezas, cócteles, tortas caseras, sodas saborizadas y adicionales. Explora el menú completo con buscador y realiza tu pedido directo a WhatsApp.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <a 
+            href="/menu" 
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black py-4 px-9 rounded-full text-sm uppercase tracking-widest transition duration-300 shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:scale-105"
+          >
+            <span>🍽️ Abrir Menú Digital Completo</span>
+            <span class="text-lg">→</span>
+          </a>
+
+          <button 
+            onclick="openCartModal()" 
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold py-4 px-7 rounded-full text-sm uppercase tracking-wider transition duration-300 cursor-pointer"
+          >
+            <span>🛒 Ver Mi Pedido</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

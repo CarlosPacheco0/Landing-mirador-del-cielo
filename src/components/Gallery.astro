@@ -1,0 +1,32 @@
+---
+// src/components/Gallery.astro
+import { galleryItems } from '../data/gallery';
+---
+
+<section class="py-24 px-4 md:px-20 max-w-7xl mx-auto" id="galeria">
+  <div class="text-center mb-16" data-aos="fade-up">
+    <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Momento Fotográfico</span>
+    <h2 class="text-4xl md:text-5xl text-white font-bold mb-4">Galería del Mirador</h2>
+    <p class="text-slate-400 text-lg max-w-xl mx-auto font-light">Haz clic en cualquier fotografía para verla a pantalla completa.</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="200">
+    {galleryItems.map((item, index) => (
+      <div 
+        onclick={`openLightbox(${index})`} 
+        class="relative group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 h-64 shadow-xl cursor-pointer"
+      >
+        <img 
+          src={item.src} 
+          alt={item.title} 
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 justify-between">
+          <span class="text-white font-medium text-lg">{item.title}</span>
+          <span class="text-amber-400 text-xl font-bold">🔍</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+

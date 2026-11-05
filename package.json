@@ -1,0 +1,22 @@
+{
+  "name": "mirador-del-cielo",
+  "version": "1.0.0",
+  "description": "Landing Page oficial e interactiva de nivel profesional para **El Mirador del Cielo**, un emblemático mirador gastronómico y turístico ubicado en el Cerro del Monumento en **Río de Oro, Cesar (Colombia)**.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/CarlosPacheco0/Landing-mirador-del-cielo/issues"
+  },
+  "homepage": "https://github.com/CarlosPacheco0/Landing-mirador-del-cielo#readme",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.4",
+    "astro": "^7.4.5",
+    "tailwindcss": "^4.3.4"
+  }
+}

@@ -1,0 +1,52 @@
+---
+// src/components/FAQ.astro
+import { faqs } from '../data/faqs';
+---
+
+<section class="py-24 px-4 md:px-20 max-w-4xl mx-auto" id="faq">
+  <div class="text-center mb-16" data-aos="fade-up">
+    <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Información Útil</span>
+    <h2 class="text-4xl md:text-5xl text-white font-bold mb-4">Preguntas Frecuentes</h2>
+    <p class="text-slate-400 text-lg font-light">Todo lo que necesitas saber antes de visitarnos.</p>
+  </div>
+
+  <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
+    {faqs.map((faq) => (
+      <div class="border border-slate-800 rounded-2xl bg-slate-900/80 backdrop-blur-md overflow-hidden transition-all duration-300">
+        <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center text-white font-semibold text-lg hover:text-amber-400 focus:outline-none cursor-pointer">
+          <span>{faq.question}</span>
+          <svg class="faq-icon w-5 h-5 text-amber-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-content hidden px-6 pb-5 text-slate-400 leading-relaxed border-t border-slate-800/50 pt-3">
+          {faq.answer}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script is:inline>
+  const faqToggles = document.querySelectorAll('.faq-toggle');
+  faqToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const content = toggle.nextElementSibling;
+      const icon = toggle.querySelector('.faq-icon');
+      const isOpening = content.classList.contains('hidden');
+
+      faqToggles.forEach(otherToggle => {
+        const otherContent = otherToggle.nextElementSibling;
+        const otherIcon = otherToggle.querySelector('.faq-icon');
+        if (otherContent) otherContent.classList.add('hidden');
+        if (otherIcon) otherIcon.classList.remove('rotate-180');
+      });
+
+      if (isOpening) {
+        content.classList.remove('hidden');
+        if (icon) icon.classList.add('rotate-180');
+      }
+    });
+  });
+</script>
+

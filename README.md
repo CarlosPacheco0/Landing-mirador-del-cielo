@@ -1,45 +1,28 @@
-# 🌄 El Mirador del Cielo | Landing Page Web Premium
+# 🌄 El Mirador del Cielo | Landing Page Web Premium (Astro + Tailwind CSS)
 
 Landing Page oficial e interactiva de nivel profesional para **El Mirador del Cielo**, un emblemático mirador gastronómico y turístico ubicado en el Cerro del Monumento en **Río de Oro, Cesar (Colombia)**.
 
-![El Mirador del Cielo](images/monumento.png)
+Migrada a la arquitectura moderna de **Astro**, permitiendo una carga ultrarrápida (Zero-JS por defecto), modularidad por componentes y catálogo de productos estructurado en datos desacoplados.
+
+![El Mirador del Cielo](public/images/monumento.png)
 
 ---
 
 ## 🚀 Características Principales
 
-- 🌙 **Diseño Slate Night Mode (`#0B0F17`) & Glassmorphism**: Estética nocturna ultra elegante, moderna y de gran contraste con destellos ámbar y naranja (`glass-glow`).
-- 🌅 **Widget de "Hora Dorada & Atardecer" en Tiempo Real**: Indicador activo en el Hero que calcula la hora del atardecer en Río de Oro e informa a los usuarios sobre la mejor luz para fotos.
+- ⚡ **Desarrollado en Astro (v5+)**: Rendimiento extremo, SSG (generación estática) y optimización de assets.
+- 📋 **Menú y Datos Desacoplados (`src/data/menu.ts`)**: Administra platos, categorías, precios y badges desde un archivo limpio y tipado, sin necesidad de bases de datos complejas ni backend.
+- 🌙 **Diseño Slate Night Mode (`#0B0F17`) & Glassmorphism**: Estética nocturna ultra elegante con destellos ámbar y naranja (`glass-glow`).
+- 🌅 **Widget de "Hora Dorada & Atardecer" en Tiempo Real**: Indicador activo en el Hero que calcula la hora del atardecer en Río de Oro.
 - 🛒 **Carrito de Pedidos Interactivo (`Order Builder WhatsApp`)**:
-  - Selector de cantidades (`+` / `-`) para granizados, pizzetas, empanadas y souvenirs.
-  - Opciones de consumo: *En Mesa en el Mirador* o *Para Llevar / Recoger*.
-  - Cálculo del subtotal y total acumulado en tiempo real.
-  - Envió del pedido estructurado con resumen de productos directamente a WhatsApp.
+  - Modalidad *Mesa en Mirador* o *Para Llevar*.
+  - Cálculo en tiempo real de subtotales y totales.
+  - Generación de mensaje estructurado con envío directo a WhatsApp.
 - 🖼️ **Visor Lightbox de Galería a Pantalla Completa**:
-  - Modal interactivo con zoom de imágenes high-resolution.
-  - Navegación por teclado (Flechas `←` `→` y tecla `ESC`).
-  - Contador de fotos y descripción detallada.
-- 📅 **Sistema de Reserva de Mesas & Celebraciones**:
-  - Formulario desplegable para agendar visitas (Fecha, Hora, Nº de Personas y Ocasión especial).
-  - Enlace rápido a WhatsApp con la información pre-diligenciada.
-- 🍕 **Sección de Menú con Filtros de Categoría**:
-  - Pestañas interactivas (*Todos*, *Granizados & Bebidas*, *Platos & Snacks*, *Souvenirs*).
-- ⭐ **Sección de Reseñas & Prueba Social**:
-  - Valoración 4.9 ★★★★★ basada en Google Maps & TripAdvisor.
-- 📌 **Barra de Navegación Flotante Inteligente**: Resaltado automático de sección activa al hacer scroll y menú hamburguesa responsive.
-- 💬 **Botón Flotante de WhatsApp con Tooltip Inteligente**: Botón fijo con destello animado y mensaje emergente.
-- ❓ **Acordeón de FAQ Inteligente**: Acordeón interactivo en JS.
-- 📍 **Mapa Interactivo de Google Maps**: Ubicación exacta en el Cerro del Monumento.
-
----
-
-## 🛠️ Tecnologías Utilizadas
-
-- **HTML5**: Estructura semántica accesible y SEO optimizada.
-- **Tailwind CSS** (vía CDN): Sistema de utilidades visuales, glassmorphism overlays y responsividad avanzada.
-- **JavaScript (ES6+)**: Lógica reactiva para carrito de compras, lightbox modal, widget de horario solar y filtros de categoría.
-- **Google Fonts**: Tipografías *Playfair Display* (títulos serif) y *Montserrat* (cuerpo de texto).
-- **AOS (Animate On Scroll)**: Animaciones fluidas al hacer scroll.
+  - Zoom de imágenes de alta resolución, navegación táctil y por teclado (`←`, `→`, `ESC`).
+- 📅 **Sistema de Reserva de Mesas**: Formulario con enlace a WhatsApp pre-diligenciado.
+- 🍕 **Sección de Menú con Filtros de Categoría**: Pestañas interactivas (*Todos*, *Bebidas*, *Comidas*, *Souvenirs*).
+- ⭐ **Prueba Social**: Valoración 4.9 ★★★★★ basada en Google Maps & TripAdvisor.
 
 ---
 
@@ -47,32 +30,66 @@ Landing Page oficial e interactiva de nivel profesional para **El Mirador del Ci
 
 ```text
 MIRADOR DEL CIELO/
-├── images/
-│   ├── granizados.jpeg      # Imagen de Granizados Artesanales
-│   ├── pizzeta.jpeg         # Imagen de Pizzeta Artesanal
-│   ├── empanadas.jpeg       # Imagen de Empanadas Crocantes
-│   ├── monumento.png        # Imagen panorámica del Cerro del Monumento
-│   ├── pin00.jpeg           # Imagen poster para el video
-│   ├── pin01.png            # Pin Fachada Local
-│   ├── pin02.png            # Pin Jaguar Río de Oro (368 años)
-│   └── video.mp4            # Video promocional de fondo
-├── index.html               # Aplicación principal
-└── README.md                # Documentación del proyecto
+├── public/                 # Archivos estáticos servidos en la raíz
+│   └── images/             # Fotografías, pines y video promocional
+├── src/
+│   ├── components/         # Componentes modulares de Astro
+│   │   ├── About.astro
+│   │   ├── CartModal.astro
+│   │   ├── FAQ.astro
+│   │   ├── Footer.astro
+│   │   ├── Gallery.astro
+│   │   ├── Hero.astro
+│   │   ├── LightboxModal.astro
+│   │   ├── Menu.astro
+│   │   ├── Navbar.astro
+│   │   ├── ReservationModal.astro
+│   │   ├── Reviews.astro
+│   │   ├── SocialBanner.astro
+│   │   ├── Souvenirs.astro
+│   │   ├── Toast.astro
+│   │   └── WhatsAppButton.astro
+│   ├── data/               # "Base de datos" estática en TypeScript/JS
+│   │   ├── faqs.ts
+│   │   ├── gallery.ts
+│   │   ├── menu.ts         # <--- Edita aquí precios y platos
+│   │   └── reviews.ts
+│   ├── layouts/
+│   │   └── Layout.astro    # Layout base (SEO, Google Fonts, AOS)
+│   ├── pages/
+│   │   └── index.astro     # Punto de entrada principal
+│   └── styles/
+│       └── global.css      # Tailwind CSS y estilos personalizados
+├── astro.config.mjs        # Configuración de Astro
+├── package.json
+└── README.md
 ```
 
 ---
 
 ## ⚙️ Cómo Ejecutar Localmente
 
-1. Clona o descarga este repositorio en tu equipo:
+1. **Instalar dependencias:**
    ```bash
-   git clone https://github.com/tu-usuario/mirador-del-cielo.git
+   npm install
    ```
-2. Navega al directorio del proyecto:
+
+2. **Iniciar servidor de desarrollo local:**
    ```bash
-   cd "MIRADOR DEL CIELO"
+   npm run dev
    ```
-3. Abre el archivo `index.html` directamente en tu navegador preferido o utiliza **Live Server** en VS Code.
+   Abre [http://localhost:4321](http://localhost:4321) en tu navegador.
+
+3. **Compilar para producción:**
+   ```bash
+   npm run build
+   ```
+   Los archivos estáticos optimizados se generarán en la carpeta `dist/`.
+
+4. **Previsualizar la compilación de producción:**
+   ```bash
+   npm run preview
+   ```
 
 ---
 

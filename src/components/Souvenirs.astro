@@ -1,0 +1,43 @@
+---
+// src/components/Souvenirs.astro
+---
+
+<section class="py-24 px-4 md:px-20 bg-[#090c13] text-white relative overflow-hidden border-t border-slate-800/80" id="souvenirs">
+  <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-amber-600 blur-[120px] opacity-20 pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-orange-600 blur-[120px] opacity-20 pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
+    <div class="grid grid-cols-2 gap-6" data-aos="fade-right" data-aos-duration="1000">
+      <div class="cursor-pointer" onclick="openLightbox(4)">
+        <img src="/images/pin01.png" alt="Pin Fachada Local" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500" />
+      </div>
+      <div class="cursor-pointer" onclick="openLightbox(5)">
+        <img src="/images/pin02.png" alt="Pin Jaguar Río de Oro" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500 mt-8" />
+      </div>
+    </div>
+    <div data-aos="fade-left" data-aos-duration="1000">
+      <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Cultura & Colección</span>
+      <h2 class="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Llévate un recuerdo exclusivo</h2>
+      <p class="text-slate-300 mb-8 leading-relaxed text-lg font-light">No te vayas sin tu pieza de colección. Celebra el arte y los 368 años de historia de Río de Oro con nuestros pines exclusivos metálicos de edición limitada.</p>
+      <ul class="space-y-4 text-slate-200 mb-10">
+        <li class="flex items-center text-lg bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+          <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg text-white font-bold text-xs">✓</div>
+          <span class="font-medium text-base">Pin Fachada "El Mirador del Cielo" ($15.000)</span>
+        </li>
+        <li class="flex items-center text-lg bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+          <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg text-white font-bold text-xs">✓</div>
+          <span class="font-medium text-base">Pin Conmemorativo Jaguar 368 Años ($15.000)</span>
+        </li>
+      </ul>
+      <div class="flex flex-wrap gap-4">
+        <button onclick="addToCart('Pin Fachada Local', 15000, '/images/pin01.png')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-xl shadow-amber-500/20 cursor-pointer">
+          + Añadir Pin Fachada
+        </button>
+        <button onclick="addToCart('Pin Jaguar 368 Años', 15000, '/images/pin02.png')" class="bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 cursor-pointer">
+          + Añadir Pin Jaguar
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+

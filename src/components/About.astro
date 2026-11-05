@@ -1,0 +1,39 @@
+---
+// src/components/About.astro
+---
+
+<section class="py-24 px-4 md:px-20 max-w-7xl mx-auto" id="conoce">
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div data-aos="fade-right" data-aos-duration="1000">
+      <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Experiencia Única</span>
+      <h2 class="text-4xl md:text-5xl text-white font-bold mb-6 leading-tight">El punto de encuentro entre la <span class="text-gradient">tierra y el cielo</span></h2>
+      <p class="text-slate-300 mb-4 leading-relaxed text-lg font-light">Ubicado junto al icónico monumento en el cerro, nuestro mirador ofrece la vista panorámica más espectacular de Río de Oro (Cesar).</p>
+      <p class="text-slate-400 leading-relaxed text-lg font-light mb-8">Diseñamos este espacio para que disfrutes de la brisa fresca de montaña, compartas con amigos y te dejes cautivar por los colores vibrantes del atardecer. ¡La foto perfecta está garantizada!</p>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-800 pt-6 text-center">
+        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+          <span class="text-2xl font-black text-amber-400 block font-serif">368+</span>
+          <span class="text-xs text-slate-400 uppercase tracking-wider">Años Historia</span>
+        </div>
+        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+          <span class="text-2xl font-black text-amber-400 block font-serif">4.9 ★</span>
+          <span class="text-xs text-slate-400 uppercase tracking-wider">Calificación</span>
+        </div>
+        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 col-span-2 sm:col-span-1">
+          <span class="text-2xl font-black text-amber-400 block font-serif">100%</span>
+          <span class="text-xs text-slate-400 uppercase tracking-wider">Pet Friendly</span>
+        </div>
+      </div>
+    </div>
+    
+    <div data-aos="fade-left" data-aos-duration="1000" class="relative group cursor-pointer" onclick="openLightbox(0)">
+      <div class="absolute -inset-4 bg-gradient-to-tr from-amber-500/30 to-orange-600/30 rounded-3xl blur-xl opacity-50 group-hover:opacity-80 transition duration-500"></div>
+      <img src="/images/monumento.png" alt="Vista aérea del Mirador en Río de Oro" class="relative rounded-2xl shadow-2xl w-full object-cover h-[450px] border-2 border-slate-700/80 group-hover:scale-[1.01] transition duration-500" />
+      <div class="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-4 rounded-xl border border-slate-800 text-xs text-slate-300 flex justify-between items-center z-10">
+        <span>📷 Monumento Cerro de la Virgen</span>
+        <span class="text-amber-400 font-bold">Ver ampliación ↗</span>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,92 @@
+---
+// src/components/Navbar.astro
+---
+
+<nav class="fixed top-0 left-0 w-full z-50 bg-[#0B0F17]/90 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+    
+    <!-- Brand Logo -->
+    <a href="#inicio" class="flex items-center gap-3 group">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg shadow-[0_0_15px_rgba(245,158,11,0.4)] group-hover:scale-105 transition-transform duration-300">
+        🌄
+      </div>
+      <span class="text-xl font-extrabold text-white font-serif tracking-tight">
+        El Mirador <span class="text-gradient">del Cielo</span>
+      </span>
+    </a>
+
+    <!-- Desktop Links -->
+    <div class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-300">
+      <a href="#inicio" class="nav-link hover:text-amber-400 transition-colors">Inicio</a>
+      <a href="#conoce" class="nav-link hover:text-amber-400 transition-colors">Conoce</a>
+      <a href="#menu" class="nav-link hover:text-amber-400 transition-colors">Menú</a>
+      <a href="#galeria" class="nav-link hover:text-amber-400 transition-colors">Galería</a>
+      <a href="#souvenirs" class="nav-link hover:text-amber-400 transition-colors">Recuerdos</a>
+      <a href="#resenas" class="nav-link hover:text-amber-400 transition-colors">Reseñas</a>
+      <a href="#faq" class="nav-link hover:text-amber-400 transition-colors">FAQ</a>
+    </div>
+
+    <!-- CTA Buttons & Cart & Mobile Toggle -->
+    <div class="flex items-center gap-3">
+      <!-- Cart Trigger Button -->
+      <button id="cart-btn" onclick="openCartModal()" class="relative bg-slate-900/90 hover:bg-slate-800 border border-amber-500/30 text-amber-300 font-bold p-2.5 px-4 rounded-full flex items-center gap-2 text-xs uppercase tracking-wider transition-all duration-300 hover:scale-105 shadow-md cursor-pointer">
+        <span>🛒</span>
+        <span class="hidden sm:inline">Pedido</span>
+        <span id="cart-badge" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+      </button>
+
+      <!-- Reservation Modal Button -->
+      <button onclick="openReservationModal()" class="hidden sm:inline-block bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold text-xs uppercase tracking-wider py-2.5 px-5 rounded-full transition duration-300 shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:scale-105 cursor-pointer">
+        Reservar
+      </button>
+      
+      <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 rounded-xl border border-slate-800 bg-slate-900/60 focus:outline-none cursor-pointer" aria-label="Abrir Menú">
+        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Dropdown -->
+  <div id="mobile-menu" class="hidden md:hidden bg-[#0B0F17]/95 backdrop-blur-xl border-b border-slate-800 px-6 py-6 space-y-4">
+    <a href="#inicio" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Inicio</a>
+    <a href="#conoce" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Conoce</a>
+    <a href="#menu" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Menú</a>
+    <a href="#galeria" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Galería</a>
+    <a href="#souvenirs" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Recuerdos</a>
+    <a href="#resenas" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Reseñas</a>
+    <a href="#faq" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">FAQ</a>
+    <div class="pt-2 flex flex-col gap-2">
+      <button onclick="openReservationModal(); closeMobileMenu();" class="w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 rounded-full cursor-pointer">
+        📅 Reservar Mesa
+      </button>
+      <a href="#contacto" onclick="closeMobileMenu()" class="mobile-link block w-full text-center border border-slate-700 text-slate-300 font-bold py-2.5 rounded-full">
+        📍 Dónde Estamos
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  function closeMobileMenu() {
+    if (mobileMenu) {
+      mobileMenu.classList.add('hidden');
+      if (iconOpen) iconOpen.classList.remove('hidden');
+      if (iconClose) iconClose.classList.add('hidden');
+    }
+  }
+
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+    });
+  }
+</script>
+
