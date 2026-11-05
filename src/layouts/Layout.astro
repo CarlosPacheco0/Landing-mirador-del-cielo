@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { url } from '../utils/paths';
 
 interface Props {
   title?: string;
@@ -21,10 +22,10 @@ const {
   <meta name="description" content={description} />
   
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
   
   <!-- Preload Hero Image para carga instantánea (LCP) -->
-  <link rel="preload" as="image" href="/images/mirador.png" fetchpriority="high" />
+  <link rel="preload" as="image" href={url('/images/mirador.webp')} fetchpriority="high" />
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

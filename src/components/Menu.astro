@@ -1,6 +1,7 @@
 ---
 // src/components/Menu.astro
 import { menuItems, DEFAULT_PLACEHOLDER_IMAGE } from '../data/menu';
+import { url } from '../utils/paths';
 
 // Filtramos solo los productos que tengan el parámetro isSpecialty: true
 const specialties = menuItems.filter(item => item.isSpecialty);
@@ -106,7 +107,7 @@ const specialties = menuItems.filter(item => item.isSpecialty);
 
         <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
           <a 
-            href="/menu" 
+            href={url('/menu')} 
             class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black py-4 px-9 rounded-full text-sm uppercase tracking-widest transition duration-300 shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:scale-105"
           >
             <span>🍽️ Abrir Menú Digital Completo</span>

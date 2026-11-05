@@ -1,3 +1,5 @@
+import { url } from '../utils/paths';
+
 export interface GalleryItem {
   id: number;
   src: string;
@@ -8,37 +10,37 @@ export interface GalleryItem {
 export const galleryItems: GalleryItem[] = [
   {
     id: 0,
-    src: '/images/monumento.png',
+    src: url('/images/monumento.png'),
     title: 'Vista Panorámica del Cerro',
     desc: 'Atardecer único desde el Cerro del Monumento a la Virgen en Río de Oro.'
   },
   {
     id: 1,
-    src: '/images/granizados.jpeg',
+    src: url('/images/granizados.jpeg'),
     title: 'Granizados Artesanales',
     desc: 'Sabor refrescante cítrico y frutal, servido helado para el calor de la tarde.'
   },
   {
     id: 2,
-    src: '/images/pizzeta.jpeg',
+    src: url('/images/pizzeta.jpeg'),
     title: 'Pizzeta Artesanal Horneada',
     desc: 'Masa crujiente horneada con abundante queso y salsa napolitana de la casa.'
   },
   {
     id: 3,
-    src: '/images/empanadas.jpeg',
+    src: url('/images/empanadas.jpeg'),
     title: 'Empanadas Crocantes',
     desc: 'Empanadas tradicionales doradas servidas con ají casero especial.'
   },
   {
     id: 4,
-    src: '/images/pin01.png',
+    src: url('/images/pin01.png'),
     title: 'Pin Fachada El Mirador',
     desc: 'Edición conmemorativa en metal con detalles de la fachada original.'
   },
   {
     id: 5,
-    src: '/images/pin02.png',
+    src: url('/images/pin02.png'),
     title: 'Pin Jaguar 368 Años',
     desc: 'Pin oficial celebrando la historia y fauna representativa de Río de Oro.'
   }

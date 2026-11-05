@@ -1,12 +1,13 @@
 ---
 // src/components/Hero.astro
+import { url } from '../utils/paths';
 ---
 
 <header class="relative h-screen flex flex-col justify-center items-center text-center text-white px-4 overflow-hidden" id="inicio">
   
   <!-- Imagen de fondo a pantalla completa -->
   <img 
-    src="/images/mirador.webp" 
+    src={url('/images/mirador.webp')} 
     alt="Vista panorámica El Mirador del Cielo" 
     class="absolute inset-0 w-full h-full object-cover object-center z-4 opacity-70" 
     loading="eager"

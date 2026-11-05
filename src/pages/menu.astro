@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import CartModal from '../components/CartModal.astro';
 import Toast from '../components/Toast.astro';
 import { menuItems, menuCategories, DEFAULT_PLACEHOLDER_IMAGE } from '../data/menu';
+import { url } from '../utils/paths';
 
 const getCategoryCount = (catId: string) => {
   if (catId === 'mas-vendidos') {
@@ -29,7 +30,7 @@ const featuredCount = getCategoryCount('mas-vendidos');
       <!-- Botón Volver + Logo -->
       <div class="flex items-center gap-3">
         <a 
-          href="/" 
+          href={url('/')} 
           class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 px-3.5 py-2 rounded-full transition duration-200"
           title="Regresar a la página principal"
         >
@@ -37,7 +38,7 @@ const featuredCount = getCategoryCount('mas-vendidos');
           <span class="hidden sm:inline">Volver</span>
         </a>
 
-        <a href="/" class="flex items-center gap-2 group">
+        <a href={url('/')} class="flex items-center gap-2 group">
           <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-base shadow-[0_0_15px_rgba(245,158,11,0.3)]">
             🌄
           </div>
@@ -70,7 +71,7 @@ const featuredCount = getCategoryCount('mas-vendidos');
   <section class="relative pt-28 pb-16 sm:pb-20 px-4 overflow-hidden border-b border-slate-800/80">
     <!-- Imagen de fondo a pantalla completa -->
     <img 
-      src="/images/mirador.webp" 
+      src={url('/images/mirador.webp')} 
       alt="El Mirador del Cielo" 
       class="absolute inset-0 w-full h-full object-cover object-center z-0" 
       loading="eager"

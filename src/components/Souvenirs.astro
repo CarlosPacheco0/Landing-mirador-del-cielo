@@ -1,5 +1,6 @@
 ---
 // src/components/Souvenirs.astro
+import { url } from '../utils/paths';
 ---
 
 <section class="py-24 px-4 md:px-20 bg-[#090c13] text-white relative overflow-hidden border-t border-slate-800/80" id="souvenirs">
@@ -9,10 +10,10 @@
   <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
     <div class="grid grid-cols-2 gap-6" data-aos="fade-right" data-aos-duration="1000">
       <div class="cursor-pointer" onclick="openLightbox(4)">
-        <img src="/images/pin01.png" alt="Pin Fachada Local" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500" />
+        <img src={url('/images/pin01.png')} alt="Pin Fachada Local" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500" />
       </div>
       <div class="cursor-pointer" onclick="openLightbox(5)">
-        <img src="/images/pin02.png" alt="Pin Jaguar Río de Oro" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500 mt-8" />
+        <img src={url('/images/pin02.png')} alt="Pin Jaguar Río de Oro" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500 mt-8" />
       </div>
     </div>
     <div data-aos="fade-left" data-aos-duration="1000">
@@ -30,10 +31,10 @@
         </li>
       </ul>
       <div class="flex flex-wrap gap-4">
-        <button onclick="addToCart('Pin Fachada Local', 15000, '/images/pin01.png')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-xl shadow-amber-500/20 cursor-pointer">
+        <button onclick={`addToCart('Pin Fachada Local', 15000, '${url('/images/pin01.png')}')`} class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-xl shadow-amber-500/20 cursor-pointer">
           + Añadir Pin Fachada
         </button>
-        <button onclick="addToCart('Pin Jaguar 368 Años', 15000, '/images/pin02.png')" class="bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 cursor-pointer">
+        <button onclick={`addToCart('Pin Jaguar 368 Años', 15000, '${url('/images/pin02.png')}')`} class="bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 cursor-pointer">
           + Añadir Pin Jaguar
         </button>
       </div>

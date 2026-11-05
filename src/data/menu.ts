@@ -4,6 +4,8 @@ export interface MenuCategory {
   icon: string;
 }
 
+import { url } from '../utils/paths';
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -17,7 +19,7 @@ export interface MenuItem {
   isSpecialty?: boolean; // Si es true, se muestra en "Especialidades de El Mirador" en el Inicio
 }
 
-export const DEFAULT_PLACEHOLDER_IMAGE = '/images/placeholder-food.svg';
+export const DEFAULT_PLACEHOLDER_IMAGE = url('/images/placeholder-food.svg');
 
 export const menuCategories: MenuCategory[] = [
   { id: 'mas-vendidos', name: '🔥 Más Vendidos', icon: '⭐' },
