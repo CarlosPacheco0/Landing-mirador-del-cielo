@@ -5,12 +5,18 @@ import { url } from '../utils/paths';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
   title = "El Mirador del Cielo | Gastronomía & Atardeceres en Río de Oro",
-  description = "El Mirador del Cielo en Río de Oro, Cesar. Disfruta de la mejor vista panorámica, granizados artesanales, pizzetas crocantes y momentos inolvidables."
+  description = "El Mirador del Cielo en Río de Oro, Cesar. Disfruta de la mejor vista panorámica, granizados artesanales, pizzetas crocantes y momentos inolvidables.",
+  image = "/images/atardecer.png"
 } = Astro.props;
+
+const defaultSite = 'https://carlospacheco0.github.io';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || defaultSite).toString();
+const ogImageURL = new URL(url(image), Astro.site || defaultSite).toString();
 ---
 
 <!DOCTYPE html>
@@ -20,6 +26,49 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  <meta name="theme-color" content="#0B0F17" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Open Graph (WhatsApp, Facebook, Instagram, LinkedIn) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_CO" />
+  <meta property="og:site_name" content="El Mirador del Cielo" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImageURL} />
+  <meta property="og:image:alt" content="Atardecer y vista panorámica en El Mirador del Cielo, Río de Oro" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter / X & Telegram Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={canonicalURL} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageURL} />
+
+  <!-- Schema.org JSON-LD para SEO Local y Google Maps -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "El Mirador del Cielo",
+    "image": ogImageURL,
+    "description": description,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Cerro del Monumento a la Virgen",
+      "addressLocality": "Río de Oro",
+      "addressRegion": "Cesar",
+      "addressCountry": "CO"
+    },
+    "servesCuisine": ["Colombiana", "Cafetería", "Pizzetas", "Granizados", "Cócteles"],
+    "priceRange": "$$",
+    "openingHours": [
+      "Th-Su 16:00-23:00"
+    ]
+  })} />
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />

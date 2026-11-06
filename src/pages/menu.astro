@@ -20,8 +20,9 @@ const featuredCount = getCategoryCount('mas-vendidos');
 ---
 
 <Layout 
-  title="Menú Digital & Pedidos | El Mirador del Cielo" 
-  description="Carta gastronómica oficial de El Mirador del Cielo en Río de Oro. Granizados, pizzetas, bebidas calientes, cócteles y pedidos directos a WhatsApp."
+  title="Carta Gastronómica & Menú Digital | El Mirador del Cielo" 
+  description="Explora nuestra carta completa: pizzetas, granizados, cafés calientes, cócteles y snacks en Río de Oro. Pide a tu mesa o a domicilio por WhatsApp."
+  image="/images/monumento.png"
 >
   <!-- BARRA SUPERIOR FIJA DEL MENÚ DIGITAL -->
   <header class="fixed top-0 left-0 w-full z-40 bg-[#0B0F17]/95 backdrop-blur-md border-b border-slate-800 transition-all duration-300">
@@ -85,8 +86,14 @@ const featuredCount = getCategoryCount('mas-vendidos');
 
     <!-- Contenido del Encabezado & Buscador -->
     <div class="relative z-20 max-w-3xl mx-auto text-center isolate">
-      <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-lg">
-        <span>📍 Cerro del Monumento, Río de Oro</span>
+      <div class="flex flex-wrap items-center justify-center gap-2.5 mb-4">
+        <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider shadow-lg">
+          <span>📍 Cerro del Monumento, Río de Oro</span>
+        </div>
+        <div id="menu-store-status" class="inline-flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg transition-all duration-300">
+          <span class="w-2.5 h-2.5 rounded-full status-dot bg-slate-500 animate-pulse"></span>
+          <span class="status-label text-slate-300">Verificando cocina...</span>
+        </div>
       </div>
 
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-serif mb-4 leading-tight hero-title">
@@ -122,32 +129,86 @@ const featuredCount = getCategoryCount('mas-vendidos');
   <!-- CONTENIDO PRINCIPAL DEL MENÚ -->
   <main class="min-h-screen pt-10 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
 
-    <!-- PESTAÑAS DE CATEGORÍAS COMPLETAS -->
-    <div class="mb-8">
-      <div class="flex flex-wrap justify-center gap-2 sm:gap-2.5 max-w-5xl mx-auto px-1">
-        {menuCategories.map((cat) => {
-          const count = getCategoryCount(cat.id);
-          const isInitialActive = cat.id === 'mas-vendidos';
-          return (
-            <button 
-              data-category={cat.id}
-              onclick={`filterMenuCategory('${cat.id}', this)`}
-              class={`category-tab-btn inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
-                isInitialActive 
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab' 
-                  : 'bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 hover:bg-slate-800/80'
-              }`}
-            >
-              <span class="text-sm">{cat.icon}</span>
-              <span class="tracking-wide uppercase text-[11px] sm:text-xs">{cat.name}</span>
-              <span class={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
-                isInitialActive ? 'bg-black/30 text-amber-100' : 'bg-slate-800 text-slate-400'
-              }`}>
-                {count}
-              </span>
-            </button>
-          );
-        })}
+    <!-- SELECTOR COMPACTO DE CATEGORÍAS (Más Vendidos + Dropdown "Más Categorías") -->
+    <div class="mb-8 relative z-20">
+      <div class="flex items-center justify-center gap-2 sm:gap-3 max-w-xl mx-auto px-2">
+        
+        <!-- 1. Botón fijo principal: 🔥 Más Vendidos -->
+        <button 
+          id="btn-featured-tab"
+          data-category="mas-vendidos"
+          onclick="filterMenuCategory('mas-vendidos', this)"
+          class="category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab"
+        >
+          <span class="text-sm">🔥</span>
+          <span class="tracking-wide uppercase text-[11px] sm:text-xs">Más Vendidos</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/30 text-amber-100 font-bold">
+            {featuredCount}
+          </span>
+        </button>
+
+        <!-- 2. Botón y Dropdown: Ver Más Categorías -->
+        <div class="relative inline-block text-left" id="categories-dropdown-wrapper">
+          <button 
+            id="more-categories-btn"
+            type="button"
+            onclick="toggleCategoriesDropdown()"
+            class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md"
+            aria-expanded="false"
+          >
+            <span id="more-cat-icon" class="text-sm">📂</span>
+            <span id="more-cat-text" class="tracking-wide uppercase text-[11px] sm:text-xs">Más Categorías</span>
+            <svg id="more-cat-chevron" class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <!-- Menú Flotante con scroll estilizado -->
+          <div 
+            id="categories-dropdown-menu" 
+            class="hidden absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-72 sm:w-80 max-h-96 overflow-y-auto bg-[#0d121d] border border-slate-800/90 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-xl divide-y divide-slate-800/50"
+          >
+            <!-- Opción Ver Todo -->
+            <div class="pb-1.5 mb-1.5">
+              <button 
+                onclick="selectDropdownCategory('todos', '🍽️', 'Todo el Menú', event)"
+                class="dropdown-cat-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition duration-150 cursor-pointer"
+                data-category="todos"
+              >
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base">🍽️</span>
+                  <span class="uppercase tracking-wider font-bold">Todo el Menú</span>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+                  {menuItems.length}
+                </span>
+              </button>
+            </div>
+
+            <!-- Lista de categorías restantes -->
+            <div class="pt-1.5 space-y-1">
+              {menuCategories.filter(c => c.id !== 'mas-vendidos').map((cat) => {
+                const count = getCategoryCount(cat.id);
+                return (
+                  <button 
+                    onclick={`selectDropdownCategory('${cat.id}', '${cat.icon}', '${cat.name}', event)`}
+                    class="dropdown-cat-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition duration-150 cursor-pointer"
+                    data-category={cat.id}
+                  >
+                    <div class="flex items-center gap-2.5">
+                      <span class="text-base">{cat.icon}</span>
+                      <span class="tracking-wide text-[11px] sm:text-xs text-left">{cat.name}</span>
+                    </div>
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -323,38 +384,89 @@ const featuredCount = getCategoryCount('mas-vendidos');
     }
   }
 
+  function toggleCategoriesDropdown() {
+    const menu = document.getElementById('categories-dropdown-menu');
+    const chevron = document.getElementById('more-cat-chevron');
+    if (menu) {
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        if (chevron) chevron.classList.add('rotate-180');
+      } else {
+        menu.classList.add('hidden');
+        if (chevron) chevron.classList.remove('rotate-180');
+      }
+    }
+  }
+
+  function closeCategoriesDropdown() {
+    const menu = document.getElementById('categories-dropdown-menu');
+    const chevron = document.getElementById('more-cat-chevron');
+    if (menu) menu.classList.add('hidden');
+    if (chevron) chevron.classList.remove('rotate-180');
+  }
+
+  function selectDropdownCategory(category, icon, name, event) {
+    if (event) event.stopPropagation();
+    activeCategory = category;
+
+    // Actualizar botón dropdown con la categoría elegida
+    const moreBtn = document.getElementById('more-categories-btn');
+    const moreIcon = document.getElementById('more-cat-icon');
+    const moreText = document.getElementById('more-cat-text');
+    const featuredBtn = document.getElementById('btn-featured-tab');
+
+    if (moreIcon) moreIcon.innerText = icon;
+    if (moreText) moreText.innerText = name;
+
+    // Activar visualmente el botón de Más Categorías
+    if (moreBtn) {
+      moreBtn.className = 'inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab';
+    }
+
+    // Desactivar el botón de Más Vendidos
+    if (featuredBtn) {
+      featuredBtn.className = 'category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md';
+      const badge = featuredBtn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-bold';
+    }
+
+    closeCategoriesDropdown();
+    applyMenuFilters();
+  }
+
   function filterMenuCategory(category, clickedBtn) {
     activeCategory = category;
 
-    const tabs = document.querySelectorAll('.category-tab-btn');
-    tabs.forEach(tab => {
-      tab.classList.remove(
-        'bg-gradient-to-r', 'from-amber-500', 'to-orange-600', 'text-white', 
-        'shadow-lg', 'shadow-amber-500/25', 'ring-2', 'ring-amber-400/50', 'scale-[1.03]', 'active-tab'
-      );
-      tab.classList.add('bg-slate-900/90', 'border', 'border-slate-800', 'text-slate-300');
-      
-      const badge = tab.querySelector('span:last-child');
-      if (badge) {
-        badge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400';
-      }
-    });
-
-    if (clickedBtn) {
-      clickedBtn.classList.remove('bg-slate-900/90', 'border', 'border-slate-800', 'text-slate-300');
-      clickedBtn.classList.add(
-        'bg-gradient-to-r', 'from-amber-500', 'to-orange-600', 'text-white', 
-        'shadow-lg', 'shadow-amber-500/25', 'ring-2', 'ring-amber-400/50', 'scale-[1.03]', 'active-tab'
-      );
-
-      const activeBadge = clickedBtn.querySelector('span:last-child');
-      if (activeBadge) {
-        activeBadge.className = 'text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-black/30 text-amber-100';
-      }
+    // Resetear el botón de Más Categorías a su estado inactivo
+    const moreBtn = document.getElementById('more-categories-btn');
+    const moreIcon = document.getElementById('more-cat-icon');
+    const moreText = document.getElementById('more-cat-text');
+    if (moreIcon) moreIcon.innerText = '📂';
+    if (moreText) moreText.innerText = 'Más Categorías';
+    if (moreBtn) {
+      moreBtn.className = 'inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md';
     }
 
+    // Activar Más Vendidos
+    const featuredBtn = document.getElementById('btn-featured-tab');
+    if (featuredBtn) {
+      featuredBtn.className = 'category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab';
+      const badge = featuredBtn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/30 text-amber-100 font-bold';
+    }
+
+    closeCategoriesDropdown();
     applyMenuFilters();
   }
+
+  // Cerrar el dropdown al hacer clic por fuera
+  document.addEventListener('click', (e) => {
+    const wrapper = document.getElementById('categories-dropdown-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      closeCategoriesDropdown();
+    }
+  });
 
   function resetMenuFilters() {
     const searchInput = document.getElementById('menu-search-input');
@@ -363,8 +475,7 @@ const featuredCount = getCategoryCount('mas-vendidos');
     if (clearBtn) clearBtn.classList.add('hidden');
     searchTerm = '';
 
-    const defaultTab = document.querySelector('.category-tab-btn[data-category="mas-vendidos"]');
-    filterMenuCategory('mas-vendidos', defaultTab);
+    filterMenuCategory('mas-vendidos');
   }
 
   const searchInput = document.getElementById('menu-search-input');
@@ -389,4 +500,41 @@ const featuredCount = getCategoryCount('mas-vendidos');
       applyMenuFilters();
     });
   }
+
+  // Sincronización del estado de cocina en tiempo real (Punto 4)
+  function updateMenuStoreStatus() {
+    try {
+      const now = new Date();
+      const colDate = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
+      const day = colDate.getDay(); // 0: Dom, 1: Lun, ..., 4: Jue, 5: Vie, 6: Sab
+      const time = colDate.getHours() + colDate.getMinutes() / 60;
+      const isOperatingDay = day === 4 || day === 5 || day === 6 || day === 0;
+      const isOpen = isOperatingDay && time >= 16 && time < 23;
+
+      const el = document.getElementById('menu-store-status');
+      if (!el) return;
+      const dot = el.querySelector('.status-dot');
+      const label = el.querySelector('.status-label');
+
+      if (isOpen) {
+        el.className = 'inline-flex items-center gap-2 bg-emerald-950/80 border border-emerald-500/50 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg shadow-emerald-950/40 backdrop-blur-md text-emerald-300 transition-all duration-300';
+        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full status-dot bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] animate-pulse';
+        if (label) label.innerText = 'Abierto Ahora • Cocina Activa (hasta 11:00 PM)';
+      } else if (isOperatingDay && time < 16) {
+        el.className = 'inline-flex items-center gap-2 bg-amber-950/80 border border-amber-500/50 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg shadow-amber-950/40 backdrop-blur-md text-amber-300 transition-all duration-300';
+        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full status-dot bg-amber-400';
+        if (label) label.innerText = 'Cerrado Ahora • Abre hoy a las 4:00 PM';
+      } else {
+        const nextDay = (day === 4 && time >= 23) ? 'Viernes' : (day === 5 && time >= 23) ? 'Sábado' : (day === 6 && time >= 23) ? 'Domingo' : 'Jueves';
+        el.className = 'inline-flex items-center gap-2 bg-rose-950/80 border border-rose-500/40 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg shadow-rose-950/40 backdrop-blur-md text-rose-300 transition-all duration-300';
+        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full status-dot bg-rose-400';
+        if (label) label.innerText = `Cerrado Ahora • Abrimos el ${nextDay} 4:00 PM`;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  updateMenuStoreStatus();
+  setInterval(updateMenuStoreStatus, 60000);
 </script>

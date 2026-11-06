@@ -5,14 +5,20 @@
 <nav class="fixed top-0 left-0 w-full z-50 bg-[#0B0F17]/90 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300" id="navbar">
   <div class="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
     
-    <!-- Brand Logo -->
+    <!-- Brand Logo con Indicador de Estado -->
     <a href="#inicio" class="flex items-center gap-3 group">
       <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg shadow-[0_0_15px_rgba(245,158,11,0.4)] group-hover:scale-105 transition-transform duration-300">
         🌄
       </div>
-      <span class="text-xl font-extrabold text-white font-serif tracking-tight">
-        El Mirador <span class="text-gradient">del Cielo</span>
-      </span>
+      <div class="flex flex-col">
+        <span class="text-xl font-extrabold text-white font-serif tracking-tight leading-none">
+          El Mirador <span class="text-gradient">del Cielo</span>
+        </span>
+        <span id="store-status-navbar" class="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-semibold mt-1">
+          <span class="w-2 h-2 rounded-full status-dot bg-slate-500"></span>
+          <span class="status-label text-slate-400">Verificando horario...</span>
+        </span>
+      </div>
     </a>
 
     <!-- Desktop Links -->
@@ -56,6 +62,12 @@
     <a href="#souvenirs" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Recuerdos</a>
     <a href="#resenas" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Reseñas</a>
     <a href="#faq" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">FAQ</a>
+    <!-- Indicador de Cocina en Menú Móvil -->
+    <div id="store-status-mobile" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full status-dot bg-slate-500"></span>
+      <span class="status-label text-slate-300 font-medium">Verificando horario...</span>
+    </div>
+
     <div class="pt-2 flex flex-col gap-2">
       <button onclick="openReservationModal(); closeMobileMenu();" class="w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 rounded-full cursor-pointer">
         📅 Reservar Mesa
@@ -88,5 +100,62 @@
       iconClose.classList.toggle('hidden');
     });
   }
+
+  function updateNavbarStoreStatus() {
+    try {
+      const now = new Date();
+      const colDate = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
+      const day = colDate.getDay(); // 0: Dom, 1: Lun, 2: Mar, 3: Mie, 4: Jue, 5: Vie, 6: Sab
+      const time = colDate.getHours() + colDate.getMinutes() / 60;
+      const isOperatingDay = day === 4 || day === 5 || day === 6 || day === 0;
+      const isOpen = isOperatingDay && time >= 16 && time < 23;
+
+      let label = '';
+      let dotClass = '';
+      let textClass = '';
+
+      if (isOpen) {
+        label = 'Abierto ahora • Cocina activa';
+        dotClass = 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]';
+        textClass = 'text-emerald-400';
+      } else if (isOperatingDay && time < 16) {
+        label = 'Cerrado • Abre hoy 4:00 PM';
+        dotClass = 'bg-amber-400';
+        textClass = 'text-amber-400';
+      } else {
+        const nextDay = (day === 4 && time >= 23) ? 'Viernes' : (day === 5 && time >= 23) ? 'Sábado' : (day === 6 && time >= 23) ? 'Domingo' : 'Jueves';
+        label = `Cerrado • Abre ${nextDay} 4:00 PM`;
+        dotClass = 'bg-rose-400';
+        textClass = 'text-rose-400';
+      }
+
+      const desktopEl = document.getElementById('store-status-navbar');
+      if (desktopEl) {
+        const dot = desktopEl.querySelector('.status-dot');
+        const text = desktopEl.querySelector('.status-label');
+        if (dot) dot.className = `w-2 h-2 rounded-full status-dot ${dotClass}`;
+        if (text) {
+          text.className = `status-label ${textClass}`;
+          text.innerText = label;
+        }
+      }
+
+      const mobileEl = document.getElementById('store-status-mobile');
+      if (mobileEl) {
+        const dot = mobileEl.querySelector('.status-dot');
+        const text = mobileEl.querySelector('.status-label');
+        if (dot) dot.className = `w-2 h-2 rounded-full status-dot ${dotClass}`;
+        if (text) {
+          text.className = `status-label ${textClass} font-semibold`;
+          text.innerText = label;
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  updateNavbarStoreStatus();
+  setInterval(updateNavbarStoreStatus, 60000);
 </script>
 
