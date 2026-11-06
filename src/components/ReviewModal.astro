@@ -1,0 +1,129 @@
+---
+// src/components/ReviewModal.astro
+---
+
+<div id="review-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+  <div class="bg-[#0D121D] w-full max-w-lg rounded-3xl border border-slate-800 p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+    <button onclick="closeReviewModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-xl p-2 rounded-full hover:bg-slate-800 cursor-pointer" title="Cerrar">✕</button>
+
+    <div class="mb-6">
+      <span class="text-amber-400 font-semibold text-xs tracking-widest uppercase block mb-1">Tu Experiencia Cuenta</span>
+      <h3 class="text-2xl sm:text-3xl font-bold text-white font-serif">Califica Tu Visita</h3>
+      <p class="text-slate-400 text-xs sm:text-sm font-light mt-1">Comparte tu opinión. Tu reseña llegará a nuestro WhatsApp para publicarla en la web oficial.</p>
+    </div>
+
+    <form onsubmit="sendReviewToWhatsApp(event)" class="space-y-4">
+      <!-- Selector interactivo de estrellas -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Tu Calificación</label>
+        <div class="flex items-center gap-2 bg-slate-900/90 p-3 rounded-2xl border border-slate-800 justify-center" id="stars-container">
+          <button type="button" onclick="setRating(1)" class="star-btn text-2xl sm:text-3xl transition-transform hover:scale-125 focus:outline-none cursor-pointer" data-val="1">⭐</button>
+          <button type="button" onclick="setRating(2)" class="star-btn text-2xl sm:text-3xl transition-transform hover:scale-125 focus:outline-none cursor-pointer" data-val="2">⭐</button>
+          <button type="button" onclick="setRating(3)" class="star-btn text-2xl sm:text-3xl transition-transform hover:scale-125 focus:outline-none cursor-pointer" data-val="3">⭐</button>
+          <button type="button" onclick="setRating(4)" class="star-btn text-2xl sm:text-3xl transition-transform hover:scale-125 focus:outline-none cursor-pointer" data-val="4">⭐</button>
+          <button type="button" onclick="setRating(5)" class="star-btn text-2xl sm:text-3xl transition-transform hover:scale-125 focus:outline-none cursor-pointer" data-val="5">⭐</button>
+        </div>
+        <p id="rating-text" class="text-center text-xs text-amber-300 font-semibold mt-1.5">5 de 5 estrellas • ¡Experiencia Inolvidable! 😍</p>
+      </div>
+
+      <!-- Nombre -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Tu Nombre Completo</label>
+        <input type="text" id="review-name" required placeholder="Ej: María Camila Rodríguez" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500" />
+      </div>
+
+      <!-- Ciudad / Procedencia -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">¿De dónde nos visitas?</label>
+        <input type="text" id="review-origin" required placeholder="Ej: Ocaña, Río de Oro, Bogotá, Cúcuta..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500" />
+      </div>
+
+      <!-- Comentario -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Tu Experiencia o Comentario</label>
+        <textarea id="review-comment" required rows="3" placeholder="Cuéntanos qué fue lo que más disfrutaste: la vista panorámica, las pizzetas, los granizados, la atención..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 resize-none"></textarea>
+      </div>
+
+      <!-- Botón Enviar a WhatsApp -->
+      <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 rounded-xl text-center shadow-lg shadow-amber-500/20 transition duration-300 mt-2 text-sm flex items-center justify-center gap-2 cursor-pointer">
+        <span>⭐</span>
+        <span>Enviar Reseña por WhatsApp</span>
+      </button>
+
+      <!-- Alternativa Google Maps -->
+      <div class="pt-2 text-center border-t border-slate-800/80">
+        <a href="https://maps.google.com/maps?q=Cerro%20de%20la%20virgen%20del%20rosario%20rio%20de%20oro" target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-amber-400 inline-flex items-center gap-1 transition-colors">
+          <span>📍</span>
+          <span>¿Prefieres calificar directamente en Google Maps? Toca aquí</span>
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script is:inline>
+  let selectedRating = 5;
+
+  const ratingDescriptions = {
+    1: '1 de 5 estrellas • Por mejorar 😔',
+    2: '2 de 5 estrellas • Aceptable 😐',
+    3: '3 de 5 estrellas • Buena visita 🙂',
+    4: '4 de 5 estrellas • ¡Muy recomendada! 😊',
+    5: '5 de 5 estrellas • ¡Experiencia Inolvidable! 😍'
+  };
+
+  function setRating(val) {
+    selectedRating = val;
+    const buttons = document.querySelectorAll('.star-btn');
+    const label = document.getElementById('rating-text');
+    buttons.forEach((btn, index) => {
+      if (index < val) {
+        btn.classList.remove('opacity-30', 'grayscale');
+        btn.classList.add('scale-110');
+      } else {
+        btn.classList.add('opacity-30', 'grayscale');
+        btn.classList.remove('scale-110');
+      }
+    });
+    if (label && ratingDescriptions[val]) {
+      label.innerText = ratingDescriptions[val];
+    }
+  }
+
+  function openReviewModal() {
+    const modal = document.getElementById('review-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setRating(5);
+    }
+  }
+
+  function closeReviewModal() {
+    const modal = document.getElementById('review-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  function sendReviewToWhatsApp(e) {
+    e.preventDefault();
+    const name = document.getElementById('review-name')?.value.trim();
+    const origin = document.getElementById('review-origin')?.value.trim();
+    const comment = document.getElementById('review-comment')?.value.trim();
+
+    if (!name || !origin || !comment) return;
+
+    const starsEmoji = '⭐'.repeat(selectedRating);
+    const message = `*¡Hola El Mirador del Cielo!* 🌄\n*Quiero compartir mi reseña sobre mi visita:*\n\n${starsEmoji} *Calificación:* ${selectedRating}/5 estrellas\n👤 *Nombre:* ${name}\n📍 *Procedencia:* ${origin}\n💬 *Comentario:* "${comment}"\n\n_¡Autorizo publicar mi reseña en la web oficial!_`;
+
+    const encoded = encodeURIComponent(message);
+    window.open(`https://wa.me/573000000000?text=${encoded}`, '_blank');
+    closeReviewModal();
+    if (typeof showToast === 'function') {
+      showToast('¡Gracias por tu reseña! Abriendo WhatsApp...');
+    }
+  }
+</script>
+

@@ -115,8 +115,10 @@
     const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
     
     const badge = document.getElementById('cart-badge');
+    const bottomBadge = document.getElementById('cart-badge-bottom');
     const totalEl = document.getElementById('cart-total-price');
     if (badge) badge.innerText = totalCount;
+    if (bottomBadge) bottomBadge.innerText = totalCount;
     if (totalEl) totalEl.innerText = '$' + totalPrice.toLocaleString('es-CO');
 
     const listContainer = document.getElementById('cart-items-list');

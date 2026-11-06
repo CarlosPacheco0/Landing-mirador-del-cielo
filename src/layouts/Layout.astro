@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import { url } from '../utils/paths';
 import { reviews } from '../data/reviews';
+import BottomNav from '../components/BottomNav.astro';
+import ReviewModal from '../components/ReviewModal.astro';
 
 interface BreadcrumbItem {
   name: string;
@@ -210,8 +212,12 @@ const allSchemas = [
   <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
-<body class="pt-20">
+<body class="pt-20 pb-20 md:pb-0">
   <slot />
+
+  <!-- Modales Globales & Barra Inferior Móvil -->
+  <ReviewModal />
+  <BottomNav />
 
   <!-- AOS JS -->
   <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

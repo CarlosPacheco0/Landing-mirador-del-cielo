@@ -2,6 +2,7 @@
 // src/pages/menu.astro
 import Layout from '../layouts/Layout.astro';
 import CartModal from '../components/CartModal.astro';
+import ReservationModal from '../components/ReservationModal.astro';
 import Toast from '../components/Toast.astro';
 import { menuItems, menuCategories, DEFAULT_PLACEHOLDER_IMAGE } from '../data/menu';
 import { url } from '../utils/paths';
@@ -352,8 +353,9 @@ const menuSchema = {
     </div>
   </div>
 
-  <!-- MODAL DE PEDIDO Y TOAST -->
+  <!-- MODAL DE PEDIDO, RESERVAS Y TOAST -->
   <CartModal />
+  <ReservationModal />
   <Toast />
 </Layout>
 
