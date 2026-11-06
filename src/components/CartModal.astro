@@ -12,17 +12,6 @@
         <button onclick="closeCartModal()" class="text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 text-xl cursor-pointer" title="Cerrar">✕</button>
       </div>
 
-      <!-- Aviso de Horario Comercial Dinámico (Punto 4) -->
-      <div id="cart-hours-notice" class="mb-5 p-3.5 rounded-2xl border text-xs flex items-start gap-3 transition-all duration-300">
-        <span class="text-base flex-shrink-0" id="cart-notice-icon">🕒</span>
-        <div class="flex-1 min-w-0">
-          <p class="font-bold text-white text-xs" id="cart-notice-title">Verificando cocina...</p>
-          <p class="text-[11px] text-slate-300 mt-0.5 leading-snug" id="cart-notice-desc">
-            Consultando estado de atención en tiempo real.
-          </p>
-        </div>
-      </div>
-
       <!-- Mode Selector: En el local vs Para llevar -->
       <div class="bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 grid grid-cols-2 gap-1 mb-6">
         <button id="order-mode-mesa" onclick="setOrderMode('mesa')" class="py-2 rounded-lg text-xs font-bold transition duration-200 bg-amber-500 text-slate-950 cursor-pointer">
@@ -168,50 +157,8 @@
     `).join('');
   }
 
-  function getColombiaSchedule() {
-    try {
-      const now = new Date();
-      const colDate = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
-      const day = colDate.getDay(); // 0: Dom, 1: Lun, 2: Mar, 3: Mie, 4: Jue, 5: Vie, 6: Sab
-      const time = colDate.getHours() + colDate.getMinutes() / 60;
-      const isOperatingDay = day === 4 || day === 5 || day === 6 || day === 0;
-      const isOpen = isOperatingDay && time >= 16 && time < 23;
-      return { isOpen, isOperatingDay, day, time };
-    } catch (e) {
-      return { isOpen: true, isOperatingDay: true, day: 4, time: 17 };
-    }
-  }
-
-  function updateCartHoursNotice() {
-    const { isOpen, isOperatingDay, day, time } = getColombiaSchedule();
-    const noticeEl = document.getElementById('cart-hours-notice');
-    const titleEl = document.getElementById('cart-notice-title');
-    const descEl = document.getElementById('cart-notice-desc');
-    const iconEl = document.getElementById('cart-notice-icon');
-    if (!noticeEl) return;
-
-    if (isOpen) {
-      noticeEl.className = 'mb-5 p-3.5 rounded-2xl border bg-emerald-950/40 border-emerald-500/30 text-emerald-200 text-xs flex items-start gap-3 transition-all duration-300';
-      if (iconEl) iconEl.innerText = '🟢';
-      if (titleEl) titleEl.innerText = 'Cocina activa y atendiendo';
-      if (descEl) descEl.innerText = 'Recibiendo pedidos hasta las 11:00 PM con despacho inmediato en mesa o para recoger.';
-    } else {
-      noticeEl.className = 'mb-5 p-3.5 rounded-2xl border bg-amber-950/40 border-amber-500/30 text-amber-200 text-xs flex items-start gap-3 transition-all duration-300';
-      if (iconEl) iconEl.innerText = '🕒';
-      if (isOperatingDay && time < 16) {
-        if (titleEl) titleEl.innerText = 'Cocina en descanso • Abre hoy 4:00 PM';
-        if (descEl) descEl.innerText = 'Tu pedido llegará a nuestro WhatsApp. Te confirmaremos y prepararemos apenas iniciemos servicio hoy a las 4:00 PM.';
-      } else {
-        const nextDay = (day === 4 && time >= 23) ? 'Viernes' : (day === 5 && time >= 23) ? 'Sábado' : (day === 6 && time >= 23) ? 'Domingo' : 'Jueves';
-        if (titleEl) titleEl.innerText = `Cocina en descanso • Abrimos el ${nextDay} 4:00 PM`;
-        if (descEl) descEl.innerText = `Nuestro horario de atención es de Jueves a Domingo (4:00 PM - 11:00 PM). Tu pedido quedará registrado en WhatsApp y te responderemos al abrir.`;
-      }
-    }
-  }
-
   function openCartModal() {
     updateCartUI();
-    updateCartHoursNotice();
     const modal = document.getElementById('cart-modal');
     if (modal) {
       modal.classList.remove('hidden');
@@ -239,22 +186,13 @@
     const notes = (notesInput && notesInput.value.trim()) || 'Sin especificaciones';
     const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const modeText = orderMode === 'mesa' ? '📍 Para consumir en Mesa' : '🛍️ Para Llevar / Recoger';
-    const { isOpen } = getColombiaSchedule();
 
     let itemsFormatted = cartItems.map(i => `• ${i.qty}x ${i.name} ($${(i.price * i.qty).toLocaleString('es-CO')})`).join('\n');
 
-    let scheduleNote = '';
-    if (!isOpen) {
-      scheduleNote = '\n\n🕒 _Nota: Pedido realizado fuera de horario habitual (Jue-Dom 4:00 PM - 11:00 PM). Quedo atento a su confirmación._';
-    }
-
-    let message = `*¡Hola El Mirador del Cielo!* 🌄\n\nQuisiera realizar el siguiente pedido:\n\n${itemsFormatted}\n\n*Modalidad:* ${modeText}\n*Total:* $${totalPrice.toLocaleString('es-CO')}\n*A nombre de:* ${name}\n*Nota/Mesa:* ${notes}${scheduleNote}\n\n¡Quedo atento a la confirmación!`;
+    let message = `*¡Hola El Mirador del Cielo!* 🌄\n\nQuisiera realizar el siguiente pedido:\n\n${itemsFormatted}\n\n*Modalidad:* ${modeText}\n*Total:* $${totalPrice.toLocaleString('es-CO')}\n*A nombre de:* ${name}\n*Nota/Mesa:* ${notes}\n\n¡Quedo atento a la confirmación!`;
 
     const encoded = encodeURIComponent(message);
     window.open(`https://wa.me/573000000000?text=${encoded}`, '_blank');
   }
-
-  updateCartHoursNotice();
-  setInterval(updateCartHoursNotice, 60000);
 </script>
 

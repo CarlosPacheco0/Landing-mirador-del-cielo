@@ -1,22 +1,155 @@
 ---
 import '../styles/global.css';
 import { url } from '../utils/paths';
+import { reviews } from '../data/reviews';
+
+interface BreadcrumbItem {
+  name: string;
+  item: string;
+}
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  additionalSchema?: Record<string, any> | Array<Record<string, any>>;
 }
 
 const {
   title = "El Mirador del Cielo | Gastronomía & Atardeceres en Río de Oro",
   description = "El Mirador del Cielo en Río de Oro, Cesar. Disfruta de la mejor vista panorámica, granizados artesanales, pizzetas crocantes y momentos inolvidables.",
-  image = "/images/atardecer.png"
+  image = "/images/atardecer.png",
+  breadcrumbs,
+  additionalSchema
 } = Astro.props;
 
 const defaultSite = 'https://carlospacheco0.github.io';
+const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, '') : defaultSite;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || defaultSite).toString();
 const ogImageURL = new URL(url(image), Astro.site || defaultSite).toString();
+const menuURL = new URL(url('/menu'), Astro.site || defaultSite).toString();
+
+// 1. Schema LocalBusiness & Restaurant de Google con datos completos
+const restaurantSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Restaurant", "TouristAttraction"],
+  "@id": `${siteBase}/#restaurant`,
+  "name": "El Mirador del Cielo",
+  "alternateName": [
+    "Mirador del Cielo",
+    "El Mirador del Cielo Río de Oro",
+    "Mirador Cerro del Monumento"
+  ],
+  "url": canonicalURL,
+  "telephone": "+573000000000",
+  "menu": menuURL,
+  "hasMenu": menuURL,
+  "acceptsReservations": "True",
+  "servesCuisine": [
+    "Colombiana",
+    "Pizzetas Artesanales",
+    "Granizados Frutales",
+    "Cafetería",
+    "Café de Origen",
+    "Snacks y Comida Rápida",
+    "Cócteles y Cervezas"
+  ],
+  "priceRange": "$$",
+  "currenciesAccepted": "COP",
+  "paymentAccepted": "Efectivo, Nequi, Daviplata, Bancolombia, Tarjeta de Crédito, Tarjeta de Débito, Transferencia",
+  "image": [
+    ogImageURL,
+    new URL(url('/images/mirador.webp'), Astro.site || defaultSite).toString(),
+    new URL(url('/images/monumento.png'), Astro.site || defaultSite).toString(),
+    new URL(url('/images/atardecer.png'), Astro.site || defaultSite).toString(),
+    new URL(url('/images/pizzeta.jpeg'), Astro.site || defaultSite).toString(),
+    new URL(url('/images/granizados.jpeg'), Astro.site || defaultSite).toString()
+  ],
+  "description": description,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Cerro del Monumento a la Virgen del Rosario",
+    "addressLocality": "Río de Oro",
+    "addressRegion": "Cesar",
+    "postalCode": "205010",
+    "addressCountry": "CO"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 8.2530,
+    "longitude": -73.3855
+  },
+  "hasMap": "https://maps.google.com/maps?q=Cerro%20de%20la%20virgen%20del%20rosario%20rio%20de%20oro",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "16:00",
+      "closes": "23:00"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "127",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "review": reviews.map(rev => ({
+    "@type": "Review",
+    "author": {
+      "@type": "Person",
+      "name": rev.name
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": rev.rating.toString(),
+      "bestRating": "5"
+    },
+    "reviewBody": rev.comment
+  })),
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Pet Friendly", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Terraza al Aire Libre", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Vista Panorámica de Montaña y Atardecer", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Ambiente Familiar y Romántico", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Música Ambiental", "value": true }
+  ]
+};
+
+// 2. Schema WebSite (Google Sitelinks)
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteBase}/#website`,
+  "name": "El Mirador del Cielo",
+  "url": siteBase,
+  "inLanguage": "es-CO"
+};
+
+// 3. Schema Breadcrumbs (Migas de Pan en Google)
+const breadcrumbItems = breadcrumbs || [
+  { name: "Inicio", item: siteBase }
+];
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbItems.map((b, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": b.name,
+    "item": b.item
+  }))
+};
+
+const allSchemas = [
+  restaurantSchema,
+  websiteSchema,
+  breadcrumbSchema,
+  ...(additionalSchema ? (Array.isArray(additionalSchema) ? additionalSchema : [additionalSchema]) : [])
+];
 ---
 
 <!DOCTYPE html>
@@ -29,6 +162,15 @@ const ogImageURL = new URL(url(image), Astro.site || defaultSite).toString();
   <link rel="canonical" href={canonicalURL} />
   <meta name="theme-color" content="#0B0F17" />
   <meta name="color-scheme" content="dark" />
+
+  <!-- Metadatos de Geolocalización para SEO Local -->
+  <meta name="geo.region" content="CO-CES" />
+  <meta name="geo.placename" content="Río de Oro, Cesar" />
+  <meta name="geo.position" content="8.2530;-73.3855" />
+  <meta name="ICBM" content="8.2530, -73.3855" />
+
+  <!-- Palabras clave locales estratégicas -->
+  <meta name="keywords" content="El Mirador del Cielo, Rio de Oro Cesar, restaurante mirador, atardeceres Ocaña, turismo Cesar, pizzetas artesanales, granizados, mirador de la virgen, café de origen, gastronomía Río de Oro" />
 
   <!-- Open Graph (WhatsApp, Facebook, Instagram, LinkedIn) -->
   <meta property="og:type" content="website" />
@@ -49,26 +191,10 @@ const ogImageURL = new URL(url(image), Astro.site || defaultSite).toString();
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImageURL} />
 
-  <!-- Schema.org JSON-LD para SEO Local y Google Maps -->
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Restaurant",
-    "name": "El Mirador del Cielo",
-    "image": ogImageURL,
-    "description": description,
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Cerro del Monumento a la Virgen",
-      "addressLocality": "Río de Oro",
-      "addressRegion": "Cesar",
-      "addressCountry": "CO"
-    },
-    "servesCuisine": ["Colombiana", "Cafetería", "Pizzetas", "Granizados", "Cócteles"],
-    "priceRange": "$$",
-    "openingHours": [
-      "Th-Su 16:00-23:00"
-    ]
-  })} />
+  <!-- Schema.org JSON-LD para SEO Local de Google -->
+  {allSchemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))}
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />

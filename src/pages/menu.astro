@@ -17,12 +17,50 @@ const getCategoryCount = (catId: string) => {
 };
 
 const featuredCount = getCategoryCount('mas-vendidos');
+
+const siteOrigin = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://carlospacheco0.github.io';
+const menuURL = new URL(Astro.url.pathname, Astro.site || siteOrigin).toString();
+const homeURL = new URL(url('/'), Astro.site || siteOrigin).toString();
+
+// Schema.org estructurado tipo Menu para Google Rich Results
+const menuSchema = {
+  "@context": "https://schema.org",
+  "@type": "Menu",
+  "@id": `${menuURL}#menu`,
+  "name": "Carta Gastronómica Oficial - El Mirador del Cielo",
+  "description": "Menú digital interactivo de El Mirador del Cielo en Río de Oro, Cesar. Pizzetas artesanales, granizados, cafés calientes, bebidas frías y cócteles.",
+  "inLanguage": "es-CO",
+  "url": menuURL,
+  "hasMenuSection": menuCategories
+    .filter(cat => cat.id !== 'todos' && cat.id !== 'mas-vendidos')
+    .map(cat => ({
+      "@type": "MenuSection",
+      "name": cat.name,
+      "hasMenuItem": menuItems
+        .filter(item => item.category === cat.id)
+        .map(item => ({
+          "@type": "MenuItem",
+          "name": item.name,
+          "description": item.description || `Especialidad de la categoría ${cat.name} en El Mirador del Cielo`,
+          "offers": {
+            "@type": "Offer",
+            "price": item.price,
+            "priceCurrency": "COP"
+          }
+        }))
+    }))
+};
 ---
 
 <Layout 
   title="Carta Gastronómica & Menú Digital | El Mirador del Cielo" 
-  description="Explora nuestra carta completa: pizzetas, granizados, cafés calientes, cócteles y snacks en Río de Oro. Pide a tu mesa o a domicilio por WhatsApp."
+  description="Explora nuestra carta completa: pizzetas artesanales, granizados, cafés calientes, cócteles y snacks en Río de Oro. Pide a tu mesa o a domicilio por WhatsApp."
   image="/images/monumento.png"
+  breadcrumbs={[
+    { name: "Inicio", item: homeURL },
+    { name: "Carta Gastronómica", item: menuURL }
+  ]}
+  additionalSchema={menuSchema}
 >
   <!-- BARRA SUPERIOR FIJA DEL MENÚ DIGITAL -->
   <header class="fixed top-0 left-0 w-full z-40 bg-[#0B0F17]/95 backdrop-blur-md border-b border-slate-800 transition-all duration-300">
@@ -86,14 +124,8 @@ const featuredCount = getCategoryCount('mas-vendidos');
 
     <!-- Contenido del Encabezado & Buscador -->
     <div class="relative z-20 max-w-3xl mx-auto text-center isolate">
-      <div class="flex flex-wrap items-center justify-center gap-2.5 mb-4">
-        <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider shadow-lg">
-          <span>📍 Cerro del Monumento, Río de Oro</span>
-        </div>
-        <div id="menu-store-status" class="inline-flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg transition-all duration-300">
-          <span class="w-2.5 h-2.5 rounded-full status-dot bg-slate-500 animate-pulse"></span>
-          <span class="status-label text-slate-300">Verificando cocina...</span>
-        </div>
+      <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-lg">
+        <span>📍 Cerro del Monumento, Río de Oro</span>
       </div>
 
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-serif mb-4 leading-tight hero-title">
@@ -500,41 +532,4 @@ const featuredCount = getCategoryCount('mas-vendidos');
       applyMenuFilters();
     });
   }
-
-  // Sincronización del estado de cocina en tiempo real (Punto 4)
-  function updateMenuStoreStatus() {
-    try {
-      const now = new Date();
-      const colDate = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
-      const day = colDate.getDay(); // 0: Dom, 1: Lun, ..., 4: Jue, 5: Vie, 6: Sab
-      const time = colDate.getHours() + colDate.getMinutes() / 60;
-      const isOperatingDay = day === 4 || day === 5 || day === 6 || day === 0;
-      const isOpen = isOperatingDay && time >= 16 && time < 23;
-
-      const el = document.getElementById('menu-store-status');
-      if (!el) return;
-      const dot = el.querySelector('.status-dot');
-      const label = el.querySelector('.status-label');
-
-      if (isOpen) {
-        el.className = 'inline-flex items-center gap-2 bg-emerald-950/80 border border-emerald-500/50 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg shadow-emerald-950/40 backdrop-blur-md text-emerald-300 transition-all duration-300';
-        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full status-dot bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] animate-pulse';
-        if (label) label.innerText = 'Abierto Ahora • Cocina Activa (hasta 11:00 PM)';
-      } else if (isOperatingDay && time < 16) {
-        el.className = 'inline-flex items-center gap-2 bg-amber-950/80 border border-amber-500/50 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg shadow-amber-950/40 backdrop-blur-md text-amber-300 transition-all duration-300';
-        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full status-dot bg-amber-400';
-        if (label) label.innerText = 'Cerrado Ahora • Abre hoy a las 4:00 PM';
-      } else {
-        const nextDay = (day === 4 && time >= 23) ? 'Viernes' : (day === 5 && time >= 23) ? 'Sábado' : (day === 6 && time >= 23) ? 'Domingo' : 'Jueves';
-        el.className = 'inline-flex items-center gap-2 bg-rose-950/80 border border-rose-500/40 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg shadow-rose-950/40 backdrop-blur-md text-rose-300 transition-all duration-300';
-        if (dot) dot.className = 'w-2.5 h-2.5 rounded-full status-dot bg-rose-400';
-        if (label) label.innerText = `Cerrado Ahora • Abrimos el ${nextDay} 4:00 PM`;
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  updateMenuStoreStatus();
-  setInterval(updateMenuStoreStatus, 60000);
 </script>
