@@ -1,7 +1,6 @@
 ---
 // src/pages/menu.astro
 import Layout from '../layouts/Layout.astro';
-import CartModal from '../components/CartModal.astro';
 import ReservationModal from '../components/ReservationModal.astro';
 import Toast from '../components/Toast.astro';
 import { menuItems, menuCategories, DEFAULT_PLACEHOLDER_IMAGE } from '../data/menu';
@@ -55,7 +54,7 @@ const menuSchema = {
 
 <Layout 
   title="Carta Gastronómica & Menú Digital | El Mirador del Cielo" 
-  description="Explora nuestra carta completa: pizzetas artesanales, granizados, cafés calientes, cócteles y snacks en Río de Oro. Pide a tu mesa o a domicilio por WhatsApp."
+  description="Explora nuestra carta completa: pizzetas artesanales, granizados, cafés calientes, cócteles y snacks en Río de Oro. Consulta opciones y precios oficiales."
   image="/images/monumento.png"
   breadcrumbs={[
     { name: "Inicio", item: homeURL },
@@ -93,15 +92,14 @@ const menuSchema = {
         </a>
       </div>
 
-      <!-- Acciones de Carrito -->
+      <!-- Acción Reservar -->
       <div class="flex items-center gap-2">
         <button 
-          onclick="openCartModal()" 
-          class="relative bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-4 py-2.5 rounded-full flex items-center gap-2 text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
+          onclick="openReservationModal()" 
+          class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-4 py-2 rounded-full flex items-center gap-2 text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
         >
-          <span>🛒</span>
-          <span class="hidden sm:inline">Mi Pedido</span>
-          <span id="cart-badge" class="bg-black/40 text-amber-100 font-black text-xs px-2 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+          <span>📅</span>
+          <span class="hidden sm:inline">Reservar Mesa</span>
         </button>
       </div>
     </div>
@@ -294,8 +292,8 @@ const menuSchema = {
             )}
           </div>
 
-          <!-- Pie de tarjeta: Precio y Botón de Pedido -->
-          <div class="pt-3 border-t border-slate-800/60 flex items-center justify-between mt-auto gap-3">
+          <!-- Pie de tarjeta: Precio -->
+          <div class="pt-3 border-t border-slate-800/60 flex items-center justify-between mt-auto">
             <div>
               <span class="text-[10px] text-slate-500 uppercase tracking-widest block font-medium">Precio</span>
               <span class="text-amber-400 font-extrabold text-xl font-serif">
@@ -303,14 +301,9 @@ const menuSchema = {
               </span>
             </div>
 
-            <button 
-              onclick={`addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, '${DEFAULT_PLACEHOLDER_IMAGE}')`}
-              class="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all duration-200 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
-              title="Añadir al pedido"
-            >
-              <span>+</span>
-              <span>Pedir</span>
-            </button>
+            <span class="text-[11px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
+              Oficial
+            </span>
           </div>
         </div>
       ))}
@@ -332,29 +325,7 @@ const menuSchema = {
     </div>
   </main>
 
-  <!-- BARRA FLOTANTE FIJA INFERIOR PARA VER PEDIDO -->
-  <div class="fixed bottom-6 left-0 w-full z-40 px-4 pointer-events-none">
-    <div class="max-w-md mx-auto pointer-events-auto">
-      <button 
-        onclick="openCartModal()" 
-        class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-6 rounded-2xl transition duration-300 shadow-[0_10px_30px_rgba(245,158,11,0.4)] flex items-center justify-between cursor-pointer transform hover:scale-[1.02]"
-      >
-        <div class="flex items-center gap-3">
-          <span class="text-xl">🛒</span>
-          <div class="text-left">
-            <span class="text-xs uppercase tracking-wider block font-medium opacity-90">Tu Pedido</span>
-            <span class="text-sm font-bold">Ver y Confirmar en WhatsApp</span>
-          </div>
-        </div>
-        <span class="bg-black/30 px-3 py-1 rounded-xl text-xs font-mono font-bold">
-          Ver Total ↗
-        </span>
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL DE PEDIDO, RESERVAS Y TOAST -->
-  <CartModal />
+  <!-- MODAL DE RESERVAS Y TOAST -->
   <ReservationModal />
   <Toast />
 </Layout>

@@ -1,0 +1,194 @@
+---
+// src/pages/galeria.astro
+import Layout from '../layouts/Layout.astro';
+import ReservationModal from '../components/ReservationModal.astro';
+import LightboxModal from '../components/LightboxModal.astro';
+import Toast from '../components/Toast.astro';
+import { fullGalleryItems } from '../data/galleryShowcase';
+import { url } from '../utils/paths';
+
+const siteOrigin = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://carlospacheco0.github.io';
+const galleryURL = new URL(Astro.url.pathname, Astro.site || siteOrigin).toString();
+const homeURL = new URL(url('/'), Astro.site || siteOrigin).toString();
+
+const categories = [
+  { id: 'todas', label: 'Todas', icon: '✨', count: fullGalleryItems.length },
+  { id: 'ambiente', label: 'Ambiente & Vistas', icon: '🌄', count: fullGalleryItems.filter(i => i.category === 'ambiente').length },
+  { id: 'gastronomia', label: 'Gastronomía', icon: '🍕', count: fullGalleryItems.filter(i => i.category === 'gastronomia').length },
+  { id: 'noches', label: 'Noches Temáticas', icon: '🌙', count: fullGalleryItems.filter(i => i.category === 'noches').length }
+];
+
+const gallerySchema = {
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  "name": "Galería Fotográfica - El Mirador del Cielo",
+  "description": "Colección de fotografías de atardeceres, vistas panorámicas de Río de Oro, pizzetas artesanales, cócteles y noches temáticas en El Mirador del Cielo.",
+  "url": galleryURL
+};
+---
+
+<Layout
+  title="Galería Completa | El Mirador del Cielo"
+  description="Explora todas las fotografías de El Mirador del Cielo en Río de Oro, Cesar: paisajes del Cerro del Monumento, gastronomía artesanal y noches bajo las luces."
+  image="/images/galeria-cerro-noche.jpeg"
+  breadcrumbs={[
+    { name: "Inicio", item: homeURL },
+    { name: "Galería Completa", item: galleryURL }
+  ]}
+  additionalSchema={gallerySchema}
+>
+  <!-- Barra superior fija -->
+  <header class="fixed top-0 left-0 w-full z-40 bg-[#0B0F17]/95 backdrop-blur-md border-b border-slate-800 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a
+          href={url('/#galeria')}
+          class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 px-3.5 py-2 rounded-full transition duration-200"
+          title="Regresar a la página principal"
+        >
+          <span>←</span>
+          <span class="hidden sm:inline">Volver</span>
+        </a>
+
+        <a href={url('/')} class="flex items-center gap-2 group">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-base shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+            📸
+          </div>
+          <div class="flex flex-col">
+            <span class="text-base sm:text-lg font-black text-white font-serif leading-tight">
+              El Mirador <span class="text-gradient">del Cielo</span>
+            </span>
+            <span class="text-[10px] text-amber-400 font-mono tracking-wide">
+              Galería Fotográfica • {fullGalleryItems.length} Fotos
+            </span>
+          </div>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a
+          href={url('/menu')}
+          class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 px-4 py-2 rounded-full transition duration-200"
+        >
+          <span>🍽️</span>
+          <span>Menú</span>
+        </a>
+
+        <button
+          type="button"
+          onclick="openReservationModal()"
+          class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-4 py-2 rounded-full flex items-center gap-2 text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
+        >
+          <span>📅</span>
+          <span class="hidden sm:inline">Reservar Mesa</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Encabezado y filtros -->
+  <section class="relative pt-10 sm:pt-14 pb-10 px-4 border-b border-slate-800/80 bg-gradient-to-b from-[#0d121d] to-[#0B0F17] overflow-hidden">
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4">
+        <span>📍 Cerro del Monumento, Río de Oro</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-serif mb-4 leading-tight">
+        Galería <span class="text-gradient">Completa</span>
+      </h1>
+
+      <p class="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light mb-8 leading-relaxed">
+        Toca cualquier fotografía para verla en pantalla completa y deslizar entre todas las capturas de El Mirador del Cielo.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3" id="gallery-filter-bar">
+        {categories.map((cat, idx) => (
+          <button
+            type="button"
+            onclick={`filterFullGallery('${cat.id}', this)`}
+            data-filter={cat.id}
+            class={`gallery-filter-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+              idx === 0
+                ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50'
+                : 'bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40'
+            }`}
+          >
+            <span>{cat.icon}</span>
+            <span>{cat.label}</span>
+            <span class={`text-[10px] font-mono px-2 py-0.5 rounded-full ${idx === 0 ? 'bg-black/30 text-amber-100' : 'bg-slate-800 text-slate-400'}`}>
+              {cat.count}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Grid completo -->
+  <main class="min-h-screen py-12 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5" id="full-gallery-grid">
+      {fullGalleryItems.map((item) => (
+        <button
+          type="button"
+          data-gallery-card
+          data-category={item.category}
+          onclick={`openLightboxBySrc('${item.src}', 'full')`}
+          class="group relative aspect-[4/5] rounded-2xl overflow-hidden border border-slate-800/90 hover:border-amber-500/60 bg-slate-900 shadow-2xl cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+          aria-label={`Ver ${item.title} en pantalla completa`}
+        >
+          <img
+            src={item.src}
+            alt={item.title}
+            loading="lazy"
+            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          />
+
+          <span
+            class="absolute top-2.5 right-2.5 bg-slate-950/75 backdrop-blur-md border border-slate-700/70 text-slate-200 group-hover:text-amber-300 group-hover:border-amber-400/60 text-xs font-semibold px-2.5 py-1 rounded-full transition-colors duration-200 pointer-events-none"
+            aria-hidden="true"
+          >
+            ⛶
+          </span>
+
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 sm:p-4 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <p class="text-white font-bold text-xs sm:text-sm font-serif leading-snug">{item.title}</p>
+            <span class="text-amber-300 text-[10px] sm:text-xs font-medium">Tocar para pantalla completa ↗</span>
+          </div>
+        </button>
+      ))}
+    </div>
+  </main>
+
+  <ReservationModal />
+  <LightboxModal />
+  <Toast />
+</Layout>
+
+<script is:inline>
+  function filterFullGallery(category, clickedBtn) {
+    const cards = document.querySelectorAll('[data-gallery-card]');
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-category');
+      if (category === 'todas' || cardCat === category) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const buttons = document.querySelectorAll('.gallery-filter-btn');
+    buttons.forEach(btn => {
+      btn.className = 'gallery-filter-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40';
+      const badge = btn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400';
+    });
+
+    if (clickedBtn) {
+      clickedBtn.className = 'gallery-filter-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50';
+      const badge = clickedBtn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/30 text-amber-100';
+    }
+  }
+</script>
+

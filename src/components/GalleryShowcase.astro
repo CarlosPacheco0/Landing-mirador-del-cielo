@@ -1,0 +1,66 @@
+---
+// src/components/GalleryShowcase.astro
+import { defaultGalleryItems, fullGalleryItems } from '../data/galleryShowcase';
+import { url } from '../utils/paths';
+---
+
+<section class="py-24 px-4 md:px-12 lg:px-20 max-w-7xl mx-auto" id="galeria">
+  <div class="text-center mb-14" data-aos="fade-up">
+    <span class="text-amber-400 font-semibold text-xs sm:text-sm tracking-widest uppercase mb-2 block">
+      Galería Visual
+    </span>
+    <h2 class="text-3xl sm:text-4xl md:text-5xl text-white font-bold mb-4 font-serif">
+      Postales de <span class="text-gradient">El Mirador</span>
+    </h2>
+    <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto font-light">
+      Nuestros platos artesanales, noches temáticas y vistas del cerro. Toca cualquier fotografía para verla en pantalla completa.
+    </p>
+  </div>
+
+  <!-- Grid de 6 imágenes destacadas por defecto -->
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12">
+    {defaultGalleryItems.map((item, index) => (
+      <button
+        type="button"
+        onclick={`openLightboxBySrc('${item.src}', 'featured')`}
+        class="group relative aspect-[4/5] rounded-2xl overflow-hidden border border-slate-800/90 hover:border-amber-500/60 bg-slate-900 shadow-2xl cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+        data-aos="fade-up"
+        data-aos-delay={(index % 3) * 100}
+        aria-label={`Ver ${item.title} en pantalla completa`}
+      >
+        <img
+          src={item.src}
+          alt={item.title}
+          loading="lazy"
+          class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+        />
+
+        <!-- Indicador visual para pantalla completa -->
+        <span
+          class="absolute top-3 right-3 bg-slate-950/75 backdrop-blur-md border border-slate-700/70 text-slate-200 group-hover:text-amber-300 group-hover:border-amber-400/60 text-xs font-semibold px-2.5 py-1 rounded-full transition-colors duration-200 pointer-events-none"
+          aria-hidden="true"
+        >
+          ⛶
+        </span>
+
+        <!-- Pie sutil en hover / toque -->
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 sm:p-4 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <p class="text-white font-bold text-xs sm:text-sm font-serif leading-snug">{item.title}</p>
+          <span class="text-amber-300 text-[10px] sm:text-xs font-medium">Tocar para ampliar ↗</span>
+        </div>
+      </button>
+    ))}
+  </div>
+
+  <!-- Botón para abrir la vista completa de galería -->
+  <div class="text-center" data-aos="fade-up">
+    <a
+      href={url('/galeria')}
+      class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black py-4 px-8 sm:px-10 rounded-full text-xs sm:text-sm uppercase tracking-widest transition duration-300 shadow-[0_0_25px_rgba(245,158,11,0.35)] hover:scale-105"
+    >
+      <span>📸 Ver galería completa ({fullGalleryItems.length} fotos)</span>
+      <span class="text-lg">→</span>
+    </a>
+  </div>
+</section>
+

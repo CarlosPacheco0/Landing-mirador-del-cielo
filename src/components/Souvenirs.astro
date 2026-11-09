@@ -3,40 +3,136 @@
 import { url } from '../utils/paths';
 ---
 
-<section class="py-24 px-4 md:px-20 bg-[#090c13] text-white relative overflow-hidden border-t border-slate-800/80" id="souvenirs">
+<section class="py-24 px-4 md:px-12 lg:px-20 bg-[#090c13] text-white relative overflow-hidden border-t border-slate-800/80" id="souvenirs">
   <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-amber-600 blur-[120px] opacity-20 pointer-events-none"></div>
   <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-orange-600 blur-[120px] opacity-20 pointer-events-none"></div>
 
-  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
-    <div class="grid grid-cols-2 gap-6" data-aos="fade-right" data-aos-duration="1000">
-      <div class="cursor-pointer" onclick="openLightbox(4)">
-        <img src={url('/images/pin01.png')} alt="Pin Fachada Local" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500" />
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-14 items-center relative z-10">
+    <!-- Columna Izquierda: Venta de Fotografías Instantáneas + Pines -->
+    <div class="lg:col-span-6 space-y-5" data-aos="fade-right" data-aos-duration="1000">
+      <div>
+        <div class="flex items-center justify-between mb-2.5">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-400">📸 Fotografía Instantánea</span>
+          <span class="text-[11px] text-slate-400">Toca para ampliar ↗</span>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <button
+            type="button"
+            onclick={`openLightboxBySrc('${url('/images/recuerdo-fotos-tarifas.jpeg')}')`}
+            class="group relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-slate-700/60 shadow-2xl shadow-black/80 cursor-pointer bg-slate-900 text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+          >
+            <img
+              src={url('/images/recuerdo-fotos-tarifas.jpeg')}
+              alt="Tarifas de fotografía instantánea El Mirador del Cielo: 1 foto $12.000, 3 fotos $28.000, 5 fotos $40.000"
+              loading="lazy"
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            />
+          </button>
+
+          <button
+            type="button"
+            onclick={`openLightboxBySrc('${url('/images/recuerdo-posa-captura.jpeg')}')`}
+            class="group relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-slate-700/60 shadow-2xl shadow-black/80 cursor-pointer bg-slate-900 text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+          >
+            <img
+              src={url('/images/recuerdo-posa-captura.jpeg')}
+              alt="Posa, nosotros capturamos y tú eliges tu foto favorita en El Mirador del Cielo"
+              loading="lazy"
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            />
+          </button>
+        </div>
       </div>
-      <div class="cursor-pointer" onclick="openLightbox(5)">
-        <img src={url('/images/pin02.png')} alt="Pin Jaguar Río de Oro" class="rounded-2xl shadow-2xl shadow-black/80 w-full h-64 object-cover border border-slate-700/60 hover:scale-105 transition-transform duration-500 mt-8" />
+
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block mb-2.5">✨ Pines de Colección</span>
+        <div class="grid grid-cols-2 gap-4">
+          <button
+            type="button"
+            onclick={`openLightboxBySrc('${url('/images/pin01.png')}')`}
+            class="group relative rounded-2xl overflow-hidden border border-slate-700/60 shadow-2xl shadow-black/80 cursor-pointer bg-slate-900 text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+          >
+            <img
+              src={url('/images/pin01.png')}
+              alt="Pin Fachada El Mirador del Cielo"
+              loading="lazy"
+              class="w-full h-40 sm:h-44 object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            />
+          </button>
+
+          <button
+            type="button"
+            onclick={`openLightboxBySrc('${url('/images/pin02.png')}')`}
+            class="group relative rounded-2xl overflow-hidden border border-slate-700/60 shadow-2xl shadow-black/80 cursor-pointer bg-slate-900 text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+          >
+            <img
+              src={url('/images/pin02.png')}
+              alt="Pin Conmemorativo Jaguar Río de Oro 368 Años"
+              loading="lazy"
+              class="w-full h-40 sm:h-44 object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            />
+          </button>
+        </div>
       </div>
     </div>
-    <div data-aos="fade-left" data-aos-duration="1000">
-      <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Cultura & Colección</span>
-      <h2 class="text-4xl md:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Llévate un recuerdo exclusivo</h2>
-      <p class="text-slate-300 mb-8 leading-relaxed text-lg font-light">No te vayas sin tu pieza de colección. Celebra el arte y los 368 años de historia de Río de Oro con nuestros pines exclusivos metálicos de edición limitada.</p>
-      <ul class="space-y-4 text-slate-200 mb-10">
-        <li class="flex items-center text-lg bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-          <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg text-white font-bold text-xs">✓</div>
-          <span class="font-medium text-base">Pin Fachada "El Mirador del Cielo" ($15.000)</span>
+
+    <!-- Columna Derecha: Descripción, Tarifas y Colección -->
+    <div class="lg:col-span-6" data-aos="fade-left" data-aos-duration="1000">
+      <span class="text-amber-400 font-semibold text-sm tracking-widest uppercase mb-2 block">Fotografía &amp; Colección</span>
+      <h2 class="text-4xl md:text-5xl font-bold mb-5 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Llévate un recuerdo exclusivo</h2>
+      <p class="text-slate-300 mb-7 leading-relaxed text-base sm:text-lg font-light">
+        Inmortaliza tu visita con nuestro servicio de <strong class="text-white font-semibold">fotografía instantánea</strong> —posa, nosotros capturamos y tú eliges tus favoritas— o colecciona nuestros pines metálicos que celebran los 368 años de historia de Río de Oro.
+      </p>
+
+      <!-- Tarjeta de Fotografía Instantánea -->
+      <div class="bg-slate-900/70 border border-amber-500/30 rounded-2xl p-5 mb-5 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h3 class="text-white font-bold text-base sm:text-lg flex items-center gap-2">
+            <span>📷</span>
+            <span>Fotos Instantáneas con Marco del Mirador</span>
+          </h3>
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
+            Entrega al instante
+          </span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-center">
+            <span class="block text-xs text-slate-400 font-medium mb-0.5">1 Foto</span>
+            <span class="block text-amber-400 font-extrabold text-base sm:text-lg font-serif">$12.000</span>
+          </div>
+          <div class="bg-slate-950/80 border border-amber-500/40 rounded-xl p-3 text-center">
+            <span class="block text-xs text-amber-300 font-semibold mb-0.5">3 Fotos</span>
+            <span class="block text-amber-400 font-extrabold text-base sm:text-lg font-serif">$28.000</span>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-center">
+            <span class="block text-xs text-slate-400 font-medium mb-0.5">5 Fotos</span>
+            <span class="block text-amber-400 font-extrabold text-base sm:text-lg font-serif">$40.000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pines Metálicos -->
+      <ul class="space-y-3 text-slate-200 mb-7">
+        <li class="flex items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="bg-gradient-to-br from-amber-500 to-orange-600 w-7 h-7 rounded-full flex items-center justify-center shrink-0 shadow-lg text-white font-bold text-xs">✓</div>
+            <span class="font-medium text-sm sm:text-base">Pin Fachada "El Mirador del Cielo"</span>
+          </div>
+          <span class="text-amber-400 font-bold font-serif shrink-0">$15.000</span>
         </li>
-        <li class="flex items-center text-lg bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-          <div class="bg-gradient-to-br from-amber-500 to-orange-600 p-2 rounded-full mr-4 shadow-lg text-white font-bold text-xs">✓</div>
-          <span class="font-medium text-base">Pin Conmemorativo Jaguar 368 Años ($15.000)</span>
+        <li class="flex items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="bg-gradient-to-br from-amber-500 to-orange-600 w-7 h-7 rounded-full flex items-center justify-center shrink-0 shadow-lg text-white font-bold text-xs">✓</div>
+            <span class="font-medium text-sm sm:text-base">Pin Conmemorativo Jaguar 368 Años</span>
+          </div>
+          <span class="text-amber-400 font-bold font-serif shrink-0">$15.000</span>
         </li>
       </ul>
-      <div class="flex flex-wrap gap-4">
-        <button onclick={`addToCart('Pin Fachada Local', 15000, '${url('/images/pin01.png')}')`} class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 shadow-xl shadow-amber-500/20 cursor-pointer">
-          + Añadir Pin Fachada
-        </button>
-        <button onclick={`addToCart('Pin Jaguar 368 Años', 15000, '${url('/images/pin02.png')}')`} class="bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-full transition duration-300 cursor-pointer">
-          + Añadir Pin Jaguar
-        </button>
+
+      <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-5 py-3 rounded-2xl text-amber-300 text-xs sm:text-sm font-semibold">
+        <span>📍</span>
+        <span>Disponibles en El Mirador • Pide tus fotos a nuestro equipo o tus pines en caja</span>
       </div>
     </div>
   </div>

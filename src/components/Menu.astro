@@ -63,8 +63,8 @@ const specialties = menuItems.filter(item => item.isSpecialty);
             )}
           </div>
 
-          <!-- Pie de tarjeta: Precio y Pedir -->
-          <div class="pt-5 border-t border-slate-800/80 flex items-center justify-between mt-auto gap-4">
+          <!-- Pie de tarjeta: Precio -->
+          <div class="pt-5 border-t border-slate-800/80 flex items-center justify-between mt-auto">
             <div>
               <span class="text-[10px] text-slate-500 uppercase tracking-widest block font-medium">Precio</span>
               <span class="text-amber-400 font-extrabold text-2xl font-serif">
@@ -72,14 +72,13 @@ const specialties = menuItems.filter(item => item.isSpecialty);
               </span>
             </div>
 
-            <button 
-              onclick={`addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, '${DEFAULT_PLACEHOLDER_IMAGE}')`}
-              class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-200 shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
-              title="Añadir al pedido"
+            <a 
+              href={url('/menu')}
+              class="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-semibold transition-colors"
             >
-              <span>+</span>
-              <span>Pedir</span>
-            </button>
+              <span>Ver Carta</span>
+              <span>→</span>
+            </a>
           </div>
         </div>
       ))}
@@ -102,24 +101,17 @@ const specialties = menuItems.filter(item => item.isSpecialty);
         </h3>
         
         <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-          Pizzetas, granizados, cafés calientes, cervezas, cócteles, tortas caseras, sodas saborizadas y adicionales. Explora el menú completo con buscador y realiza tu pedido directo a WhatsApp.
+          Pizzetas, granizados, cafés calientes, cervezas, cócteles, tortas caseras, sodas saborizadas y adicionales. Explora el menú completo con buscador interactivo y precios oficiales.
         </p>
 
-        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <div class="flex justify-center items-center">
           <a 
             href={url('/menu')} 
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black py-4 px-9 rounded-full text-sm uppercase tracking-widest transition duration-300 shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:scale-105"
+            class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black py-4 px-9 rounded-full text-sm uppercase tracking-widest transition duration-300 shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:scale-105"
           >
             <span>🍽️ Abrir Menú Digital Completo</span>
             <span class="text-lg">→</span>
           </a>
-
-          <button 
-            onclick="openCartModal()" 
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold py-4 px-7 rounded-full text-sm uppercase tracking-wider transition duration-300 cursor-pointer"
-          >
-            <span>🛒 Ver Mi Pedido</span>
-          </button>
         </div>
       </div>
     </div>

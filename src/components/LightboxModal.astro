@@ -1,33 +1,100 @@
 ---
 // src/components/LightboxModal.astro
-import { galleryItems } from '../data/gallery';
+import { aboutMonumentItem, defaultGalleryItems, fullGalleryItems } from '../data/galleryShowcase';
+import { url } from '../utils/paths';
+
+const souvenirMediaItems = [
+  {
+    id: 100,
+    src: url('/images/recuerdo-fotos-tarifas.jpeg'),
+    title: 'Fotografía Instantánea • Tarifas Oficiales',
+    desc: 'Llévate tu recuerdo impreso al instante con marco de El Mirador del Cielo: 1 foto $12.000, 3 fotos $28.000 o 5 fotos $40.000.'
+  },
+  {
+    id: 101,
+    src: url('/images/recuerdo-posa-captura.jpeg'),
+    title: 'Posa, Capturamos y Tú Eliges',
+    desc: 'Nuestro equipo toma tus fotos con la vista de Río de Oro y tú eliges tus capturas favoritas.'
+  },
+  {
+    id: 102,
+    src: url('/images/pin01.png'),
+    title: 'Pin Fachada "El Mirador del Cielo"',
+    desc: 'Edición conmemorativa en metal con detalles de nuestra fachada original ($15.000).'
+  },
+  {
+    id: 103,
+    src: url('/images/pin02.png'),
+    title: 'Pin Conmemorativo Jaguar 368 Años',
+    desc: 'Pin oficial celebrando la historia y fauna representativa de Río de Oro ($15.000).'
+  }
+];
+
+const remainingGalleryItems = fullGalleryItems.filter(
+  item => item.src !== aboutMonumentItem.src
+);
+
+const allLightboxItems = [aboutMonumentItem, ...remainingGalleryItems, ...souvenirMediaItems];
 ---
 
-<div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-xl flex flex-col justify-between items-center p-4 sm:p-8">
-  <div class="w-full flex justify-between items-center max-w-5xl z-10">
-    <span id="lightbox-counter" class="text-amber-400 font-mono text-xs font-bold uppercase tracking-wider">Foto 1 de 6</span>
-    <button onclick="closeLightbox()" class="text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 text-2xl cursor-pointer">✕</button>
+<div
+  id="lightbox-modal"
+  onclick="handleLightboxBackdropClick(event)"
+  class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-xl flex flex-col justify-between items-center p-3 sm:p-6"
+>
+  <div class="w-full flex justify-between items-center max-w-6xl z-10 gap-3">
+    <span id="lightbox-counter" class="text-amber-400 font-mono text-xs font-bold uppercase tracking-wider">Foto 1 de {allLightboxItems.length}</span>
+    <div class="flex items-center gap-2">
+      <button
+        id="lightbox-fullscreen-btn"
+        type="button"
+        onclick="toggleLightboxFullscreen()"
+        class="text-slate-200 hover:text-amber-300 bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
+        title="Ver en pantalla completa"
+      >
+        <span>⛶</span>
+        <span id="lightbox-fullscreen-label" class="hidden sm:inline">Pantalla completa</span>
+      </button>
+      <button
+        type="button"
+        onclick="closeLightbox()"
+        class="text-slate-300 hover:text-white p-2 rounded-full hover:bg-slate-800 text-2xl leading-none cursor-pointer"
+        aria-label="Cerrar visor"
+      >✕</button>
+    </div>
   </div>
 
-  <div class="relative w-full max-w-4xl flex-1 flex items-center justify-center my-4 overflow-hidden">
-    <button onclick="prevLightboxImage()" class="absolute left-2 sm:left-4 z-20 bg-slate-900/80 hover:bg-slate-800 text-white p-3 rounded-full border border-slate-700 text-xl cursor-pointer">‹</button>
+  <div id="lightbox-stage" class="relative w-full max-w-5xl flex-1 flex items-center justify-center my-3 overflow-hidden">
+    <button
+      type="button"
+      onclick="prevLightboxImage()"
+      class="absolute left-1 sm:left-4 z-20 bg-slate-900/85 hover:bg-slate-800 text-white w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full border border-slate-700 text-2xl cursor-pointer transition"
+      aria-label="Foto anterior"
+    >‹</button>
     
-    <img id="lightbox-img" src="" alt="Ampliación" class="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-2xl border border-slate-800 transition duration-300" />
+    <img id="lightbox-img" src="" alt="Ampliación" class="max-h-[80vh] max-w-full w-auto h-auto object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-slate-800 select-none transition duration-200" />
     
-    <button onclick="nextLightboxImage()" class="absolute right-2 sm:right-4 z-20 bg-slate-900/80 hover:bg-slate-800 text-white p-3 rounded-full border border-slate-700 text-xl cursor-pointer">›</button>
+    <button
+      type="button"
+      onclick="nextLightboxImage()"
+      class="absolute right-1 sm:right-4 z-20 bg-slate-900/85 hover:bg-slate-800 text-white w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full border border-slate-700 text-2xl cursor-pointer transition"
+      aria-label="Siguiente foto"
+    >›</button>
   </div>
 
-  <div class="w-full max-w-xl text-center z-10">
-    <h4 id="lightbox-title" class="text-white text-xl font-bold font-serif mb-1">Título de Foto</h4>
-    <p id="lightbox-desc" class="text-slate-400 text-xs font-light">Descripción de la foto</p>
+  <div class="w-full max-w-2xl text-center z-10 px-2">
+    <h4 id="lightbox-title" class="text-white text-lg sm:text-xl font-bold font-serif mb-1">Título de Foto</h4>
+    <p id="lightbox-desc" class="text-slate-400 text-xs sm:text-sm font-light">Descripción de la foto</p>
   </div>
 </div>
 
-<script is:inline define:vars={{ galleryItems }}>
+<script is:inline define:vars={{ allLightboxItems, defaultGalleryItems, fullGalleryItems, souvenirMediaItems }}>
+  let currentLightboxItems = allLightboxItems;
   let currentLightboxIndex = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
 
-  function openLightbox(index) {
-    currentLightboxIndex = index;
+  function showLightboxModal() {
     updateLightboxContent();
     const modal = document.getElementById('lightbox-modal');
     if (modal) {
@@ -36,16 +103,41 @@ import { galleryItems } from '../data/gallery';
     }
   }
 
-  function openLightboxBySrc(src) {
-    const idx = galleryItems.findIndex(i => i.src === src);
-    if (idx !== -1) {
-      openLightbox(idx);
+  function openLightbox(index) {
+    currentLightboxItems = allLightboxItems;
+    currentLightboxIndex = Math.max(0, Math.min(index, currentLightboxItems.length - 1));
+    showLightboxModal();
+  }
+
+  function openLightboxBySrc(src, scope) {
+    let pool = allLightboxItems;
+    if (scope === 'featured') {
+      pool = defaultGalleryItems;
+    } else if (scope === 'full') {
+      pool = fullGalleryItems;
+    } else if (scope === 'souvenirs') {
+      pool = souvenirMediaItems;
     } else {
-      openLightbox(0);
+      const inSouvenirs = souvenirMediaItems.some(i => i.src === src || i.src.endsWith(src));
+      if (inSouvenirs) pool = souvenirMediaItems;
     }
+
+    const idx = pool.findIndex(i => i.src === src || i.src.endsWith(src));
+    if (idx !== -1) {
+      currentLightboxItems = pool;
+      currentLightboxIndex = idx;
+      showLightboxModal();
+      return;
+    }
+
+    const fallbackIdx = allLightboxItems.findIndex(i => i.src === src || i.src.endsWith(src));
+    openLightbox(fallbackIdx !== -1 ? fallbackIdx : 0);
   }
 
   function closeLightbox() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
     const modal = document.getElementById('lightbox-modal');
     if (modal) {
       modal.classList.add('hidden');
@@ -53,8 +145,32 @@ import { galleryItems } from '../data/gallery';
     }
   }
 
+  function handleLightboxBackdropClick(event) {
+    const target = event.target;
+    if (target && (target.id === 'lightbox-modal' || target.id === 'lightbox-stage')) {
+      closeLightbox();
+    }
+  }
+
+  function toggleLightboxFullscreen() {
+    const modal = document.getElementById('lightbox-modal');
+    if (!modal || !document.fullscreenEnabled) return;
+    if (!document.fullscreenElement) {
+      modal.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
+
+  function updateFullscreenButton() {
+    const label = document.getElementById('lightbox-fullscreen-label');
+    if (label) {
+      label.innerText = document.fullscreenElement ? 'Salir pantalla completa' : 'Pantalla completa';
+    }
+  }
+
   function updateLightboxContent() {
-    const item = galleryItems[currentLightboxIndex];
+    const item = currentLightboxItems[currentLightboxIndex];
     if (!item) return;
     
     const img = document.getElementById('lightbox-img');
@@ -62,20 +178,48 @@ import { galleryItems } from '../data/gallery';
     const desc = document.getElementById('lightbox-desc');
     const counter = document.getElementById('lightbox-counter');
 
-    if (img) img.src = item.src;
+    if (img) {
+      img.src = item.src;
+      img.alt = item.title || 'Ampliación';
+    }
     if (title) title.innerText = item.title;
     if (desc) desc.innerText = item.desc;
-    if (counter) counter.innerText = `Foto ${currentLightboxIndex + 1} de ${galleryItems.length}`;
+    if (counter) counter.innerText = `Foto ${currentLightboxIndex + 1} de ${currentLightboxItems.length}`;
   }
 
   function prevLightboxImage() {
-    currentLightboxIndex = (currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length;
+    if (!currentLightboxItems.length) return;
+    currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxItems.length) % currentLightboxItems.length;
     updateLightboxContent();
   }
 
   function nextLightboxImage() {
-    currentLightboxIndex = (currentLightboxIndex + 1) % galleryItems.length;
+    if (!currentLightboxItems.length) return;
+    currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxItems.length;
     updateLightboxContent();
+  }
+
+  document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+  const stage = document.getElementById('lightbox-stage');
+  if (stage) {
+    stage.addEventListener('touchstart', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+      }
+    }, { passive: true });
+
+    stage.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+          if (dx < 0) nextLightboxImage();
+          else prevLightboxImage();
+        }
+      }
+    }, { passive: true });
   }
 
   // Teclado para Lightbox (ESC y Flechas)

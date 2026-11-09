@@ -31,33 +31,20 @@ const isHome = !isMenu;
       <span class="text-[10px] tracking-tight">Carta</span>
     </a>
 
-    <!-- 3. Botón Central Destacado: Mi Pedido -->
-    <button 
-      type="button"
-      onclick="openCartModal()" 
-      class="relative flex flex-col items-center justify-center -mt-5 group cursor-pointer focus:outline-none"
-      title="Ver Mi Pedido"
-    >
-      <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white text-xl shadow-[0_0_20px_rgba(245,158,11,0.5)] border-2 border-[#0B0F17] group-active:scale-95 transition-transform duration-200">
-        <span>🛒</span>
-        <!-- Contador reactivo -->
-        <span id="cart-badge-bottom" class="absolute -top-1 -right-1 bg-black text-amber-300 font-mono font-black text-[10px] px-1.5 py-0.2 rounded-full border border-amber-500/60 min-w-[18px] text-center">0</span>
-      </div>
-      <span class="text-[10px] font-extrabold text-amber-300 mt-1">Pedido</span>
-    </button>
-
-    <!-- 4. Reservar Mesa -->
+    <!-- 3. Botón Central Destacado: Reservar Mesa -->
     <button 
       type="button"
       onclick="openReservationModal()" 
-      class="flex flex-col items-center justify-center py-1 text-slate-400 hover:text-white transition-all duration-200 group cursor-pointer focus:outline-none"
+      class="relative flex flex-col items-center justify-center -mt-5 group cursor-pointer focus:outline-none"
       title="Reservar Mesa"
     >
-      <span class="text-lg leading-none mb-1 transition-transform group-active:scale-125">📅</span>
-      <span class="text-[10px] font-bold tracking-tight">Reservar</span>
+      <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white text-xl shadow-[0_0_20px_rgba(245,158,11,0.5)] border-2 border-[#0B0F17] group-active:scale-95 transition-transform duration-200">
+        <span>📅</span>
+      </div>
+      <span class="text-[10px] font-extrabold text-amber-300 mt-1">Reservar</span>
     </button>
 
-    <!-- 5. Calificar / Reseñas -->
+    <!-- 4. Calificar / Reseñas -->
     <button 
       type="button"
       onclick="openReviewModal()" 
@@ -68,6 +55,16 @@ const isHome = !isMenu;
       <span class="text-[10px] font-bold tracking-tight">Opinar</span>
     </button>
 
+    <!-- 5. Dónde Estamos / Cómo Llegar -->
+    <a 
+      href={url('/#contacto')} 
+      class="flex flex-col items-center justify-center py-1 text-slate-400 hover:text-white transition-all duration-200 group"
+      title="Cómo Llegar"
+    >
+      <span class="text-lg leading-none mb-1 transition-transform group-active:scale-125">📍</span>
+      <span class="text-[10px] font-bold tracking-tight">Llegar</span>
+    </a>
+
   </div>
 </nav>
 
@@ -75,24 +72,12 @@ const isHome = !isMenu;
   .safe-bottom {
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
-</style>
 
-<script is:inline>
-  // Sincronizar contador del carrito con el badge de la barra inferior
-  function syncBottomCartBadge() {
-    const mainBadge = document.getElementById('cart-badge');
-    const bottomBadge = document.getElementById('cart-badge-bottom');
-    if (mainBadge && bottomBadge) {
-      bottomBadge.innerText = mainBadge.innerText;
+  /* Elevar botón flotante de WhatsApp en móviles para que no tape los accesos del menú */
+  @media (max-width: 768px) {
+    :global(.fixed.bottom-6.right-6) {
+      bottom: 5.25rem !important;
+      right: 1rem !important;
     }
   }
-
-  // Observar cambios en el badge principal para sincronización instantánea
-  const targetBadge = document.getElementById('cart-badge');
-  if (targetBadge && window.MutationObserver) {
-    const observer = new MutationObserver(syncBottomCartBadge);
-    observer.observe(targetBadge, { childList: true, characterData: true, subtree: true });
-  }
-
-  window.addEventListener('DOMContentLoaded', syncBottomCartBadge);
-</script>
+</style>
