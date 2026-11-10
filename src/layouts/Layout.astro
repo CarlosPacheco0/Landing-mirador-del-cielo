@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import { url } from '../utils/paths';
-import { reviews } from '../data/reviews';
 import BottomNav from '../components/BottomNav.astro';
 import ReviewModal from '../components/ReviewModal.astro';
 
@@ -93,24 +92,11 @@ const restaurantSchema = {
   ],
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "127",
+    "ratingValue": "5.0",
+    "ratingCount": "1",
     "bestRating": "5",
     "worstRating": "1"
   },
-  "review": reviews.map(rev => ({
-    "@type": "Review",
-    "author": {
-      "@type": "Person",
-      "name": rev.name
-    },
-    "reviewRating": {
-      "@type": "Rating",
-      "ratingValue": rev.rating.toString(),
-      "bestRating": "5"
-    },
-    "reviewBody": rev.comment
-  })),
   "amenityFeature": [
     { "@type": "LocationFeatureSpecification", "name": "Pet Friendly", "value": true },
     { "@type": "LocationFeatureSpecification", "name": "Terraza al Aire Libre", "value": true },
