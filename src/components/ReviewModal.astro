@@ -1,5 +1,7 @@
 ---
 // src/components/ReviewModal.astro
+const googleMapsPlaceUrl =
+  'https://www.google.com/maps/place/MIRADOR+DEL+CIELO/@8.2605735,-73.4223439,12z/data=!4m10!1m2!2m1!1smirador+del+cielo!3m6!1s0x8e677d004a625959:0xd89b6c13b37b8fd8!8m2!3d8.2910646!4d-73.3840203!15sChFtaXJhZG9yIGRlbCBjaWVsb5IBC2NvZmZlZV9zaG9w4AEA!16s%2Fg%2F11z4dlswfq';
 ---
 
 <div id="review-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
@@ -52,7 +54,7 @@
 
       <!-- Alternativa Google Maps -->
       <div class="pt-2 text-center border-t border-slate-800/80">
-        <a href="https://maps.google.com/maps?q=Cerro%20de%20la%20virgen%20del%20rosario%20rio%20de%20oro" target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-amber-400 inline-flex items-center gap-1 transition-colors">
+        <a href={googleMapsPlaceUrl} target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-amber-400 inline-flex items-center gap-1 transition-colors">
           <span>📍</span>
           <span>¿Prefieres calificar directamente en Google Maps? Toca aquí</span>
         </a>

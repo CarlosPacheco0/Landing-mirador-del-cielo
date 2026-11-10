@@ -35,201 +35,206 @@ const remainingGalleryItems = fullGalleryItems.filter(
 );
 
 const allLightboxItems = [aboutMonumentItem, ...remainingGalleryItems, ...souvenirMediaItems];
+
+const lightboxPayload = JSON.stringify({
+  allLightboxItems,
+  defaultGalleryItems,
+  fullGalleryItems,
+  souvenirMediaItems
+}).replace(/</g, '\\u003c');
 ---
 
 <div
   id="lightbox-modal"
-  onclick="handleLightboxBackdropClick(event)"
-  class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-xl flex flex-col justify-between items-center p-3 sm:p-6"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Visor de imagen en pantalla completa"
+  onclick="window.handleLightboxBackdropClick(event)"
+  style="display: none;"
+  class="fixed inset-0 z-[999] hidden h-[100dvh] w-screen bg-black/95 backdrop-blur-xl flex-col justify-between items-center p-3 sm:p-6"
 >
-  <div class="w-full flex justify-between items-center max-w-6xl z-10 gap-3">
+  <div id="lightbox-topbar" class="w-full flex justify-between items-center max-w-6xl z-10 gap-3">
     <span id="lightbox-counter" class="text-amber-400 font-mono text-xs font-bold uppercase tracking-wider">Foto 1 de {allLightboxItems.length}</span>
-    <div class="flex items-center gap-2">
-      <button
-        id="lightbox-fullscreen-btn"
-        type="button"
-        onclick="toggleLightboxFullscreen()"
-        class="text-slate-200 hover:text-amber-300 bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
-        title="Ver en pantalla completa"
-      >
-        <span>⛶</span>
-        <span id="lightbox-fullscreen-label" class="hidden sm:inline">Pantalla completa</span>
-      </button>
-      <button
-        type="button"
-        onclick="closeLightbox()"
-        class="text-slate-300 hover:text-white p-2 rounded-full hover:bg-slate-800 text-2xl leading-none cursor-pointer"
-        aria-label="Cerrar visor"
-      >✕</button>
-    </div>
-  </div>
-
-  <div id="lightbox-stage" class="relative w-full max-w-5xl flex-1 flex items-center justify-center my-3 overflow-hidden">
     <button
       type="button"
-      onclick="prevLightboxImage()"
+      onclick="window.closeLightbox()"
+      class="text-slate-300 hover:text-white p-2 rounded-full hover:bg-slate-800 text-2xl leading-none cursor-pointer"
+      aria-label="Cerrar visor"
+    >✕</button>
+  </div>
+
+  <div id="lightbox-stage" class="relative w-full max-w-6xl flex-1 min-h-0 flex items-center justify-center my-2 sm:my-3 overflow-hidden">
+    <button
+      type="button"
+      onclick="window.prevLightboxImage()"
       class="absolute left-1 sm:left-4 z-20 bg-slate-900/85 hover:bg-slate-800 text-white w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full border border-slate-700 text-2xl cursor-pointer transition"
       aria-label="Foto anterior"
     >‹</button>
     
-    <img id="lightbox-img" src="" alt="Ampliación" class="max-h-[80vh] max-w-full w-auto h-auto object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-slate-800 select-none transition duration-200" />
+    <img id="lightbox-img" src="" alt="Ampliación" class="max-h-[82dvh] max-w-full w-auto h-auto object-contain rounded-xl sm:rounded-2xl shadow-2xl border border-slate-800 select-none transition duration-200" />
     
     <button
       type="button"
-      onclick="nextLightboxImage()"
+      onclick="window.nextLightboxImage()"
       class="absolute right-1 sm:right-4 z-20 bg-slate-900/85 hover:bg-slate-800 text-white w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full border border-slate-700 text-2xl cursor-pointer transition"
       aria-label="Siguiente foto"
     >›</button>
   </div>
 
-  <div class="w-full max-w-2xl text-center z-10 px-2">
-    <h4 id="lightbox-title" class="text-white text-lg sm:text-xl font-bold font-serif mb-1">Título de Foto</h4>
+  <div id="lightbox-caption" class="w-full max-w-2xl text-center z-10 px-2 pb-1">
+    <h4 id="lightbox-title" class="text-white text-base sm:text-xl font-bold font-serif mb-0.5">Título de Foto</h4>
     <p id="lightbox-desc" class="text-slate-400 text-xs sm:text-sm font-light">Descripción de la foto</p>
   </div>
 </div>
 
-<script is:inline define:vars={{ allLightboxItems, defaultGalleryItems, fullGalleryItems, souvenirMediaItems }}>
-  let currentLightboxItems = allLightboxItems;
-  let currentLightboxIndex = 0;
-  let touchStartX = 0;
-  let touchStartY = 0;
+<script id="lightbox-payload" type="application/json" set:html={lightboxPayload}></script>
 
-  function showLightboxModal() {
-    updateLightboxContent();
-    const modal = document.getElementById('lightbox-modal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-    }
-  }
+<script is:inline>
+  (function () {
+    const payloadEl = document.getElementById('lightbox-payload');
+    const parsed = payloadEl ? JSON.parse(payloadEl.textContent || '{}') : {};
 
-  function openLightbox(index) {
-    currentLightboxItems = allLightboxItems;
-    currentLightboxIndex = Math.max(0, Math.min(index, currentLightboxItems.length - 1));
-    showLightboxModal();
-  }
+    const allLightboxItems = Array.isArray(parsed.allLightboxItems) ? parsed.allLightboxItems : [];
+    const defaultGalleryItems = Array.isArray(parsed.defaultGalleryItems) ? parsed.defaultGalleryItems : [];
+    const fullGalleryItems = Array.isArray(parsed.fullGalleryItems) ? parsed.fullGalleryItems : [];
+    const souvenirMediaItems = Array.isArray(parsed.souvenirMediaItems) ? parsed.souvenirMediaItems : [];
 
-  function openLightboxBySrc(src, scope) {
-    let pool = allLightboxItems;
-    if (scope === 'featured') {
-      pool = defaultGalleryItems;
-    } else if (scope === 'full') {
-      pool = fullGalleryItems;
-    } else if (scope === 'souvenirs') {
-      pool = souvenirMediaItems;
-    } else {
-      const inSouvenirs = souvenirMediaItems.some(i => i.src === src || i.src.endsWith(src));
-      if (inSouvenirs) pool = souvenirMediaItems;
+    let currentLightboxItems = allLightboxItems;
+    let currentLightboxIndex = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    function matchSrc(itemSrc, targetSrc) {
+      if (!itemSrc || !targetSrc) return false;
+      if (itemSrc === targetSrc) return true;
+      return itemSrc.endsWith(targetSrc) || targetSrc.endsWith(itemSrc);
     }
 
-    const idx = pool.findIndex(i => i.src === src || i.src.endsWith(src));
-    if (idx !== -1) {
-      currentLightboxItems = pool;
-      currentLightboxIndex = idx;
+    function updateLightboxContent() {
+      const item = currentLightboxItems[currentLightboxIndex];
+      if (!item) return;
+
+      const img = document.getElementById('lightbox-img');
+      const title = document.getElementById('lightbox-title');
+      const desc = document.getElementById('lightbox-desc');
+      const counter = document.getElementById('lightbox-counter');
+
+      if (img) {
+        img.src = item.src;
+        img.alt = item.title || 'Ampliación';
+      }
+      if (title) title.innerText = item.title || '';
+      if (desc) desc.innerText = item.desc || '';
+      if (counter) counter.innerText = `Foto ${currentLightboxIndex + 1} de ${currentLightboxItems.length}`;
+    }
+
+    function showLightboxModal() {
+      updateLightboxContent();
+      const modal = document.getElementById('lightbox-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function openLightbox(index) {
+      if (!allLightboxItems.length) return;
+      currentLightboxItems = allLightboxItems;
+      currentLightboxIndex = Math.max(0, Math.min(Number(index) || 0, currentLightboxItems.length - 1));
       showLightboxModal();
-      return;
     }
 
-    const fallbackIdx = allLightboxItems.findIndex(i => i.src === src || i.src.endsWith(src));
-    openLightbox(fallbackIdx !== -1 ? fallbackIdx : 0);
-  }
-
-  function closeLightbox() {
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
-    }
-    const modal = document.getElementById('lightbox-modal');
-    if (modal) {
-      modal.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    }
-  }
-
-  function handleLightboxBackdropClick(event) {
-    const target = event.target;
-    if (target && (target.id === 'lightbox-modal' || target.id === 'lightbox-stage')) {
-      closeLightbox();
-    }
-  }
-
-  function toggleLightboxFullscreen() {
-    const modal = document.getElementById('lightbox-modal');
-    if (!modal || !document.fullscreenEnabled) return;
-    if (!document.fullscreenElement) {
-      modal.requestFullscreen().catch(() => {});
-    } else {
-      document.exitFullscreen().catch(() => {});
-    }
-  }
-
-  function updateFullscreenButton() {
-    const label = document.getElementById('lightbox-fullscreen-label');
-    if (label) {
-      label.innerText = document.fullscreenElement ? 'Salir pantalla completa' : 'Pantalla completa';
-    }
-  }
-
-  function updateLightboxContent() {
-    const item = currentLightboxItems[currentLightboxIndex];
-    if (!item) return;
-    
-    const img = document.getElementById('lightbox-img');
-    const title = document.getElementById('lightbox-title');
-    const desc = document.getElementById('lightbox-desc');
-    const counter = document.getElementById('lightbox-counter');
-
-    if (img) {
-      img.src = item.src;
-      img.alt = item.title || 'Ampliación';
-    }
-    if (title) title.innerText = item.title;
-    if (desc) desc.innerText = item.desc;
-    if (counter) counter.innerText = `Foto ${currentLightboxIndex + 1} de ${currentLightboxItems.length}`;
-  }
-
-  function prevLightboxImage() {
-    if (!currentLightboxItems.length) return;
-    currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxItems.length) % currentLightboxItems.length;
-    updateLightboxContent();
-  }
-
-  function nextLightboxImage() {
-    if (!currentLightboxItems.length) return;
-    currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxItems.length;
-    updateLightboxContent();
-  }
-
-  document.addEventListener('fullscreenchange', updateFullscreenButton);
-
-  const stage = document.getElementById('lightbox-stage');
-  if (stage) {
-    stage.addEventListener('touchstart', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        touchStartX = e.changedTouches[0].clientX;
-        touchStartY = e.changedTouches[0].clientY;
+    function openLightboxBySrc(src, scope) {
+      let pool = allLightboxItems;
+      if (scope === 'featured') {
+        pool = defaultGalleryItems;
+      } else if (scope === 'full') {
+        pool = fullGalleryItems;
+      } else if (scope === 'souvenirs') {
+        pool = souvenirMediaItems;
+      } else if (souvenirMediaItems.some(i => matchSrc(i.src, src))) {
+        pool = souvenirMediaItems;
       }
-    }, { passive: true });
 
-    stage.addEventListener('touchend', (e) => {
-      if (e.changedTouches && e.changedTouches.length > 0) {
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        const dy = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
-          if (dx < 0) nextLightboxImage();
-          else prevLightboxImage();
+      const idx = pool.findIndex(i => matchSrc(i.src, src));
+      if (idx !== -1) {
+        currentLightboxItems = pool;
+        currentLightboxIndex = idx;
+        showLightboxModal();
+        return;
+      }
+
+      const fallbackIdx = allLightboxItems.findIndex(i => matchSrc(i.src, src));
+      openLightbox(fallbackIdx !== -1 ? fallbackIdx : 0);
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    function handleLightboxBackdropClick(event) {
+      const target = event.target;
+      if (target && (target.id === 'lightbox-modal' || target.id === 'lightbox-stage')) {
+        closeLightbox();
+      }
+    }
+
+    function prevLightboxImage() {
+      if (!currentLightboxItems.length) return;
+      currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxItems.length) % currentLightboxItems.length;
+      updateLightboxContent();
+    }
+
+    function nextLightboxImage() {
+      if (!currentLightboxItems.length) return;
+      currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxItems.length;
+      updateLightboxContent();
+    }
+
+    window.openLightbox = openLightbox;
+    window.openLightboxBySrc = openLightboxBySrc;
+    window.closeLightbox = closeLightbox;
+    window.handleLightboxBackdropClick = handleLightboxBackdropClick;
+    window.prevLightboxImage = prevLightboxImage;
+    window.nextLightboxImage = nextLightboxImage;
+
+    const stage = document.getElementById('lightbox-stage');
+    if (stage) {
+      stage.addEventListener('touchstart', (e) => {
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          touchStartX = e.changedTouches[0].clientX;
+          touchStartY = e.changedTouches[0].clientY;
         }
-      }
-    }, { passive: true });
-  }
+      }, { passive: true });
 
-  // Teclado para Lightbox (ESC y Flechas)
-  window.addEventListener('keydown', (e) => {
-    const modal = document.getElementById('lightbox-modal');
-    if (modal && !modal.classList.contains('hidden')) {
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') prevLightboxImage();
-      if (e.key === 'ArrowRight') nextLightboxImage();
+      stage.addEventListener('touchend', (e) => {
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          const dx = e.changedTouches[0].clientX - touchStartX;
+          const dy = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+            if (dx < 0) nextLightboxImage();
+            else prevLightboxImage();
+          }
+        }
+      }, { passive: true });
     }
-  });
+
+    window.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('lightbox-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevLightboxImage();
+        if (e.key === 'ArrowRight') nextLightboxImage();
+      }
+    });
+  })();
 </script>
 
