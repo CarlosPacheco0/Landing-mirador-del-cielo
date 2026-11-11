@@ -1,0 +1,396 @@
+---
+// src/components/PageLoader.astro
+import { url } from '../utils/paths';
+---
+
+<div
+  id="page-loader"
+  role="status"
+  aria-live="polite"
+  aria-label="Cargando El Mirador del Cielo"
+  class="fixed inset-0 z-[1000] bg-[#0B0F17] flex flex-col items-center justify-center px-6 overflow-hidden select-none transition-all duration-500 ease-out"
+>
+  <!-- Brillo ambiental cálido -->
+  <div class="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-amber-500/20 via-orange-500/10 to-sky-400/10 blur-3xl loader-glow pointer-events-none"></div>
+
+  <!-- Escenario del Logo con halo orbital -->
+  <div class="relative flex items-center justify-center w-44 h-44 sm:w-52 sm:h-52 loader-reveal">
+    <!-- Anillo exterior punteado sutil -->
+    <div class="absolute inset-0 rounded-full border border-dashed border-amber-400/25 loader-spin-slow pointer-events-none"></div>
+
+    <!-- Halo dorado giratorio -->
+    <div class="absolute inset-2 rounded-full loader-orbit pointer-events-none"></div>
+
+    <!-- Contenedor interno del emblema ajustado al óvalo para destello diagonal -->
+    <div class="relative z-10 flex items-center justify-center w-[74px] h-[112px] sm:w-[86px] sm:h-[130px] overflow-hidden rounded-[999px] drop-shadow-[0_0_24px_rgba(245,158,11,0.45)] loader-float">
+      <img
+        id="page-loader-logo"
+        src={url('/images/logo-emblema.png')}
+        alt="Logo El Mirador del Cielo"
+        width="120"
+        height="182"
+        loading="eager"
+        decoding="sync"
+        fetchpriority="high"
+        class="h-full w-auto object-contain"
+      />
+      <div class="loader-sheen pointer-events-none" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- Identidad de marca -->
+  <div class="text-center mt-5 loader-text-fade">
+    <p class="font-serif text-2xl sm:text-3xl font-black text-white tracking-tight">
+      El Mirador <span class="text-gradient">del Cielo</span>
+    </p>
+    <p class="text-[11px] sm:text-xs uppercase tracking-[0.28em] text-amber-300/85 font-semibold mt-1.5">
+      Cerro de la Virgen • Río de Oro
+    </p>
+  </div>
+
+  <!-- Barra de progreso sutil -->
+  <div class="w-40 h-1 bg-slate-800/90 rounded-full overflow-hidden mt-6 border border-slate-700/40 loader-text-fade">
+    <div class="h-full w-1/2 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-300 loader-progress"></div>
+  </div>
+</div>
+
+<style>
+  :global(html.loader-lock) {
+    overflow: hidden;
+  }
+
+  .loader-orbit {
+    background: conic-gradient(
+      from 0deg,
+      rgba(245, 158, 11, 0) 0deg,
+      rgba(245, 158, 11, 0.85) 75deg,
+      rgba(249, 115, 22, 0.95) 120deg,
+      rgba(251, 191, 36, 0) 195deg,
+      rgba(245, 158, 11, 0) 360deg
+    );
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1.5px));
+    animation: loaderSpin 1.6s linear infinite;
+  }
+
+  .loader-spin-slow {
+    animation: loaderSpinReverse 9s linear infinite;
+  }
+
+  .loader-glow {
+    animation: loaderGlow 2.4s ease-in-out infinite;
+  }
+
+  .loader-reveal {
+    animation: loaderReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .loader-float {
+    animation: loaderFloat 2.4s ease-in-out infinite;
+  }
+
+  .loader-sheen {
+    position: absolute;
+    inset: -20% -60%;
+    background: linear-gradient(
+      110deg,
+      transparent 38%,
+      rgba(255, 243, 214, 0.28) 50%,
+      transparent 62%
+    );
+    animation: loaderSheen 1.9s ease-in-out infinite;
+  }
+
+  .loader-text-fade {
+    animation: loaderTextFade 0.55s ease-out 0.1s both;
+  }
+
+  .loader-progress {
+    animation: loaderProgress 1.15s ease-in-out infinite;
+  }
+
+  #page-loader.loader-hidden {
+    opacity: 0;
+    transform: scale(1.03);
+    pointer-events: none;
+  }
+
+  #page-loader.loader-entering {
+    transition-duration: 240ms;
+  }
+
+  #page-loader.loader-handoff .loader-reveal,
+  #page-loader.loader-handoff .loader-text-fade {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  @keyframes loaderSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes loaderSpinReverse {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+
+  @keyframes loaderGlow {
+    0%, 100% {
+      opacity: 0.65;
+      transform: scale(0.96);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes loaderReveal {
+    from {
+      opacity: 0;
+      transform: scale(0.88);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes loaderFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  @keyframes loaderSheen {
+    0% {
+      transform: translateX(-85%);
+    }
+    55%, 100% {
+      transform: translateX(85%);
+    }
+  }
+
+  @keyframes loaderTextFade {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes loaderProgress {
+    0% {
+      transform: translateX(-110%);
+    }
+    100% {
+      transform: translateX(220%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loader-orbit,
+    .loader-spin-slow,
+    .loader-glow,
+    .loader-reveal,
+    .loader-float,
+    .loader-sheen,
+    .loader-text-fade,
+    .loader-progress {
+      animation: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const loader = document.getElementById('page-loader');
+    if (!loader) return;
+
+    const minDisplayMs = 1800;
+    const maxFallbackMs = 3600;
+    const fadeInMs = 260;
+    const fadeOutMs = 520;
+    const HANDOFF_KEY = 'mirador-loader-handoff';
+
+    let activeCycleId = 1;
+    let isShowing = true;
+    let isNavigatingAway = false;
+    let handoffAge = 0;
+
+    try {
+      const raw = window.sessionStorage.getItem(HANDOFF_KEY);
+      if (raw) {
+        window.sessionStorage.removeItem(HANDOFF_KEY);
+        const ts = Number(raw);
+        if (!Number.isNaN(ts) && ts > 0) {
+          const diff = Date.now() - ts;
+          if (diff >= 0 && diff < 5000) {
+            handoffAge = Math.min(diff, 900);
+            loader.classList.add('loader-handoff');
+          }
+        }
+      }
+    } catch (_) {}
+
+    document.documentElement.classList.add('loader-lock');
+    const initialStartTime = Date.now() - handoffAge;
+
+    function finishDismiss(immediate, expectedCycleId) {
+      if (expectedCycleId !== undefined && expectedCycleId !== activeCycleId) return;
+      if (!isShowing && !immediate) return;
+
+      isShowing = false;
+      isNavigatingAway = false;
+      document.documentElement.classList.remove('loader-lock');
+      loader.classList.remove('loader-entering', 'loader-handoff');
+
+      if (immediate) {
+        loader.classList.add('loader-hidden');
+        loader.style.display = 'none';
+        return;
+      }
+
+      loader.classList.add('loader-hidden');
+      const captureId = activeCycleId;
+      setTimeout(() => {
+        if (captureId !== activeCycleId) return;
+        loader.style.display = 'none';
+      }, fadeOutMs);
+    }
+
+    function scheduleInitialDismiss() {
+      const cycleId = 1;
+      if (cycleId !== activeCycleId || !isShowing) return;
+      const elapsed = Date.now() - initialStartTime;
+      const remaining = Math.max(0, minDisplayMs - elapsed);
+      setTimeout(() => finishDismiss(false, cycleId), remaining);
+    }
+
+    function triggerBrandLoader(options) {
+      if (isShowing || isNavigatingAway) return;
+
+      const targetHash = options && options.targetHash ? options.targetHash : '';
+      const navigateTo = options && options.navigateTo ? options.navigateTo : '';
+
+      activeCycleId += 1;
+      const cycleId = activeCycleId;
+      const cycleStartTime = Date.now();
+      isShowing = true;
+
+      loader.classList.remove('loader-handoff');
+      loader.classList.add('loader-entering', 'loader-hidden');
+      loader.style.display = 'flex';
+      void loader.offsetWidth;
+
+      document.documentElement.classList.add('loader-lock');
+      loader.classList.remove('loader-hidden');
+
+      if (navigateTo) {
+        isNavigatingAway = true;
+        setTimeout(() => {
+          if (cycleId !== activeCycleId) return;
+          try {
+            window.sessionStorage.setItem(HANDOFF_KEY, String(cycleStartTime));
+          } catch (_) {}
+          window.location.assign(navigateTo);
+        }, fadeInMs);
+        setTimeout(() => finishDismiss(false, cycleId), 6000);
+        return;
+      }
+
+      setTimeout(() => {
+        if (cycleId !== activeCycleId) return;
+        loader.classList.remove('loader-entering');
+
+        const jumpTop = () => {
+          try {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+          } catch (_) {
+            window.scrollTo(0, 0);
+          }
+        };
+
+        if (targetHash && targetHash !== '#inicio') {
+          const targetEl = document.querySelector(targetHash);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'instant', block: 'start' });
+          } else {
+            jumpTop();
+          }
+        } else {
+          jumpTop();
+        }
+
+        if (targetHash && window.location.hash !== targetHash && window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', targetHash);
+        }
+        window.dispatchEvent(new Event('scroll'));
+      }, fadeInMs);
+
+      setTimeout(() => finishDismiss(false, cycleId), minDisplayMs);
+      setTimeout(() => finishDismiss(false, cycleId), maxFallbackMs);
+    }
+
+    if (document.readyState === 'complete') {
+      scheduleInitialDismiss();
+    } else {
+      window.addEventListener('load', scheduleInitialDismiss, { once: true });
+    }
+
+    // Respaldo inicial para evitar bloqueos si algún recurso externo tarda demasiado
+    setTimeout(() => finishDismiss(false, 1), maxFallbackMs);
+
+    // Mostrar el loader al seleccionar el icono/marca de El Mirador del Cielo
+    document.addEventListener('click', (event) => {
+      const target = event.target instanceof Element ? event.target.closest('[data-brand-loader]') : null;
+      if (!target) return;
+      if (target.getAttribute('target') === '_blank') return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+
+      const rawHref = target.getAttribute('href') || '#inicio';
+      if (rawHref.startsWith('#')) {
+        event.preventDefault();
+        if (typeof window.closeMobileMenu === 'function') {
+          window.closeMobileMenu();
+        }
+        triggerBrandLoader({ targetHash: rawHref });
+        return;
+      }
+
+      try {
+        const destUrl = new URL(rawHref, window.location.href);
+        if (destUrl.origin === window.location.origin && destUrl.pathname === window.location.pathname) {
+          event.preventDefault();
+          if (typeof window.closeMobileMenu === 'function') {
+            window.closeMobileMenu();
+          }
+          triggerBrandLoader({ targetHash: destUrl.hash || '#inicio' });
+          return;
+        }
+        event.preventDefault();
+        triggerBrandLoader({ navigateTo: destUrl.href });
+      } catch (_) {}
+    });
+
+    window.showPageLoader = triggerBrandLoader;
+
+    // Asegura ocultar el loader al regresar desde bfcache del navegador
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        activeCycleId += 1;
+        finishDismiss(true, activeCycleId);
+      }
+    });
+  })();
+</script>

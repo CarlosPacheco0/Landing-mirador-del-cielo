@@ -13,7 +13,7 @@ export const faqs: FAQItem[] = [
   {
     id: 2,
     question: '¿Cuentan con parqueadero disponible?',
-    answer: 'Sí, en la zona adyacente al Cerro del Monumento se dispone de espacio para estacionar automóviles y motocicletas de forma segura.'
+    answer: 'Sí, en la zona adyacente al Cerro de la Virgen se dispone de espacio para estacionar automóviles y motocicletas de forma segura.'
   },
   {
     id: 3,

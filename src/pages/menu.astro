@@ -77,10 +77,14 @@ const menuSchema = {
           <span class="hidden sm:inline">Volver</span>
         </a>
 
-        <a href={url('/')} class="flex items-center gap-2 group">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-base shadow-[0_0_15px_rgba(245,158,11,0.3)]">
-            🌄
-          </div>
+        <a href={url('/')} data-brand-loader class="flex items-center gap-2.5 group">
+          <img
+            src={url('/images/logo-emblema.png')}
+            alt="Logo El Mirador del Cielo"
+            width="29"
+            height="44"
+            class="h-11 w-auto object-contain shrink-0 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)] group-hover:scale-105 transition-transform duration-300"
+          />
           <div class="flex flex-col">
             <span class="text-base sm:text-lg font-black text-white font-serif leading-tight">
               El Mirador <span class="text-gradient">del Cielo</span>
@@ -124,7 +128,7 @@ const menuSchema = {
     <!-- Contenido del Encabezado & Buscador -->
     <div class="relative z-20 max-w-3xl mx-auto text-center isolate">
       <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-lg">
-        <span>📍 Cerro del Monumento, Río de Oro</span>
+        <span>📍 Cerro de la Virgen, Río de Oro</span>
       </div>
 
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-serif mb-4 leading-tight hero-title">

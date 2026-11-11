@@ -1,6 +1,6 @@
 # 🌄 El Mirador del Cielo | Landing Page Web Premium (Astro + Tailwind CSS)
 
-Landing Page oficial e interactiva de nivel profesional para **El Mirador del Cielo**, un emblemático mirador gastronómico y turístico ubicado en el Cerro del Monumento en **Río de Oro, Cesar (Colombia)**.
+Landing Page oficial e interactiva de nivel profesional para **El Mirador del Cielo**, un emblemático mirador gastronómico y turístico ubicado en el Cerro de la Virgen en **Río de Oro, Cesar (Colombia)**.
 
 Migrada a la arquitectura moderna de **Astro**, permitiendo una carga ultrarrápida (Zero-JS por defecto), modularidad por componentes y catálogo de productos estructurado en datos desacoplados.
 

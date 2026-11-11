@@ -15,7 +15,7 @@ export const aboutMonumentItem: GalleryShowcaseItem = {
   id: 0,
   src: url('/images/monumento.png'),
   title: 'Vista Panorámica del Cerro',
-  desc: 'Vista aérea del icónico Cerro del Monumento a la Virgen en Río de Oro, hogar de El Mirador del Cielo.',
+  desc: 'Vista aérea del icónico Cerro de la Virgen en Río de Oro, hogar de El Mirador del Cielo.',
   category: 'ambiente'
 };
 

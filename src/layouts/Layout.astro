@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { url } from '../utils/paths';
 import BottomNav from '../components/BottomNav.astro';
 import ReviewModal from '../components/ReviewModal.astro';
+import PageLoader from '../components/PageLoader.astro';
 
 interface BreadcrumbItem {
   name: string;
@@ -29,6 +30,7 @@ const defaultSite = 'https://carlospacheco0.github.io';
 const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, '') : defaultSite;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || defaultSite).toString();
 const ogImageURL = new URL(url(image), Astro.site || defaultSite).toString();
+const logoFullURL = new URL(url('/images/logo.jpeg'), Astro.site || defaultSite).toString();
 const menuURL = new URL(url('/menu'), Astro.site || defaultSite).toString();
 
 // 1. Schema LocalBusiness & Restaurant de Google con datos completos
@@ -37,10 +39,11 @@ const restaurantSchema = {
   "@type": ["Restaurant", "TouristAttraction"],
   "@id": `${siteBase}/#restaurant`,
   "name": "El Mirador del Cielo",
+  "logo": logoFullURL,
   "alternateName": [
     "Mirador del Cielo",
     "El Mirador del Cielo Río de Oro",
-    "Mirador Cerro del Monumento"
+    "Mirador Cerro de la Virgen"
   ],
   "url": canonicalURL,
   "telephone": "+573000000000",
@@ -70,7 +73,7 @@ const restaurantSchema = {
   "description": description,
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Cerro del Monumento a la Virgen del Rosario",
+    "streetAddress": "Cerro de la Virgen",
     "addressLocality": "Río de Oro",
     "addressRegion": "Cesar",
     "postalCode": "205010",
@@ -85,9 +88,9 @@ const restaurantSchema = {
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "16:00",
-      "closes": "23:00"
+      "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "15:00",
+      "closes": "22:00"
     }
   ],
   "aggregateRating": {
@@ -158,7 +161,7 @@ const allSchemas = [
   <meta name="ICBM" content="8.2910646, -73.3840203" />
 
   <!-- Palabras clave locales estratégicas -->
-  <meta name="keywords" content="El Mirador del Cielo, Rio de Oro Cesar, restaurante mirador, atardeceres Ocaña, turismo Cesar, pizzetas artesanales, granizados, mirador de la virgen, café de origen, gastronomía Río de Oro" />
+  <meta name="keywords" content="El Mirador del Cielo, Rio de Oro Cesar, restaurante mirador, atardeceres Ocaña, turismo Cesar, pizzetas artesanales, granizados, cerro de la virgen, mirador de la virgen, café de origen, gastronomía Río de Oro" />
 
   <!-- Open Graph (WhatsApp, Facebook, Instagram, LinkedIn) -->
   <meta property="og:type" content="website" />
@@ -185,9 +188,11 @@ const allSchemas = [
   ))}
   
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+  <link rel="icon" type="image/png" sizes="512x512" href={url('/images/logo-favicon.png')} />
+  <link rel="apple-touch-icon" sizes="512x512" href={url('/images/logo-favicon.png')} />
   
-  <!-- Preload Hero Image para carga instantánea (LCP) -->
+  <!-- Preload Logo & Hero Image para carga instantánea (LCP) -->
+  <link rel="preload" as="image" href={url('/images/logo-emblema.png')} fetchpriority="high" />
   <link rel="preload" as="image" href={url('/images/mirador.webp')} fetchpriority="high" />
   
   <!-- Google Fonts -->
@@ -197,9 +202,20 @@ const allSchemas = [
   
   <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <noscript><style>#page-loader{display:none!important;}</style></noscript>
+  <style is:global>
+    html,
+    body {
+      overflow-x: clip;
+      max-width: 100%;
+    }
+  </style>
 </head>
 <body class="pt-20 pb-20 md:pb-0">
-  <slot />
+  <PageLoader />
+  <div class="overflow-x-clip w-full">
+    <slot />
+  </div>
 
   <!-- Modales Globales & Barra Inferior Móvil -->
   <ReviewModal />

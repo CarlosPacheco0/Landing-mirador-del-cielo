@@ -29,7 +29,7 @@ const gallerySchema = {
 
 <Layout
   title="Galería Completa | El Mirador del Cielo"
-  description="Explora todas las fotografías de El Mirador del Cielo en Río de Oro, Cesar: paisajes del Cerro del Monumento, gastronomía artesanal y noches bajo las luces."
+  description="Explora todas las fotografías de El Mirador del Cielo en Río de Oro, Cesar: paisajes del Cerro de la Virgen, gastronomía artesanal y noches bajo las luces."
   image="/images/galeria-cerro-noche.jpeg"
   breadcrumbs={[
     { name: "Inicio", item: homeURL },
@@ -50,16 +50,20 @@ const gallerySchema = {
           <span class="hidden sm:inline">Volver</span>
         </a>
 
-        <a href={url('/')} class="flex items-center gap-2 group">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-base shadow-[0_0_15px_rgba(245,158,11,0.3)]">
-            📸
-          </div>
-          <div class="flex flex-col">
-            <span class="text-base sm:text-lg font-black text-white font-serif leading-tight">
+        <a href={url('/')} data-brand-loader class="flex items-center gap-2.5 group">
+          <img
+            src={url('/images/logo-emblema.png')}
+            alt="Logo El Mirador del Cielo"
+            width="29"
+            height="44"
+            class="h-11 w-auto object-contain shrink-0 drop-shadow-[0_0_10px_rgba(245,158,11,0.3)] group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="flex flex-col min-w-0">
+            <span class="text-sm sm:text-lg font-black text-white font-serif leading-tight truncate">
               El Mirador <span class="text-gradient">del Cielo</span>
             </span>
-            <span class="text-[10px] text-amber-400 font-mono tracking-wide">
-              Galería Fotográfica • {fullGalleryItems.length} Fotos
+            <span class="text-[10px] text-amber-400 font-mono tracking-wide truncate">
+              Galería • {fullGalleryItems.length} Fotos
             </span>
           </div>
         </a>
@@ -91,7 +95,7 @@ const gallerySchema = {
     <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
     <div class="max-w-4xl mx-auto text-center relative z-10">
       <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4">
-        <span>📍 Cerro del Monumento, Río de Oro</span>
+        <span>📍 Cerro de la Virgen, Río de Oro</span>
       </div>
 
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-white font-serif mb-4 leading-tight">
