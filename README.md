@@ -35,15 +35,17 @@ MIRADOR DEL CIELO/
 ├── src/
 │   ├── components/         # Componentes modulares de Astro
 │   │   ├── About.astro
-│   │   ├── CartModal.astro
+│   │   ├── BottomNav.astro
 │   │   ├── FAQ.astro
 │   │   ├── Footer.astro
-│   │   ├── Gallery.astro
+│   │   ├── GalleryShowcase.astro
 │   │   ├── Hero.astro
 │   │   ├── LightboxModal.astro
 │   │   ├── Menu.astro
 │   │   ├── Navbar.astro
+│   │   ├── PageLoader.astro
 │   │   ├── ReservationModal.astro
+│   │   ├── ReviewModal.astro
 │   │   ├── Reviews.astro
 │   │   ├── SocialBanner.astro
 │   │   ├── Souvenirs.astro

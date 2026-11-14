@@ -1,8 +1,9 @@
 ---
 // src/components/ReservationModal.astro
+import { siteConfig } from '../data/site';
 ---
 
-<div id="reservation-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+<div id="reservation-modal" data-phone={siteConfig.contact.phone} class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
   <div class="bg-[#0D121D] w-full max-w-lg rounded-3xl border border-slate-800 p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
     <button onclick="closeReservationModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-xl p-2 rounded-full hover:bg-slate-800 cursor-pointer">✕</button>
 
@@ -99,8 +100,13 @@
     let message = `*¡Hola El Mirador del Cielo!* 🌄\n\nDeseo realizar una solicitud de reserva de mesa:\n\n👤 *Nombre:* ${name}\n📅 *Fecha:* ${date}\n🕒 *Hora:* ${time}\n👥 *Personas:* ${guests}\n✨ *Ocasión:* ${occasion}\n\n¿Tienen disponibilidad disponible? Gracias.`;
 
     const encoded = encodeURIComponent(message);
-    window.open(`https://wa.me/573000000000?text=${encoded}`, '_blank');
+    const modal = document.getElementById('reservation-modal');
+    const phone = (modal && modal.dataset && modal.dataset.phone) || '573000000000';
+    window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
     closeReservationModal();
+    if (typeof showToast === 'function') {
+      showToast('¡Solicitud de reserva lista! Abriendo WhatsApp...');
+    }
   }
 </script>
 

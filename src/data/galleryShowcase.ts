@@ -13,7 +13,7 @@ export interface GalleryShowcaseItem {
 
 export const aboutMonumentItem: GalleryShowcaseItem = {
   id: 0,
-  src: url('/images/monumento.png'),
+  src: url('/images/monumento.webp'),
   title: 'Vista Panorámica del Cerro',
   desc: 'Vista aérea del icónico Cerro de la Virgen en Río de Oro, hogar de El Mirador del Cielo.',
   category: 'ambiente'
@@ -23,7 +23,7 @@ export const aboutMonumentItem: GalleryShowcaseItem = {
 export const defaultGalleryItems: GalleryShowcaseItem[] = [
   {
     id: 1,
-    src: url('/images/galeria-masa-artesanal.jpeg'),
+    src: url('/images/galeria-masa-artesanal.webp'),
     title: 'Masa Artesanal de la Casa',
     desc: 'Preparación diaria con masa fresca artesanal para lograr pizzetas doradas y crocantes al horno.',
     category: 'gastronomia',
@@ -31,7 +31,7 @@ export const defaultGalleryItems: GalleryShowcaseItem[] = [
   },
   {
     id: 2,
-    src: url('/images/galeria-noche-terraza.jpeg'),
+    src: url('/images/galeria-noche-terraza.webp'),
     title: 'Noches Temáticas en el Deck',
     desc: 'Ambiente divertido y gastronomía al aire libre frente al letrero oficial de El Mirador.',
     category: 'noches',
@@ -39,7 +39,7 @@ export const defaultGalleryItems: GalleryShowcaseItem[] = [
   },
   {
     id: 3,
-    src: url('/images/galeria-noche-coctel.jpeg'),
+    src: url('/images/galeria-noche-coctel.webp'),
     title: 'Cócteles y Sodas de Altura',
     desc: 'Bebidas refrescantes con cítricos deshidratados bajo las guirnaldas de luces cálidas.',
     category: 'noches',
@@ -47,7 +47,7 @@ export const defaultGalleryItems: GalleryShowcaseItem[] = [
   },
   {
     id: 4,
-    src: url('/images/galeria-noche-pizzeta.jpeg'),
+    src: url('/images/galeria-noche-pizzeta.webp'),
     title: 'Pizzetas Recién Horneadas',
     desc: 'Nuestras pizzetas saladas listas para compartir en nuestras noches especiales en el cerro.',
     category: 'noches',
@@ -55,7 +55,7 @@ export const defaultGalleryItems: GalleryShowcaseItem[] = [
   },
   {
     id: 5,
-    src: url('/images/galeria-pizzeta-logo.jpeg'),
+    src: url('/images/galeria-pizzeta-logo.webp'),
     title: 'Pizzeta Dulce & Cóctel',
     desc: 'Pizzeta dulce artesanal con fresas frescas acompañada de cóctel frutal junto a la baranda del mirador.',
     category: 'gastronomia',
@@ -63,7 +63,7 @@ export const defaultGalleryItems: GalleryShowcaseItem[] = [
   },
   {
     id: 6,
-    src: url('/images/galeria-cerro-noche.jpeg'),
+    src: url('/images/galeria-cerro-noche.webp'),
     title: 'Río de Oro Iluminado',
     desc: 'Panorámica en hora azul del Monumento a la Virgen iluminado y el municipio entre montañas.',
     category: 'ambiente',
@@ -84,42 +84,42 @@ export const fullGalleryItems: GalleryShowcaseItem[] = [
   aboutMonumentItem,
   {
     id: 8,
-    src: url('/images/galeria-terraza-malteada.jpeg'),
+    src: url('/images/galeria-terraza-malteada.webp'),
     title: 'Noches Bajo las Luces',
     desc: 'Sonrisas, brisa fresca de montaña y malteadas artesanales disfrutadas en terraza.',
     category: 'ambiente'
   },
   {
     id: 9,
-    src: url('/images/galeria-malteada-crocante.jpeg'),
+    src: url('/images/galeria-malteada-crocante.webp'),
     title: 'Malteadas Artesanales',
     desc: 'Malteadas cremosas coronadas con chantilly y topping crocante para acompañar la vista.',
     category: 'gastronomia'
   },
   {
     id: 10,
-    src: url('/images/galeria-torta-malteada.jpeg'),
+    src: url('/images/galeria-torta-malteada.webp'),
     title: 'Tarde de Torta & Malteada',
     desc: 'Malteada de arándanos y porción de torta casera bañada en salsa de chocolate.',
     category: 'gastronomia'
   },
   {
     id: 11,
-    src: url('/images/galeria-pizzeta-coctel.jpeg'),
+    src: url('/images/galeria-pizzeta-coctel.webp'),
     title: 'Vista Completa en la Baranda',
     desc: 'Nuestra pizzeta dulce de fresas y cóctel rosado con la panorámica nocturna de fondo.',
     category: 'gastronomia'
   },
   {
     id: 12,
-    src: url('/images/recuerdo-mesa-polaroid.jpeg'),
+    src: url('/images/recuerdo-mesa-polaroid.webp'),
     title: 'Sabores y Recuerdos en la Mesa',
     desc: 'Pizzetas artesanales, bebidas refrescantes y capturas instantáneas de tu visita.',
     category: 'gastronomia'
   },
   {
     id: 13,
-    src: url('/images/galeria-noche-dulce.jpeg'),
+    src: url('/images/galeria-noche-dulce.webp'),
     title: 'Momentos Dulces Bajo el Cielo',
     desc: 'Malteadas especiales y postres de la casa disfrutados en nuestras veladas nocturnas.',
     category: 'noches'

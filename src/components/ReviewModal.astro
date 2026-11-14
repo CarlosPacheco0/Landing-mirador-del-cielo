@@ -1,10 +1,10 @@
 ---
 // src/components/ReviewModal.astro
-const googleMapsPlaceUrl =
-  'https://www.google.com/maps/place/MIRADOR+DEL+CIELO/@8.2605735,-73.4223439,12z/data=!4m10!1m2!2m1!1smirador+del+cielo!3m6!1s0x8e677d004a625959:0xd89b6c13b37b8fd8!8m2!3d8.2910646!4d-73.3840203!15sChFtaXJhZG9yIGRlbCBjaWVsb5IBC2NvZmZlZV9zaG9w4AEA!16s%2Fg%2F11z4dlswfq';
+import { siteConfig } from '../data/site';
+const googleMapsReviewUrl = siteConfig.googleMaps.reviewUrl;
 ---
 
-<div id="review-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+<div id="review-modal" data-phone={siteConfig.contact.phone} class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
   <div class="bg-[#0D121D] w-full max-w-lg rounded-3xl border border-slate-800 p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
     <button onclick="closeReviewModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-xl p-2 rounded-full hover:bg-slate-800 cursor-pointer" title="Cerrar">✕</button>
 
@@ -54,7 +54,7 @@ const googleMapsPlaceUrl =
 
       <!-- Alternativa Google Maps -->
       <div class="pt-2 text-center border-t border-slate-800/80">
-        <a href={googleMapsPlaceUrl} target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-amber-400 inline-flex items-center gap-1 transition-colors">
+        <a href={googleMapsReviewUrl} target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-amber-400 inline-flex items-center gap-1 transition-colors">
           <span>📍</span>
           <span>¿Prefieres calificar directamente en Google Maps? Toca aquí</span>
         </a>
@@ -121,7 +121,9 @@ const googleMapsPlaceUrl =
     const message = `*¡Hola El Mirador del Cielo!* 🌄\n*Quiero compartir mi reseña sobre mi visita:*\n\n${starsEmoji} *Calificación:* ${selectedRating}/5 estrellas\n👤 *Nombre:* ${name}\n📍 *Procedencia:* ${origin}\n💬 *Comentario:* "${comment}"\n\n_¡Autorizo publicar mi reseña en la web oficial!_`;
 
     const encoded = encodeURIComponent(message);
-    window.open(`https://wa.me/573000000000?text=${encoded}`, '_blank');
+    const modal = document.getElementById('review-modal');
+    const phone = (modal && modal.dataset && modal.dataset.phone) || '573000000000';
+    window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
     closeReviewModal();
     if (typeof showToast === 'function') {
       showToast('¡Gracias por tu reseña! Abriendo WhatsApp...');

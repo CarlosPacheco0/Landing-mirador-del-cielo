@@ -1,6 +1,7 @@
 ---
 // src/components/BottomNav.astro
 import { url } from '../utils/paths';
+import { siteConfig } from '../data/site';
 
 const pathname = Astro.url.pathname;
 const isMenu = pathname.includes('/menu');
@@ -55,13 +56,15 @@ const isHome = !isMenu;
       <span class="text-[10px] font-bold tracking-tight">Opinar</span>
     </button>
 
-    <!-- 5. Dónde Estamos / Cómo Llegar -->
+    <!-- 5. Dónde Estamos / Cómo Llegar (GPS) -->
     <a 
-      href={url('/#contacto')} 
+      href={siteConfig.googleMaps.directionsUrl} 
+      target="_blank"
+      rel="noopener noreferrer"
       class="flex flex-col items-center justify-center py-1 text-slate-400 hover:text-white transition-all duration-200 group"
-      title="Cómo Llegar"
+      title="Cómo Llegar en GPS con Google Maps"
     >
-      <span class="text-lg leading-none mb-1 transition-transform group-active:scale-125">📍</span>
+      <span class="text-lg leading-none mb-1 transition-transform group-active:scale-125">🧭</span>
       <span class="text-[10px] font-bold tracking-tight">Llegar</span>
     </a>
 

@@ -10,7 +10,7 @@ export interface GalleryItem {
 export const galleryItems: GalleryItem[] = [
   {
     id: 0,
-    src: url('/images/monumento.png'),
+    src: url('/images/monumento.webp'),
     title: 'Vista Panorámica del Cerro',
     desc: 'Atardecer único desde el Cerro del Monumento a la Virgen en Río de Oro.'
   },
@@ -34,13 +34,13 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     id: 4,
-    src: url('/images/pin01.png'),
+    src: url('/images/pin01.webp'),
     title: 'Pin Fachada El Mirador',
     desc: 'Edición conmemorativa en metal con detalles de la fachada original.'
   },
   {
     id: 5,
-    src: url('/images/pin02.png'),
+    src: url('/images/pin02.webp'),
     title: 'Pin Jaguar 368 Años',
     desc: 'Pin oficial celebrando la historia y fauna representativa de Río de Oro.'
   }

@@ -9,7 +9,7 @@ import { url } from '../utils/paths';
     <!-- Brand Logo -->
     <a href="#inicio" data-brand-loader class="flex items-center gap-2 sm:gap-3 group min-w-0">
       <img
-        src={url('/images/logo-emblema.png')}
+        src={url('/images/logo-emblema.webp')}
         alt="Logo El Mirador del Cielo"
         width="32"
         height="48"
@@ -46,21 +46,30 @@ import { url } from '../utils/paths';
   </div>
 
   <!-- Mobile Menu Dropdown -->
-  <div id="mobile-menu" class="hidden md:hidden bg-[#0B0F17]/95 backdrop-blur-xl border-b border-slate-800 px-6 py-6 space-y-4">
-    <a href="#inicio" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Inicio</a>
-    <a href="#conoce" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Conoce</a>
-    <a href="#menu" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Menú</a>
-    <a href="#galeria" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Galería</a>
-    <a href="#souvenirs" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Recuerdos</a>
-    <a href="#resenas" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">Reseñas</a>
-    <a href="#faq" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-2">FAQ</a>
+  <div id="mobile-menu" class="hidden md:hidden bg-[#0B0F17]/95 backdrop-blur-xl border-b border-slate-800 px-6 py-6 space-y-3">
+    <!-- Acceso Directo Destacado a Carta Digital -->
+    <a href={url('/menu')} class="flex items-center justify-between text-amber-300 hover:text-white font-bold py-2.5 px-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl mb-1 shadow-sm">
+      <span class="flex items-center gap-2.5">
+        <span class="text-base">🍽️</span>
+        <span class="text-sm">Carta Digital Completa</span>
+      </span>
+      <span class="text-xs bg-amber-500/20 text-amber-300 font-mono px-2 py-0.5 rounded-full font-bold">Ver →</span>
+    </a>
 
-    <div class="pt-2 flex flex-col gap-2">
-      <button onclick="openReservationModal(); closeMobileMenu();" class="w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 rounded-full cursor-pointer">
+    <a href="#inicio" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-1.5">Inicio</a>
+    <a href="#conoce" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-1.5">Conoce</a>
+    <a href="#menu" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-1.5">Especialidades</a>
+    <a href="#galeria" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-1.5">Galería</a>
+    <a href="#souvenirs" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-1.5">Recuerdos</a>
+    <a href="#resenas" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-1.5">Reseñas</a>
+    <a href="#faq" onclick="closeMobileMenu()" class="mobile-link block text-slate-200 hover:text-amber-400 font-medium py-1.5">FAQ</a>
+
+    <div class="pt-3 flex flex-col gap-2.5">
+      <button onclick="openReservationModal(); closeMobileMenu();" class="w-full text-center bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-3 rounded-full cursor-pointer shadow-lg shadow-amber-500/25">
         📅 Reservar Mesa
       </button>
-      <a href="#contacto" onclick="closeMobileMenu()" class="mobile-link block w-full text-center border border-slate-700 text-slate-300 font-bold py-2.5 rounded-full">
-        📍 Dónde Estamos
+      <a href="#contacto" onclick="closeMobileMenu()" class="mobile-link block w-full text-center border border-slate-700 hover:border-slate-500 text-slate-300 font-bold py-2.5 rounded-full">
+        📍 Dónde Estamos & GPS
       </a>
     </div>
   </div>

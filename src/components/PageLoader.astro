@@ -25,7 +25,7 @@ import { url } from '../utils/paths';
     <div class="relative z-10 flex items-center justify-center w-[74px] h-[112px] sm:w-[86px] sm:h-[130px] overflow-hidden rounded-[999px] drop-shadow-[0_0_24px_rgba(245,158,11,0.45)] loader-float">
       <img
         id="page-loader-logo"
-        src={url('/images/logo-emblema.png')}
+        src={url('/images/logo-emblema.webp')}
         alt="Logo El Mirador del Cielo"
         width="120"
         height="182"
@@ -217,43 +217,25 @@ import { url } from '../utils/paths';
     const loader = document.getElementById('page-loader');
     if (!loader) return;
 
-    const minDisplayMs = 1800;
-    const maxFallbackMs = 3600;
-    const fadeInMs = 260;
-    const fadeOutMs = 520;
-    const HANDOFF_KEY = 'mirador-loader-handoff';
+    const minDisplayMs = 1200;
+    const maxFallbackMs = 2400;
+    const fadeInMs = 200;
+    const fadeOutMs = 400;
+    const FIRST_LOAD_KEY = 'mirador_first_load_done';
 
     let activeCycleId = 1;
-    let isShowing = true;
-    let isNavigatingAway = false;
-    let handoffAge = 0;
+    let isShowing = false;
 
+    // Verificar si ya cargó por primera vez en esta sesión
+    let hasLoadedBefore = false;
     try {
-      const raw = window.sessionStorage.getItem(HANDOFF_KEY);
-      if (raw) {
-        window.sessionStorage.removeItem(HANDOFF_KEY);
-        const ts = Number(raw);
-        if (!Number.isNaN(ts) && ts > 0) {
-          const diff = Date.now() - ts;
-          if (diff >= 0 && diff < 5000) {
-            handoffAge = Math.min(diff, 900);
-            loader.classList.add('loader-handoff');
-          }
-        }
-      }
+      hasLoadedBefore = !!window.sessionStorage.getItem(FIRST_LOAD_KEY);
     } catch (_) {}
 
-    document.documentElement.classList.add('loader-lock');
-    const initialStartTime = Date.now() - handoffAge;
-
-    function finishDismiss(immediate, expectedCycleId) {
-      if (expectedCycleId !== undefined && expectedCycleId !== activeCycleId) return;
-      if (!isShowing && !immediate) return;
-
+    function dismissLoader(immediate) {
       isShowing = false;
-      isNavigatingAway = false;
       document.documentElement.classList.remove('loader-lock');
-      loader.classList.remove('loader-entering', 'loader-handoff');
+      loader.classList.remove('loader-entering');
 
       if (immediate) {
         loader.classList.add('loader-hidden');
@@ -262,96 +244,67 @@ import { url } from '../utils/paths';
       }
 
       loader.classList.add('loader-hidden');
-      const captureId = activeCycleId;
       setTimeout(() => {
-        if (captureId !== activeCycleId) return;
-        loader.style.display = 'none';
+        if (!isShowing) {
+          loader.style.display = 'none';
+        }
       }, fadeOutMs);
     }
 
-    function scheduleInitialDismiss() {
-      const cycleId = 1;
-      if (cycleId !== activeCycleId || !isShowing) return;
-      const elapsed = Date.now() - initialStartTime;
-      const remaining = Math.max(0, minDisplayMs - elapsed);
-      setTimeout(() => finishDismiss(false, cycleId), remaining);
+    if (hasLoadedBefore) {
+      // Ya cargó previamente: ocultar de inmediato sin demoras
+      dismissLoader(true);
+    } else {
+      // Primera vez que carga en la sesión: mostrar brevemente y registrar
+      isShowing = true;
+      document.documentElement.classList.add('loader-lock');
+      try {
+        window.sessionStorage.setItem(FIRST_LOAD_KEY, 'true');
+      } catch (_) {}
+
+      const startTime = Date.now();
+      const finishFirstLoad = () => {
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, minDisplayMs - elapsed);
+        setTimeout(() => dismissLoader(false), remaining);
+      };
+
+      if (document.readyState === 'complete') {
+        finishFirstLoad();
+      } else {
+        window.addEventListener('load', finishFirstLoad, { once: true });
+      }
+      setTimeout(() => dismissLoader(false), maxFallbackMs);
     }
 
-    function triggerBrandLoader(options) {
-      if (isShowing || isNavigatingAway) return;
-
-      const targetHash = options && options.targetHash ? options.targetHash : '';
-      const navigateTo = options && options.navigateTo ? options.navigateTo : '';
-
+    // Función para activar el loader ÚNICAMENTE al hacer clic en el logo/emblema principal
+    function triggerBrandLoader() {
+      if (isShowing) return;
+      isShowing = true;
       activeCycleId += 1;
       const cycleId = activeCycleId;
-      const cycleStartTime = Date.now();
-      isShowing = true;
 
-      loader.classList.remove('loader-handoff');
-      loader.classList.add('loader-entering', 'loader-hidden');
+      loader.classList.add('loader-entering');
       loader.style.display = 'flex';
       void loader.offsetWidth;
-
       document.documentElement.classList.add('loader-lock');
       loader.classList.remove('loader-hidden');
 
-      if (navigateTo) {
-        isNavigatingAway = true;
-        setTimeout(() => {
-          if (cycleId !== activeCycleId) return;
-          try {
-            window.sessionStorage.setItem(HANDOFF_KEY, String(cycleStartTime));
-          } catch (_) {}
-          window.location.assign(navigateTo);
-        }, fadeInMs);
-        setTimeout(() => finishDismiss(false, cycleId), 6000);
-        return;
+      // Scroll suave a inicio
+      try {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      } catch (_) {
+        window.scrollTo(0, 0);
       }
 
       setTimeout(() => {
-        if (cycleId !== activeCycleId) return;
-        loader.classList.remove('loader-entering');
-
-        const jumpTop = () => {
-          try {
-            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-          } catch (_) {
-            window.scrollTo(0, 0);
-          }
-        };
-
-        if (targetHash && targetHash !== '#inicio') {
-          const targetEl = document.querySelector(targetHash);
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'instant', block: 'start' });
-          } else {
-            jumpTop();
-          }
-        } else {
-          jumpTop();
+        if (cycleId === activeCycleId) {
+          dismissLoader(false);
         }
-
-        if (targetHash && window.location.hash !== targetHash && window.history && window.history.replaceState) {
-          window.history.replaceState(null, '', targetHash);
-        }
-        window.dispatchEvent(new Event('scroll'));
-      }, fadeInMs);
-
-      setTimeout(() => finishDismiss(false, cycleId), minDisplayMs);
-      setTimeout(() => finishDismiss(false, cycleId), maxFallbackMs);
+      }, minDisplayMs);
     }
 
-    if (document.readyState === 'complete') {
-      scheduleInitialDismiss();
-    } else {
-      window.addEventListener('load', scheduleInitialDismiss, { once: true });
-    }
-
-    // Respaldo inicial para evitar bloqueos si algún recurso externo tarda demasiado
-    setTimeout(() => finishDismiss(false, 1), maxFallbackMs);
-
-    // Mostrar el loader al seleccionar el icono/marca de El Mirador del Cielo
+    // Listener exclusivo para el logo / emblema principal de la marca
     document.addEventListener('click', (event) => {
       const target = event.target instanceof Element ? event.target.closest('[data-brand-loader]') : null;
       if (!target) return;
@@ -359,37 +312,23 @@ import { url } from '../utils/paths';
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
 
       const rawHref = target.getAttribute('href') || '#inicio';
-      if (rawHref.startsWith('#')) {
+
+      // Si estamos en la página principal y apunta a #inicio o /
+      if (rawHref.startsWith('#') || rawHref === '/' || rawHref === window.location.pathname) {
         event.preventDefault();
         if (typeof window.closeMobileMenu === 'function') {
           window.closeMobileMenu();
         }
-        triggerBrandLoader({ targetHash: rawHref });
-        return;
+        triggerBrandLoader();
       }
-
-      try {
-        const destUrl = new URL(rawHref, window.location.href);
-        if (destUrl.origin === window.location.origin && destUrl.pathname === window.location.pathname) {
-          event.preventDefault();
-          if (typeof window.closeMobileMenu === 'function') {
-            window.closeMobileMenu();
-          }
-          triggerBrandLoader({ targetHash: destUrl.hash || '#inicio' });
-          return;
-        }
-        event.preventDefault();
-        triggerBrandLoader({ navigateTo: destUrl.href });
-      } catch (_) {}
     });
 
     window.showPageLoader = triggerBrandLoader;
 
-    // Asegura ocultar el loader al regresar desde bfcache del navegador
+    // Asegurar que el loader no quede bloqueado al volver atrás con bfcache
     window.addEventListener('pageshow', (event) => {
       if (event.persisted) {
-        activeCycleId += 1;
-        finishDismiss(true, activeCycleId);
+        dismissLoader(true);
       }
     });
   })();

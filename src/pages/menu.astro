@@ -3,7 +3,7 @@
 import Layout from '../layouts/Layout.astro';
 import ReservationModal from '../components/ReservationModal.astro';
 import Toast from '../components/Toast.astro';
-import { menuItems, menuCategories, DEFAULT_PLACEHOLDER_IMAGE } from '../data/menu';
+import { menuItems, menuCategories } from '../data/menu';
 import { url } from '../utils/paths';
 
 const getCategoryCount = (catId: string) => {
@@ -55,7 +55,7 @@ const menuSchema = {
 <Layout 
   title="Carta Gastronómica & Menú Digital | El Mirador del Cielo" 
   description="Explora nuestra carta completa: pizzetas artesanales, granizados, cafés calientes, cócteles y snacks en Río de Oro. Consulta opciones y precios oficiales."
-  image="/images/monumento.png"
+  image="/images/monumento.webp"
   breadcrumbs={[
     { name: "Inicio", item: homeURL },
     { name: "Carta Gastronómica", item: menuURL }
@@ -79,7 +79,7 @@ const menuSchema = {
 
         <a href={url('/')} data-brand-loader class="flex items-center gap-2.5 group">
           <img
-            src={url('/images/logo-emblema.png')}
+            src={url('/images/logo-emblema.webp')}
             alt="Logo El Mirador del Cielo"
             width="29"
             height="44"
@@ -296,7 +296,7 @@ const menuSchema = {
             )}
           </div>
 
-          <!-- Pie de tarjeta: Precio -->
+          <!-- Pie de tarjeta: Precio y Acción -->
           <div class="pt-3 border-t border-slate-800/60 flex items-center justify-between mt-auto">
             <div>
               <span class="text-[10px] text-slate-500 uppercase tracking-widest block font-medium">Precio</span>
@@ -305,9 +305,15 @@ const menuSchema = {
               </span>
             </div>
 
-            <span class="text-[11px] font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
-              Oficial
-            </span>
+            <button
+              type="button"
+              onclick="openReservationModal()"
+              class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-amber-300 hover:text-white bg-amber-500/10 hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 border border-amber-500/30 hover:border-amber-400 px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer active:scale-95"
+              title="Reservar mesa para degustar este plato"
+            >
+              <span>📅</span>
+              <span>Reservar</span>
+            </button>
           </div>
         </div>
       ))}
@@ -441,6 +447,11 @@ const menuSchema = {
     }
 
     closeCategoriesDropdown();
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('cat', category);
+      window.history.replaceState(null, '', url.pathname + '?' + url.searchParams.toString());
+    } catch (_) {}
     applyMenuFilters();
   }
 
@@ -466,6 +477,11 @@ const menuSchema = {
     }
 
     closeCategoriesDropdown();
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('cat');
+      window.history.replaceState(null, '', url.pathname);
+    } catch (_) {}
     applyMenuFilters();
   }
 
@@ -509,4 +525,24 @@ const menuSchema = {
       applyMenuFilters();
     });
   }
+
+  // Soporte directo de categoría por URL (ej: /menu?cat=pizzetas, /menu?cat=granizados)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const initialCat = params.get('cat');
+    if (initialCat) {
+      if (initialCat === 'mas-vendidos') {
+        filterMenuCategory('mas-vendidos');
+      } else {
+        const itemBtn = document.querySelector(`.dropdown-cat-item[data-category="${initialCat}"]`);
+        if (itemBtn) {
+          const iconSpan = itemBtn.querySelector('span:first-child');
+          const nameSpan = itemBtn.querySelector('span:nth-child(2)');
+          const icon = iconSpan ? iconSpan.innerText : '📂';
+          const name = nameSpan ? nameSpan.innerText : initialCat;
+          selectDropdownCategory(initialCat, icon, name);
+        }
+      }
+    }
+  } catch (_) {}
 </script>

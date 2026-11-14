@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { url } from '../utils/paths';
+import { siteConfig } from '../data/site';
 import BottomNav from '../components/BottomNav.astro';
 import ReviewModal from '../components/ReviewModal.astro';
 import PageLoader from '../components/PageLoader.astro';
@@ -21,7 +22,7 @@ interface Props {
 const {
   title = "El Mirador del Cielo | Gastronomía & Atardeceres en Río de Oro",
   description = "El Mirador del Cielo en Río de Oro, Cesar. Disfruta de la mejor vista panorámica, granizados artesanales, pizzetas crocantes y momentos inolvidables.",
-  image = "/images/atardecer.png",
+  image = "/images/atardecer.webp",
   breadcrumbs,
   additionalSchema
 } = Astro.props;
@@ -30,7 +31,7 @@ const defaultSite = 'https://carlospacheco0.github.io';
 const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, '') : defaultSite;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || defaultSite).toString();
 const ogImageURL = new URL(url(image), Astro.site || defaultSite).toString();
-const logoFullURL = new URL(url('/images/logo.jpeg'), Astro.site || defaultSite).toString();
+const logoFullURL = new URL(url('/images/logo.webp'), Astro.site || defaultSite).toString();
 const menuURL = new URL(url('/menu'), Astro.site || defaultSite).toString();
 
 // 1. Schema LocalBusiness & Restaurant de Google con datos completos
@@ -46,7 +47,7 @@ const restaurantSchema = {
     "Mirador Cerro de la Virgen"
   ],
   "url": canonicalURL,
-  "telephone": "+573000000000",
+  "telephone": siteConfig.contact.phoneFormatted,
   "menu": menuURL,
   "hasMenu": menuURL,
   "acceptsReservations": "True",
@@ -65,40 +66,40 @@ const restaurantSchema = {
   "image": [
     ogImageURL,
     new URL(url('/images/mirador.webp'), Astro.site || defaultSite).toString(),
-    new URL(url('/images/monumento.png'), Astro.site || defaultSite).toString(),
-    new URL(url('/images/atardecer.png'), Astro.site || defaultSite).toString(),
-    new URL(url('/images/galeria-pizzeta-logo.jpeg'), Astro.site || defaultSite).toString(),
-    new URL(url('/images/galeria-cerro-noche.jpeg'), Astro.site || defaultSite).toString()
+    new URL(url('/images/monumento.webp'), Astro.site || defaultSite).toString(),
+    new URL(url('/images/atardecer.webp'), Astro.site || defaultSite).toString(),
+    new URL(url('/images/galeria-pizzeta-logo.webp'), Astro.site || defaultSite).toString(),
+    new URL(url('/images/galeria-cerro-noche.webp'), Astro.site || defaultSite).toString()
   ],
   "description": description,
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Cerro de la Virgen",
-    "addressLocality": "Río de Oro",
-    "addressRegion": "Cesar",
-    "postalCode": "205010",
-    "addressCountry": "CO"
+    "streetAddress": siteConfig.location.address,
+    "addressLocality": siteConfig.location.locality,
+    "addressRegion": siteConfig.location.region,
+    "postalCode": siteConfig.location.postalCode,
+    "addressCountry": siteConfig.location.country
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 8.2910646,
-    "longitude": -73.3840203
+    "latitude": siteConfig.location.coordinates.latitude,
+    "longitude": siteConfig.location.coordinates.longitude
   },
-  "hasMap": "https://www.google.com/maps/place/MIRADOR+DEL+CIELO/@8.2605735,-73.4223439,12z/data=!4m10!1m2!2m1!1smirador+del+cielo!3m6!1s0x8e677d004a625959:0xd89b6c13b37b8fd8!8m2!3d8.2910646!4d-73.3840203!15sChFtaXJhZG9yIGRlbCBjaWVsb5IBC2NvZmZlZV9zaG9w4AEA!16s%2Fg%2F11z4dlswfq",
+  "hasMap": siteConfig.googleMaps.placeUrl,
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "15:00",
-      "closes": "22:00"
+      "opens": siteConfig.schedule.opens,
+      "closes": siteConfig.schedule.closes
     }
   ],
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "ratingCount": "1",
-    "bestRating": "5",
-    "worstRating": "1"
+    "ratingValue": siteConfig.rating.ratingValue,
+    "ratingCount": siteConfig.rating.ratingCount,
+    "bestRating": siteConfig.rating.bestRating,
+    "worstRating": siteConfig.rating.worstRating
   },
   "amenityFeature": [
     { "@type": "LocationFeatureSpecification", "name": "Pet Friendly", "value": true },
@@ -156,9 +157,9 @@ const allSchemas = [
 
   <!-- Metadatos de Geolocalización para SEO Local -->
   <meta name="geo.region" content="CO-CES" />
-  <meta name="geo.placename" content="Río de Oro, Cesar" />
-  <meta name="geo.position" content="8.2910646;-73.3840203" />
-  <meta name="ICBM" content="8.2910646, -73.3840203" />
+  <meta name="geo.placename" content={`${siteConfig.location.locality}, ${siteConfig.location.region}`} />
+  <meta name="geo.position" content={`${siteConfig.location.coordinates.latitude};${siteConfig.location.coordinates.longitude}`} />
+  <meta name="ICBM" content={`${siteConfig.location.coordinates.latitude}, ${siteConfig.location.coordinates.longitude}`} />
 
   <!-- Palabras clave locales estratégicas -->
   <meta name="keywords" content="El Mirador del Cielo, Rio de Oro Cesar, restaurante mirador, atardeceres Ocaña, turismo Cesar, pizzetas artesanales, granizados, cerro de la virgen, mirador de la virgen, café de origen, gastronomía Río de Oro" />
@@ -192,7 +193,7 @@ const allSchemas = [
   <link rel="apple-touch-icon" sizes="512x512" href={url('/images/logo-favicon.png')} />
   
   <!-- Preload Logo & Hero Image para carga instantánea (LCP) -->
-  <link rel="preload" as="image" href={url('/images/logo-emblema.png')} fetchpriority="high" />
+  <link rel="preload" as="image" href={url('/images/logo-emblema.webp')} fetchpriority="high" />
   <link rel="preload" as="image" href={url('/images/mirador.webp')} fetchpriority="high" />
   
   <!-- Google Fonts -->

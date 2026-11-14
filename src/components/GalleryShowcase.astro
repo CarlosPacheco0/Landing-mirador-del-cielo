@@ -1,11 +1,20 @@
 ---
 // src/components/GalleryShowcase.astro
-import { defaultGalleryItems, fullGalleryItems } from '../data/galleryShowcase';
+import { fullGalleryItems } from '../data/galleryShowcase';
 import { url } from '../utils/paths';
+
+const featuredCount = fullGalleryItems.filter(i => i.featured).length;
+const totalCount = fullGalleryItems.length;
+
+const photoCategories = [
+  { id: 'ambiente', name: 'Ambiente & Vistas', icon: '🌄', count: fullGalleryItems.filter(i => i.category === 'ambiente').length },
+  { id: 'gastronomia', name: 'Gastronomía & Platos', icon: '🍕', count: fullGalleryItems.filter(i => i.category === 'gastronomia').length },
+  { id: 'noches', name: 'Noches Temáticas', icon: '🌙', count: fullGalleryItems.filter(i => i.category === 'noches').length }
+];
 ---
 
 <section class="py-24 px-4 md:px-12 lg:px-20 max-w-7xl mx-auto" id="galeria">
-  <div class="text-center mb-14" data-aos="fade-up">
+  <div class="text-center mb-10" data-aos="fade-up">
     <span class="text-amber-400 font-semibold text-xs sm:text-sm tracking-widest uppercase mb-2 block">
       Galería Visual
     </span>
@@ -13,19 +22,116 @@ import { url } from '../utils/paths';
       Postales de <span class="text-gradient">El Mirador</span>
     </h2>
     <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto font-light">
-      Nuestros platos artesanales, noches temáticas y vistas del cerro. Toca cualquier fotografía para verla en pantalla completa.
+      Nuestros platos artesanales, noches temáticas y vistas del cerro. Toca cualquier fotografía para verla en pantalla completa o filtra por categoría.
     </p>
   </div>
 
-  <!-- Grid de 6 imágenes destacadas por defecto -->
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12">
-    {defaultGalleryItems.map((item, index) => (
+  <!-- SELECTOR COMPACTO DE CATEGORÍAS (Destacadas + Dropdown "Más Categorías") -->
+  <div class="mb-6 relative z-30" data-aos="fade-up">
+    <div class="flex items-center justify-center gap-2 sm:gap-3 max-w-xl mx-auto px-2">
+      
+      <!-- 1. Botón fijo principal: 🔥 Destacadas -->
+      <button 
+        id="home-btn-featured-tab"
+        type="button"
+        onclick="filterHomeGalleryCategory('destacadas')"
+        class="category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab"
+      >
+        <span class="text-sm">🔥</span>
+        <span class="tracking-wide uppercase text-[11px] sm:text-xs">Destacadas</span>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/30 text-amber-100 font-bold">
+          {featuredCount}
+        </span>
+      </button>
+
+      <!-- 2. Botón y Dropdown: Ver Más Categorías -->
+      <div class="relative inline-block text-left" id="home-gallery-dropdown-wrapper">
+        <button 
+          id="home-gallery-more-btn"
+          type="button"
+          onclick="toggleHomeGalleryDropdown()"
+          class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md"
+          aria-expanded="false"
+        >
+          <span id="home-gallery-more-icon" class="text-sm">📂</span>
+          <span id="home-gallery-more-text" class="tracking-wide uppercase text-[11px] sm:text-xs">Más Categorías</span>
+          <svg id="home-gallery-more-chevron" class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+
+        <!-- Menú Flotante con scroll estilizado -->
+        <div 
+          id="home-gallery-dropdown-menu" 
+          class="hidden absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-72 sm:w-80 max-h-96 overflow-y-auto bg-[#0d121d] border border-slate-800/90 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-xl divide-y divide-slate-800/50"
+        >
+          <!-- Opción Toda la Galería -->
+          <div class="pb-1.5 mb-1.5">
+            <button 
+              type="button"
+              onclick="selectHomeGalleryDropdownCategory('todas', '📸', 'Toda la Galería', event)"
+              class="dropdown-cat-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition duration-150 cursor-pointer"
+              data-category="todas"
+            >
+              <div class="flex items-center gap-2.5">
+                <span class="text-base">📸</span>
+                <span class="uppercase tracking-wider font-bold">Toda la Galería</span>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+                {totalCount}
+              </span>
+            </button>
+          </div>
+
+          <!-- Lista de categorías restantes -->
+          <div class="pt-1.5 space-y-1">
+            {photoCategories.map((cat) => (
+              <button 
+                type="button"
+                onclick={`selectHomeGalleryDropdownCategory('${cat.id}', '${cat.icon}', '${cat.name}', event)`}
+                class="dropdown-cat-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition duration-150 cursor-pointer"
+                data-category={cat.id}
+              >
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base">{cat.icon}</span>
+                  <span class="tracking-wide text-[11px] sm:text-xs text-left">{cat.name}</span>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+                  {cat.count}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INDICADOR DE ESTADO -->
+  <div class="flex flex-col sm:flex-row justify-between items-center mb-8 text-xs text-slate-400 px-2 gap-2 border-b border-slate-800/60 pb-3 max-w-4xl mx-auto" data-aos="fade-up">
+    <div class="flex items-center gap-2">
+      <span id="home-gallery-active-indicator" class="text-amber-400 font-bold uppercase tracking-wider text-xs bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+        🔥 Mostrando: Destacadas
+      </span>
+      <span>(<strong id="home-gallery-photo-count" class="text-white font-mono">{featuredCount}</strong> fotografías)</span>
+    </div>
+    <span class="text-slate-500">✨ Toca cualquier foto para pantalla completa</span>
+  </div>
+
+  <!-- Grid de fotografías filtrables -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6 mb-12" id="home-gallery-grid">
+    {fullGalleryItems.map((item, index) => (
       <button
         type="button"
-        onclick={`openLightboxBySrc('${item.src}', 'featured')`}
-        class="group relative aspect-[4/5] rounded-2xl overflow-hidden border border-slate-800/90 hover:border-amber-500/60 bg-slate-900 shadow-2xl cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+        data-home-gallery-card
+        data-category={item.category}
+        data-featured={item.featured ? 'true' : 'false'}
+        onclick={`openLightboxBySrc('${item.src}', 'full')`}
+        style={item.featured ? 'display: block;' : 'display: none;'}
+        class="group relative aspect-[4/5] rounded-2xl overflow-hidden border border-slate-800/90 hover:border-amber-500/60 bg-slate-900 shadow-2xl cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all duration-300"
         data-aos="fade-up"
-        data-aos-delay={(index % 3) * 100}
+        data-aos-delay={(index % 3) * 80}
         aria-label={`Ver ${item.title} en pantalla completa`}
       >
         <img
@@ -37,14 +143,21 @@ import { url } from '../utils/paths';
 
         <!-- Indicador visual para pantalla completa -->
         <span
-          class="absolute top-3 right-3 bg-slate-950/75 backdrop-blur-md border border-slate-700/70 text-slate-200 group-hover:text-amber-300 group-hover:border-amber-400/60 text-xs font-semibold px-2.5 py-1 rounded-full transition-colors duration-200 pointer-events-none"
+          class="absolute top-2.5 right-2.5 bg-slate-950/75 backdrop-blur-md border border-slate-700/70 text-slate-200 group-hover:text-amber-300 group-hover:border-amber-400/60 text-xs font-semibold px-2.5 py-1 rounded-full transition-colors duration-200 pointer-events-none"
           aria-hidden="true"
         >
           ⛶
         </span>
 
+        <!-- Badge de categoría sutil -->
+        <span
+          class="absolute top-2.5 left-2.5 bg-black/65 backdrop-blur-md border border-slate-700/60 text-amber-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full pointer-events-none"
+        >
+          {item.category === 'ambiente' ? '🌄 Vistas' : item.category === 'gastronomia' ? '🍕 Platos' : '🌙 Noches'}
+        </span>
+
         <!-- Pie sutil en hover / toque -->
-        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 sm:p-4 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 sm:p-4 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
           <p class="text-white font-bold text-xs sm:text-sm font-serif leading-snug">{item.title}</p>
           <span class="text-amber-300 text-[10px] sm:text-xs font-medium">Tocar para ampliar ↗</span>
         </div>
@@ -55,12 +168,139 @@ import { url } from '../utils/paths';
   <!-- Botón para abrir la vista completa de galería -->
   <div class="text-center" data-aos="fade-up">
     <a
+      id="home-gallery-full-btn"
       href={url('/galeria')}
+      data-base-url={url('/galeria')}
       class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black py-4 px-8 sm:px-10 rounded-full text-xs sm:text-sm uppercase tracking-widest transition duration-300 shadow-[0_0_25px_rgba(245,158,11,0.35)] hover:scale-105"
     >
-      <span>📸 Ver galería completa ({fullGalleryItems.length} fotos)</span>
+      <span>📸 Ver galería completa ({totalCount} fotos)</span>
       <span class="text-lg">→</span>
     </a>
   </div>
 </section>
 
+<script is:inline>
+  let homeActiveCategory = 'destacadas';
+
+  function toggleHomeGalleryDropdown() {
+    const menu = document.getElementById('home-gallery-dropdown-menu');
+    const btn = document.getElementById('home-gallery-more-btn');
+    const chevron = document.getElementById('home-gallery-more-chevron');
+    if (!menu) return;
+
+    const isHidden = menu.classList.contains('hidden');
+    if (isHidden) {
+      menu.classList.remove('hidden');
+      if (chevron) chevron.classList.add('rotate-180');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    } else {
+      closeHomeGalleryDropdown();
+    }
+  }
+
+  function closeHomeGalleryDropdown() {
+    const menu = document.getElementById('home-gallery-dropdown-menu');
+    const btn = document.getElementById('home-gallery-more-btn');
+    const chevron = document.getElementById('home-gallery-more-chevron');
+    if (menu) menu.classList.add('hidden');
+    if (chevron) chevron.classList.remove('rotate-180');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function applyHomeGalleryFilters() {
+    const cards = document.querySelectorAll('[data-home-gallery-card]');
+    const countEl = document.getElementById('home-gallery-photo-count');
+    const fullBtn = document.getElementById('home-gallery-full-btn');
+
+    let visibleCount = 0;
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-category');
+      const isFeatured = card.getAttribute('data-featured') === 'true';
+
+      let show = false;
+      if (homeActiveCategory === 'destacadas') {
+        show = isFeatured;
+      } else if (homeActiveCategory === 'todas') {
+        show = true;
+      } else {
+        show = cardCat === homeActiveCategory;
+      }
+
+      if (show) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (countEl) countEl.innerText = visibleCount;
+
+    if (fullBtn) {
+      const baseUrl = fullBtn.getAttribute('data-base-url') || fullBtn.href.split('?')[0];
+      fullBtn.href = homeActiveCategory === 'destacadas' ? baseUrl : baseUrl + '?cat=' + encodeURIComponent(homeActiveCategory);
+    }
+  }
+
+  function selectHomeGalleryDropdownCategory(category, icon, name, event) {
+    if (event) event.stopPropagation();
+    homeActiveCategory = category;
+
+    const moreBtn = document.getElementById('home-gallery-more-btn');
+    const moreIcon = document.getElementById('home-gallery-more-icon');
+    const moreText = document.getElementById('home-gallery-more-text');
+    const featuredBtn = document.getElementById('home-btn-featured-tab');
+    const indicator = document.getElementById('home-gallery-active-indicator');
+
+    if (moreIcon) moreIcon.innerText = icon;
+    if (moreText) moreText.innerText = name;
+    if (indicator) indicator.innerText = `${icon} Mostrando: ${name}`;
+
+    if (moreBtn) {
+      moreBtn.className = 'inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab';
+    }
+
+    if (featuredBtn) {
+      featuredBtn.className = 'category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md';
+      const badge = featuredBtn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-bold';
+    }
+
+    closeHomeGalleryDropdown();
+    applyHomeGalleryFilters();
+  }
+
+  function filterHomeGalleryCategory(category) {
+    homeActiveCategory = category;
+
+    const moreBtn = document.getElementById('home-gallery-more-btn');
+    const moreIcon = document.getElementById('home-gallery-more-icon');
+    const moreText = document.getElementById('home-gallery-more-text');
+    const featuredBtn = document.getElementById('home-btn-featured-tab');
+    const indicator = document.getElementById('home-gallery-active-indicator');
+
+    if (moreIcon) moreIcon.innerText = '📂';
+    if (moreText) moreText.innerText = 'Más Categorías';
+    if (indicator) indicator.innerText = '🔥 Mostrando: Destacadas';
+
+    if (moreBtn) {
+      moreBtn.className = 'inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md';
+    }
+
+    if (featuredBtn) {
+      featuredBtn.className = 'category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab';
+      const badge = featuredBtn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/30 text-amber-100 font-bold';
+    }
+
+    closeHomeGalleryDropdown();
+    applyHomeGalleryFilters();
+  }
+
+  document.addEventListener('click', (e) => {
+    const wrapper = document.getElementById('home-gallery-dropdown-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      closeHomeGalleryDropdown();
+    }
+  });
+</script>

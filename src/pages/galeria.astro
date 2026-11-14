@@ -11,11 +11,13 @@ const siteOrigin = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'http
 const galleryURL = new URL(Astro.url.pathname, Astro.site || siteOrigin).toString();
 const homeURL = new URL(url('/'), Astro.site || siteOrigin).toString();
 
-const categories = [
-  { id: 'todas', label: 'Todas', icon: '✨', count: fullGalleryItems.length },
-  { id: 'ambiente', label: 'Ambiente & Vistas', icon: '🌄', count: fullGalleryItems.filter(i => i.category === 'ambiente').length },
-  { id: 'gastronomia', label: 'Gastronomía', icon: '🍕', count: fullGalleryItems.filter(i => i.category === 'gastronomia').length },
-  { id: 'noches', label: 'Noches Temáticas', icon: '🌙', count: fullGalleryItems.filter(i => i.category === 'noches').length }
+const featuredCount = fullGalleryItems.filter(i => i.featured).length;
+const totalCount = fullGalleryItems.length;
+
+const photoCategories = [
+  { id: 'ambiente', name: 'Ambiente & Vistas', icon: '🌄', count: fullGalleryItems.filter(i => i.category === 'ambiente').length },
+  { id: 'gastronomia', name: 'Gastronomía & Platos', icon: '🍕', count: fullGalleryItems.filter(i => i.category === 'gastronomia').length },
+  { id: 'noches', name: 'Noches Temáticas', icon: '🌙', count: fullGalleryItems.filter(i => i.category === 'noches').length }
 ];
 
 const gallerySchema = {
@@ -30,7 +32,7 @@ const gallerySchema = {
 <Layout
   title="Galería Completa | El Mirador del Cielo"
   description="Explora todas las fotografías de El Mirador del Cielo en Río de Oro, Cesar: paisajes del Cerro de la Virgen, gastronomía artesanal y noches bajo las luces."
-  image="/images/galeria-cerro-noche.jpeg"
+  image="/images/galeria-cerro-noche.webp"
   breadcrumbs={[
     { name: "Inicio", item: homeURL },
     { name: "Galería Completa", item: galleryURL }
@@ -52,7 +54,7 @@ const gallerySchema = {
 
         <a href={url('/')} data-brand-loader class="flex items-center gap-2.5 group">
           <img
-            src={url('/images/logo-emblema.png')}
+            src={url('/images/logo-emblema.webp')}
             alt="Logo El Mirador del Cielo"
             width="29"
             height="44"
@@ -63,7 +65,7 @@ const gallerySchema = {
               El Mirador <span class="text-gradient">del Cielo</span>
             </span>
             <span class="text-[10px] text-amber-400 font-mono tracking-wide truncate">
-              Galería • {fullGalleryItems.length} Fotos
+              Galería • {totalCount} Fotos
             </span>
           </div>
         </a>
@@ -90,11 +92,11 @@ const gallerySchema = {
     </div>
   </header>
 
-  <!-- Encabezado y filtros -->
-  <section class="relative pt-10 sm:pt-14 pb-10 px-4 border-b border-slate-800/80 bg-gradient-to-b from-[#0d121d] to-[#0B0F17] overflow-hidden">
+  <!-- Encabezado y Buscador -->
+  <section class="relative pt-28 sm:pt-32 pb-10 px-4 border-b border-slate-800/80 bg-gradient-to-b from-[#0d121d] to-[#0B0F17] overflow-hidden">
     <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
     <div class="max-w-4xl mx-auto text-center relative z-10">
-      <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4">
+      <div class="inline-flex items-center gap-2 bg-slate-900/90 border border-amber-500/40 px-4 py-1.5 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4 shadow-lg">
         <span>📍 Cerro de la Virgen, Río de Oro</span>
       </div>
 
@@ -106,39 +108,134 @@ const gallerySchema = {
         Toca cualquier fotografía para verla en pantalla completa y deslizar entre todas las capturas de El Mirador del Cielo.
       </p>
 
-      <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3" id="gallery-filter-bar">
-        {categories.map((cat, idx) => (
-          <button
-            type="button"
-            onclick={`filterFullGallery('${cat.id}', this)`}
-            data-filter={cat.id}
-            class={`gallery-filter-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              idx === 0
-                ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50'
-                : 'bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40'
-            }`}
+      <!-- BUSCADOR EN TIEMPO REAL -->
+      <div class="max-w-md mx-auto relative shadow-2xl">
+        <div class="relative flex items-center">
+          <span class="absolute left-4 text-slate-400 text-base pointer-events-none">🔍</span>
+          <input 
+            type="text" 
+            id="gallery-search-input" 
+            placeholder="Buscar por atardecer, pizzeta, cóctel..." 
+            class="w-full bg-slate-900/95 border border-amber-500/30 rounded-full py-3.5 sm:py-4 pl-12 pr-10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 transition duration-200 shadow-2xl backdrop-blur-md"
+          />
+          <button 
+            id="gallery-search-clear" 
+            class="absolute right-3.5 text-slate-500 hover:text-white p-1 rounded-full text-xs hidden cursor-pointer"
+            title="Limpiar búsqueda"
           >
-            <span>{cat.icon}</span>
-            <span>{cat.label}</span>
-            <span class={`text-[10px] font-mono px-2 py-0.5 rounded-full ${idx === 0 ? 'bg-black/30 text-amber-100' : 'bg-slate-800 text-slate-400'}`}>
-              {cat.count}
-            </span>
+            ✕
           </button>
-        ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Grid completo -->
-  <main class="min-h-screen py-12 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
+  <!-- CONTENIDO PRINCIPAL DE LA GALERÍA -->
+  <main class="min-h-screen pt-8 pb-32 px-4 md:px-8 max-w-7xl mx-auto relative z-20">
+
+    <!-- SELECTOR COMPACTO DE CATEGORÍAS (Destacadas + Dropdown "Más Categorías") -->
+    <div class="mb-8 relative z-30">
+      <div class="flex items-center justify-center gap-2 sm:gap-3 max-w-xl mx-auto px-2">
+        
+        <!-- 1. Botón fijo: 🔥 Destacadas -->
+        <button 
+          id="btn-gallery-featured-tab"
+          type="button"
+          onclick="filterFullGalleryCategory('destacadas')"
+          class="category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md"
+        >
+          <span class="text-sm">🔥</span>
+          <span class="tracking-wide uppercase text-[11px] sm:text-xs">Destacadas</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-bold">
+            {featuredCount}
+          </span>
+        </button>
+
+        <!-- 2. Botón y Dropdown: Ver Más Categorías -->
+        <div class="relative inline-block text-left" id="gallery-categories-dropdown-wrapper">
+          <button 
+            id="gallery-more-categories-btn"
+            type="button"
+            onclick="toggleGalleryCategoriesDropdown()"
+            class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab"
+            aria-expanded="false"
+          >
+            <span id="gallery-more-cat-icon" class="text-sm">📸</span>
+            <span id="gallery-more-cat-text" class="tracking-wide uppercase text-[11px] sm:text-xs">Toda la Galería</span>
+            <svg id="gallery-more-cat-chevron" class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <!-- Menú Flotante con scroll estilizado -->
+          <div 
+            id="gallery-categories-dropdown-menu" 
+            class="hidden absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 mt-2 w-72 sm:w-80 max-h-96 overflow-y-auto bg-[#0d121d] border border-slate-800/90 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-xl divide-y divide-slate-800/50"
+          >
+            <!-- Opción Toda la Galería -->
+            <div class="pb-1.5 mb-1.5">
+              <button 
+                type="button"
+                onclick="selectGalleryDropdownCategory('todas', '📸', 'Toda la Galería', event)"
+                class="dropdown-cat-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition duration-150 cursor-pointer"
+                data-category="todas"
+              >
+                <div class="flex items-center gap-2.5">
+                  <span class="text-base">📸</span>
+                  <span class="uppercase tracking-wider font-bold">Toda la Galería</span>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+                  {totalCount}
+                </span>
+              </button>
+            </div>
+
+            <!-- Lista de categorías restantes -->
+            <div class="pt-1.5 space-y-1">
+              {photoCategories.map((cat) => (
+                <button 
+                  type="button"
+                  onclick={`selectGalleryDropdownCategory('${cat.id}', '${cat.icon}', '${cat.name}', event)`}
+                  class="dropdown-cat-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition duration-150 cursor-pointer"
+                  data-category={cat.id}
+                >
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-base">{cat.icon}</span>
+                    <span class="tracking-wide text-[11px] sm:text-xs text-left">{cat.name}</span>
+                  </div>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+                    {cat.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Indicador de Estado -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 text-xs text-slate-400 gap-2 border-b border-slate-800/60 pb-3">
+      <div class="flex items-center gap-2">
+        <span id="gallery-active-category-indicator" class="text-amber-400 font-bold uppercase tracking-wider text-xs bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+          📸 Mostrando: Toda la Galería
+        </span>
+        <span>(<strong id="gallery-photo-count" class="text-white font-mono">{totalCount}</strong> fotografías)</span>
+      </div>
+      <span class="text-slate-500">✨ Toca cualquier foto para pantalla completa</span>
+    </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5" id="full-gallery-grid">
       {fullGalleryItems.map((item) => (
         <button
           type="button"
           data-gallery-card
           data-category={item.category}
+          data-featured={item.featured ? 'true' : 'false'}
+          data-title={item.title.toLowerCase()}
+          data-desc={item.desc.toLowerCase()}
           onclick={`openLightboxBySrc('${item.src}', 'full')`}
-          class="group relative aspect-[4/5] rounded-2xl overflow-hidden border border-slate-800/90 hover:border-amber-500/60 bg-slate-900 shadow-2xl cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400"
+          class="group relative aspect-[4/5] rounded-2xl overflow-hidden border border-slate-800/90 hover:border-amber-500/60 bg-slate-900 shadow-2xl cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all duration-300"
           aria-label={`Ver ${item.title} en pantalla completa`}
         >
           <img
@@ -148,11 +245,19 @@ const gallerySchema = {
             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
 
+          <!-- Indicador visual para pantalla completa -->
           <span
             class="absolute top-2.5 right-2.5 bg-slate-950/75 backdrop-blur-md border border-slate-700/70 text-slate-200 group-hover:text-amber-300 group-hover:border-amber-400/60 text-xs font-semibold px-2.5 py-1 rounded-full transition-colors duration-200 pointer-events-none"
             aria-hidden="true"
           >
             ⛶
+          </span>
+
+          <!-- Badge de categoría sutil -->
+          <span
+            class="absolute top-2.5 left-2.5 bg-black/65 backdrop-blur-md border border-slate-700/60 text-amber-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full pointer-events-none"
+          >
+            {item.category === 'ambiente' ? '🌄 Vistas' : item.category === 'gastronomia' ? '🍕 Platos' : '🌙 Noches'}
           </span>
 
           <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 sm:p-4 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
@@ -162,6 +267,21 @@ const gallerySchema = {
         </button>
       ))}
     </div>
+
+    <!-- ESTADO VACÍO -->
+    <div id="gallery-no-results" class="hidden text-center py-20 px-4">
+      <span class="text-5xl block mb-3">🔍</span>
+      <h4 class="text-xl font-bold text-white mb-1">No se encontraron fotografías</h4>
+      <p class="text-slate-400 text-sm max-w-sm mx-auto mb-6">
+        No encontramos ninguna captura que coincida con tu búsqueda.
+      </p>
+      <button 
+        onclick="resetGalleryFilters()"
+        class="bg-slate-900 border border-slate-700 hover:bg-slate-800 text-amber-400 font-semibold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition duration-200 cursor-pointer"
+      >
+        Ver Toda la Galería
+      </button>
+    </div>
   </main>
 
   <ReservationModal />
@@ -170,29 +290,200 @@ const gallerySchema = {
 </Layout>
 
 <script is:inline>
-  function filterFullGallery(category, clickedBtn) {
+  let activeGalleryCategory = 'todas';
+  let gallerySearchTerm = '';
+
+  function toggleGalleryCategoriesDropdown() {
+    const menu = document.getElementById('gallery-categories-dropdown-menu');
+    const btn = document.getElementById('gallery-more-categories-btn');
+    const chevron = document.getElementById('gallery-more-cat-chevron');
+    if (!menu) return;
+
+    const isHidden = menu.classList.contains('hidden');
+    if (isHidden) {
+      menu.classList.remove('hidden');
+      if (chevron) chevron.classList.add('rotate-180');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    } else {
+      closeGalleryCategoriesDropdown();
+    }
+  }
+
+  function closeGalleryCategoriesDropdown() {
+    const menu = document.getElementById('gallery-categories-dropdown-menu');
+    const btn = document.getElementById('gallery-more-categories-btn');
+    const chevron = document.getElementById('gallery-more-cat-chevron');
+    if (menu) menu.classList.add('hidden');
+    if (chevron) chevron.classList.remove('rotate-180');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function applyGalleryFilters() {
     const cards = document.querySelectorAll('[data-gallery-card]');
+    const countEl = document.getElementById('gallery-photo-count');
+    const noResults = document.getElementById('gallery-no-results');
+
+    let visibleCount = 0;
     cards.forEach(card => {
       const cardCat = card.getAttribute('data-category');
-      if (category === 'todas' || cardCat === category) {
+      const isFeatured = card.getAttribute('data-featured') === 'true';
+      const title = card.getAttribute('data-title') || '';
+      const desc = card.getAttribute('data-desc') || '';
+
+      let matchesCategory = false;
+      if (activeGalleryCategory === 'destacadas') {
+        matchesCategory = isFeatured;
+      } else if (activeGalleryCategory === 'todas') {
+        matchesCategory = true;
+      } else {
+        matchesCategory = cardCat === activeGalleryCategory;
+      }
+
+      const matchesSearch = !gallerySearchTerm || title.includes(gallerySearchTerm) || desc.includes(gallerySearchTerm);
+
+      if (matchesCategory && matchesSearch) {
         card.style.display = 'block';
+        visibleCount++;
       } else {
         card.style.display = 'none';
       }
     });
 
-    const buttons = document.querySelectorAll('.gallery-filter-btn');
-    buttons.forEach(btn => {
-      btn.className = 'gallery-filter-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40';
-      const badge = btn.querySelector('span:last-child');
-      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400';
-    });
-
-    if (clickedBtn) {
-      clickedBtn.className = 'gallery-filter-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50';
-      const badge = clickedBtn.querySelector('span:last-child');
-      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/30 text-amber-100';
+    if (countEl) countEl.innerText = visibleCount;
+    if (noResults) {
+      if (visibleCount === 0) noResults.classList.remove('hidden');
+      else noResults.classList.add('hidden');
     }
   }
-</script>
 
+  function selectGalleryDropdownCategory(category, icon, name, event) {
+    if (event) event.stopPropagation();
+    activeGalleryCategory = category;
+
+    const moreBtn = document.getElementById('gallery-more-categories-btn');
+    const moreIcon = document.getElementById('gallery-more-cat-icon');
+    const moreText = document.getElementById('gallery-more-cat-text');
+    const featuredBtn = document.getElementById('btn-gallery-featured-tab');
+    const indicator = document.getElementById('gallery-active-category-indicator');
+
+    if (moreIcon) moreIcon.innerText = icon;
+    if (moreText) moreText.innerText = name;
+    if (indicator) indicator.innerText = `${icon} Mostrando: ${name}`;
+
+    if (moreBtn) {
+      moreBtn.className = 'inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab';
+    }
+
+    if (featuredBtn) {
+      featuredBtn.className = 'category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md';
+      const badge = featuredBtn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-bold';
+    }
+
+    closeGalleryCategoriesDropdown();
+    try {
+      const url = new URL(window.location.href);
+      if (category === 'todas') {
+        url.searchParams.delete('cat');
+        window.history.replaceState(null, '', url.pathname);
+      } else {
+        url.searchParams.set('cat', category);
+        window.history.replaceState(null, '', url.pathname + '?' + url.searchParams.toString());
+      }
+    } catch (_) {}
+    applyGalleryFilters();
+  }
+
+  function filterFullGalleryCategory(category) {
+    activeGalleryCategory = category;
+
+    const moreBtn = document.getElementById('gallery-more-categories-btn');
+    const moreIcon = document.getElementById('gallery-more-cat-icon');
+    const moreText = document.getElementById('gallery-more-cat-text');
+    const featuredBtn = document.getElementById('btn-gallery-featured-tab');
+    const indicator = document.getElementById('gallery-active-category-indicator');
+
+    if (moreIcon) moreIcon.innerText = '📂';
+    if (moreText) moreText.innerText = 'Más Categorías';
+    if (indicator) indicator.innerText = '🔥 Mostrando: Destacadas';
+
+    if (moreBtn) {
+      moreBtn.className = 'inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-slate-900/90 border border-slate-800 text-slate-300 hover:text-white hover:border-amber-500/40 hover:bg-slate-800/80 shadow-md';
+    }
+
+    if (featuredBtn) {
+      featuredBtn.className = 'category-tab-btn inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/25 ring-2 ring-amber-400/50 scale-[1.03] active-tab';
+      const badge = featuredBtn.querySelector('span:last-child');
+      if (badge) badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/30 text-amber-100 font-bold';
+    }
+
+    closeGalleryCategoriesDropdown();
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('cat', 'destacadas');
+      window.history.replaceState(null, '', url.pathname + '?' + url.searchParams.toString());
+    } catch (_) {}
+    applyGalleryFilters();
+  }
+
+  function resetGalleryFilters() {
+    const searchInput = document.getElementById('gallery-search-input');
+    const clearBtn = document.getElementById('gallery-search-clear');
+    if (searchInput) searchInput.value = '';
+    if (clearBtn) clearBtn.classList.add('hidden');
+    gallerySearchTerm = '';
+    selectGalleryDropdownCategory('todas', '📸', 'Toda la Galería');
+  }
+
+  // Cerrar al hacer clic fuera del dropdown
+  document.addEventListener('click', (e) => {
+    const wrapper = document.getElementById('gallery-categories-dropdown-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      closeGalleryCategoriesDropdown();
+    }
+  });
+
+  // Búsqueda en tiempo real
+  const searchInput = document.getElementById('gallery-search-input');
+  const clearBtn = document.getElementById('gallery-search-clear');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      gallerySearchTerm = e.target.value.trim().toLowerCase();
+      if (clearBtn) {
+        if (gallerySearchTerm.length > 0) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+      applyGalleryFilters();
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      clearBtn.classList.add('hidden');
+      gallerySearchTerm = '';
+      applyGalleryFilters();
+    });
+  }
+
+  // Soporte directo de categoría por URL (ej: /galeria?cat=gastronomia, /galeria?cat=destacadas)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const initialCat = params.get('cat');
+    if (initialCat) {
+      if (initialCat === 'destacadas') {
+        filterFullGalleryCategory('destacadas');
+      } else {
+        const itemBtn = document.querySelector(`.dropdown-cat-item[data-category="${initialCat}"]`);
+        if (itemBtn) {
+          const iconSpan = itemBtn.querySelector('span:first-child');
+          const nameSpan = itemBtn.querySelector('span:nth-child(2)');
+          const icon = iconSpan ? iconSpan.innerText : '📸';
+          const name = nameSpan ? nameSpan.innerText : initialCat;
+          selectGalleryDropdownCategory(initialCat, icon, name);
+        }
+      }
+    }
+  } catch (_) {}
+</script>

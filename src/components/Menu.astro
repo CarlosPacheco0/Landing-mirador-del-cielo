@@ -73,10 +73,10 @@ const specialties = menuItems.filter(item => item.isSpecialty);
             </div>
 
             <a 
-              href={url('/menu')}
+              href={url(`/menu?cat=${item.category}`)}
               class="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-semibold transition-colors"
             >
-              <span>Ver Carta</span>
+              <span>Ver en Carta</span>
               <span>→</span>
             </a>
           </div>

@@ -1,5 +1,6 @@
 ---
 // src/components/WhatsAppButton.astro
+import { siteConfig } from '../data/site';
 ---
 
 <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2 group">
@@ -9,7 +10,7 @@
     <span class="text-green-400 font-bold">¡Escríbenos!</span>
   </div>
   
-  <a href="https://wa.me/573000000000?text=Hola!%20Quisiera%20mas%20informacion%20sobre%20El%20Mirador%20del%20Cielo." target="_blank" rel="noopener noreferrer" class="relative flex items-center justify-center" aria-label="Escribir a WhatsApp">
+  <a href={siteConfig.contact.getWhatsAppUrl("Hola! Quisiera mas informacion sobre El Mirador del Cielo.")} target="_blank" rel="noopener noreferrer" class="relative flex items-center justify-center" aria-label="Escribir a WhatsApp">
     <div class="absolute -inset-1 bg-green-500 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
     <div class="relative bg-[#25D366] text-white p-4 rounded-full shadow-2xl transition duration-300 transform group-hover:scale-110 flex items-center gap-2">
       <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
